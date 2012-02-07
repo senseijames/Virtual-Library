@@ -5,14 +5,15 @@ by James Overton V
                                     Milestones
 I. Console Output Prototype
 Purpose - get the structure and workflow going before sexying up the view with the 3D engine
-2. Mapper algorithm - get FileSystemMapper searching a directory recursively, and return proper data structure
-3. Final console view output - get console displaying 'bookcases'.  Determine a good I/F for the view, as the 3D engine will use the same I/F
-4. Simple user interface - add a file browser (text field and button), so the user can select a file and input the directory for search
+1. Simple console view output - output one file's information
+2. Simple user interface - add a file browser (text field and button), so the user can select a file and input the directory for search
+*3. Mapper algorithm - get FileSystemMapper searching a directory recursively, and return proper data structure
+    Key - determining the proper data structure.
+4. Final console view output - get console displaying 'bookcases'.  Determine a good I/F for the view, as the 3D engine will use the same I/F
 5. Advanced user interface - add a search box (text field) so the user can filter the results by simple filename match (contents search is beyond the scope of this project)
-    1. Simple console view output - output one file's information
 Output - the structure of the program will be complete
 
-II. 3D Engine
+II. 3D Engine Prototype
 Purpose - replace the console view with a sexy 3D Virtual Library.
 Also - touch up the user interface (file browser and live search)
 1. Create the room
@@ -22,3 +23,6 @@ Also - touch up the user interface (file browser and live search)
 4. Create bookcase models, replace rectangles with bookcases
 5. Click each file to open it (open menu instead?  No, just a prototype!)
 6. Live search effects
+
+
+*in progress

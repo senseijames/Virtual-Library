@@ -16,6 +16,10 @@ package view.console
 //            
 //        }
         
+        protected function clear_bookcases():void
+        {
+        }
+        
         protected var _bookcases:Array = new Array();
         
         public function add_bookcase(files:Array):void
@@ -28,6 +32,8 @@ package view.console
 //            var current_file:File;
             for (var i:uint = 0; i < _bookcases.length; i++)
             {
+                var depth_indicator:String = get_depth_indicator(i);
+                trace(depth_indicator, 'Rendering folder:', _bookcases[i][0].parent.nativePath);
                 for (var j:uint = 0; j < _bookcases[i].length; j++)
                 {
                     print_file_data(_bookcases[i][j]);
@@ -47,16 +53,15 @@ package view.console
             var depth_indicator:String = get_depth_indicator(depth);
             
             trace(depth_indicator, delimeter);
-            trace(depth_indicator, 'Printing info for',file.name);
+            trace(depth_indicator, 'Rendering',file.name);
             trace(depth_indicator, 'size:', file.size, 'bytes');
             // trace(depth_indicator, 'type:', file.type);
             //            trace(depth_indicator, 'extension:', file.extension);
             trace(depth_indicator, 'modification date:', file.modificationDate);
-            trace(depth_indicator, 'native path:',file.nativePath);
-            trace(depth_indicator, 'url:',file.url);
+//            trace(depth_indicator, 'native path:',file.nativePath);
+//            trace(depth_indicator, 'url:',file.url);
             trace(depth_indicator, 'is directory:', file.isDirectory);
             trace(depth_indicator, 'is hidden:', file.isHidden);
-            trace(depth_indicator, 'parent directory name:', get_filename(file.parent),'and native path is',file.parent.nativePath);
         }
         
         protected function get_depth_indicator(depth:uint):String

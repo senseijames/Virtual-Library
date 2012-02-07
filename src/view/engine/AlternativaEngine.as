@@ -16,7 +16,7 @@ package view.engine
     import flash.display.Stage3D;
     import flash.display3D.Context3DBlendFactor;
     import flash.events.Event;
-//    import flash.filesystem.File;
+    import flash.geom.Rectangle;
     import flash.text.TextField;
     
 //    [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
@@ -35,10 +35,17 @@ package view.engine
         private var directional_light:DirectionalLight;
         private var ambient_light:AmbientLight;
         
-        public function AlternativaEngine() 
+        protected var _rectangle:Rectangle;
+        
+        /*
+            TODO: This class needs a heavy refactor; do as you learn more about the engine.
+        */
+        public function AlternativaEngine(options:Object) 
         {
             // ...
 
+            _rectangle = new Rectangle(0, 0, options.width, options.height);
+            
             (stage) ? init() : addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
@@ -106,7 +113,7 @@ package view.engine
             camera.y = -300;
             camera.z = 100;
             // Add a view to the camera.
-            camera.view = new View(stage.stageWidth, stage.stageHeight, false, 0x404040, 0, 4);
+            camera.view = new View(_rectangle.width, _rectangle.height, false, 0x404040, 0, 4);
             addChild(camera.view);
             // Add the camera to the root container.
             root_container = new Object3D();
