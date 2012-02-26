@@ -1,6 +1,8 @@
 package mapper
 {
     import flash.filesystem.File;
+    
+    import model.FileDirectory;
 
     /**
      * Delegate for file system mapping; given a directory, returns a data structure (nested array, object, vector, dictionary?)
@@ -20,39 +22,41 @@ package mapper
                 just make the SWF dimensions larger than the the Alternativa window, giving space for that chrome.
         
             Console Prototype Milestone II - Mapper Algorithm
-            1. Implement recursive file search
-            2. Choose an appropriate data structure for the files
+                1. Implement recursive file search
+                2. Choose an appropriate data structure for the files
             3. Console output showing the recursive structure (tabbed over well)
-        
-            Thoughts: want to display one bookcase at a time?  Maybe a full on directory search is too taxing, too much of a wait for the user.
         */
         
         
         /**
          *  Returns multidimensional array of Files.
+         * 
+         *  @param reverse_depth:uint           How deep to search, and a running countdown of the current (reverse) depth of recursion.
+         *  @param options.show_hidden:Boolean  Whether to show hidden files (default false)
          */ 
-        public static function map_directory(directory:File, depth:Number = 1):Array
+        public static function get_directory_tree(directory:File, reverse_depth:int, options:Object):FileDirectory
         {
-//            if (depth == 0) {
-//                return [];
-//            }
-            
-            var directory_map:Array = new Array;
+            var file_directory:FileDirectory = new FileDirectory(directory);
             var directory_files:Array = directory.getDirectoryListing();
             
             var current_file:File;
             for (var i:uint = 0; i < directory_files.length; i++)
             {
                 current_file = directory_files[i];
-//                if (current_file.isDirectory) {
-//                    directory.push([ get_directory(current_file, depth - 1)]);    
-//                }
-//                else {
-                    directory_map.push(current_file);
-//                }
+                
+                if (!options.show_hidden && current_file.isHidden) {
+                    continue;
+                }
+                
+                if (current_file.isDirectory && reverse_depth - 1 > 0) {
+                    file_directory.push(get_directory_tree(current_file, reverse_depth - 1, options));    
+                }
+                else {
+                    file_directory.push(new FileDirectory(current_file));
+                }
             }
             
-            return directory_map;
+            return file_directory;
         }
         
         // May be needed on iOS or other platforms where file browser not supported.

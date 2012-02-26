@@ -3,16 +3,26 @@ package view.ui
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.events.TextEvent;
+    import flash.text.TextField;
+    import flash.text.TextFieldType;
+    
+    import utils.TextUtils;
     
     public class Chrome extends Sprite
     {
         public static const OPEN_FILE_BROWSER_EVENT:String = "open_file_browser";
         
         protected var _open_file_browser_button:Sprite;
+        protected var _live_search_text_field:TextField;
         
         public function Chrome()
         {
             _open_file_browser_button = get_button(60, 30, { color: 0xFF0000});
+            
+            _live_search_text_field = TextUtils.getTextField();
+            _live_search_text_field.type = TextFieldType.INPUT;
+//            _live_search_text_field.maxChars 
         }
         
         /**
@@ -26,6 +36,11 @@ package view.ui
             
             addChild(_open_file_browser_button);
             
+            _live_search_text_field.width = Math.max(0.25 * width, 100);
+            _live_search_text_field.x = width - _live_search_text_field.width - 10;
+            _live_search_text_field.y = 0.5 * (height - _live_search_text_field.height);
+//            addChild(_live_search_text_field);
+            
             addEventListeners();
         }
         
@@ -33,6 +48,9 @@ package view.ui
         {
             _open_file_browser_button.addEventListener(MouseEvent.CLICK, open_file_browser);
             _open_file_browser_button.buttonMode = true;
+            
+            _live_search_text_field.addEventListener(Event.CHANGE, do_live_search);
+            
             addEventListener(MouseEvent.ROLL_OVER, show);
             addEventListener(MouseEvent.ROLL_OUT, hide);
         }
@@ -41,6 +59,13 @@ package view.ui
         public function resize(options:Object):void
         {
             
+        }
+        
+        protected function do_live_search(e:Event):void
+        {
+            var textInputEvent:TextEvent = new TextEvent(TextEvent.TEXT_INPUT, true);
+            textInputEvent.text = _live_search_text_field.text;
+            dispatchEvent(textInputEvent);
         }
         
         protected function open_file_browser(e:MouseEvent):void

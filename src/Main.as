@@ -15,6 +15,9 @@ package
     public class Main extends Sprite
     {
         protected static const VERSION:String = '0.0.2';
+        protected static const FILE_SEARCH_DEPTH:uint = 3;
+        protected static const SHOW_HIDDEN:Boolean = false;
+        protected static const IS_LOOSE_PACK:Boolean = true;
         
         
         public function Main() 
@@ -23,7 +26,7 @@ package
             
             run();
             
-            test_alternativa_engine();
+            run_tests();
         }
         
         protected function run():void
@@ -31,8 +34,7 @@ package
             var container:Sprite = new Sprite();
             addChild(container);
             var virtual_library_controller:VirtualLibraryController = new VirtualLibraryController();
-            virtual_library_controller.init(container, {});
-//            virtual_library_controller.run();
+            virtual_library_controller.init(container, {depth: FILE_SEARCH_DEPTH, show_hidden: SHOW_HIDDEN, is_loose_pack: IS_LOOSE_PACK });
         }
 
         protected function trace_boilerplate():void
@@ -50,9 +52,7 @@ package
         protected function run_tests():void
         {
             test_alternativa_engine();
-            var file_api_test:FileApiTest = new FileApiTest();
-            
-            trace('\nTesting now dude!');
+//            var file_api_test:FileApiTest = new FileApiTest();
         }
    }
 }
