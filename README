@@ -9,10 +9,8 @@ Purpose - get the structure and workflow going before sexying up the view with t
 2. Simple user interface - add a file browser (text field and button), so the user can select a file and input the directory for search
 3. Mapper algorithm - get FileSystemMapper searching a directory recursively, and return proper data structure
    Key - determining the proper data structure.
-* 4. Final console view output - get console displaying 'bookcases'.  Determine a good I/F for the view, as the 3D engine will use the same I/F
-
-**Goal Today: get to here
-**5. Advanced user interface - add a search box (text field) so the user can filter the results by simple filename match (contents search is beyond the scope of this project)
+4. Final console view output - get console displaying 'bookcases'.  Determine a good I/F for the view, as the 3D engine will use the same I/F
+*5. Advanced user interface - add a search box (text field) so the user can filter the results by simple filename match (contents search is beyond the scope of this project)
 Output - the structure of the program will be complete
 
 II. 3D Engine Prototype

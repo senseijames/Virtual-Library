@@ -64,7 +64,7 @@ package controller
 //            _chrome.x = -20;
             container.addChild(_chrome);
             
-            _view.init({ is_loose_pack: _is_loose_pack });
+            _view.init({ is_loose_pack: _is_loose_pack, depth: _depth });
 //            open_file_browser();
         }
 
@@ -76,41 +76,43 @@ package controller
         
         /**
          * @param   options.is_append:Boolean   whether the add() operation appends to the existing library or replaces it
-         */ 
-        protected function add_directories_to_view(file_directory:FileDirectory):void //, options:Object):void
+         * 
+         */
+        // Eligible for public I/F, should one be needed.
+        protected function add_directories_to_view(file_directory:FileDirectory, depth:int):void //, options:Object):void
         {
-            _directory_tree = file_directory;
-            add_directory_to_view(file_directory, 0);
-        }
-        
-        protected function add_directory_to_view(file_directory:FileDirectory, depth:uint):void
-        {
-trace('adding', file_directory.directory.name);            
-            _view.add_book(file_directory.directory, depth);
+            if (!file_directory.directory.isDirectory) {
+                return;
+            }
+            
+            add_directory_to_view(file_directory, depth);
             
             if (!file_directory.files || depth >= _depth) {
                 return;
             }
-//            if (depth >= _depth) {
-//                add_directory_children_to_view(file_directory, depth + 1);
-//                return;
-//            }
             
             for (var i:uint = 0; i < file_directory.files.length; i++)
             {
-                add_directory_to_view(file_directory.files[i], depth + 1);
-            }
-        }
-
-        // TODO: Currently unused.
-        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint):void
-        {
-            for (var i:uint = 0; i < file_directory.files.length; i++)
-            {
-                _view.add_book(file_directory.files[i].directory, depth);
+                add_directories_to_view(file_directory.files[i], depth + 1);
             }
         }
         
+        protected function add_directory_to_view(file_directory:FileDirectory, depth:uint):void
+        {
+            _view.add_directory(file_directory, depth);
+//trace('Adding to view at depth', depth, ':', file_directory.directory.name);            
+        }
+
+        public function filename_search(query:String):void
+        {
+            trace('\n\n\nPerforming file search for query:', query);
+            trace('* * * * * * * * * * * * * * * * * * * * * * * * * *');
+            
+            if (_directory_tree.directory.name.indexOf(query) != -1) {
+//                high
+            }
+        }
+
         
         /* * * * * * * * * * * * * * * * *
          * File Browser Event Handlers
@@ -150,10 +152,9 @@ trace('adding', file_directory.directory.name);
         
         protected function file_browser_SELECT(event:Event):void
         {
-            var file:File = File(event.target);
             // TODO: Ammend duplication in run.  Best I/F for this?
-            var directory_tree:FileDirectory = FileSystemMapper.get_directory_tree(file, _depth, { show_hidden: _show_hidden });
-            add_directories_to_view(directory_tree);
+            _directory_tree = FileSystemMapper.get_directory_tree(File(event.target), _depth, { show_hidden: _show_hidden });
+            add_directories_to_view(_directory_tree, 0);
             _view.render();
         }
         protected function file_browser_CANCEL(event:Event):void
@@ -165,6 +166,18 @@ trace('adding', file_directory.directory.name);
             trace('\nFile browser IO Error!  File Browser may be unsupported on this platform:', event.toString());
         }
 
+        
+        /* * * * * * * * * * * * * * * * *
+        * Deprecated
+        * * * * * * * * * * * * * * * * */
+        
+        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint):void
+        {
+            for (var i:uint = 0; i < file_directory.files.length; i++)
+            {
+//                _view.add_book(file_directory.files[i].directory, depth);
+            }
+        }
+        
     }
-    
 }

@@ -2,6 +2,8 @@ package view.console
 {
     import flash.filesystem.File;
     
+    import model.FileDirectory;
+    
     /**
      *  View responsibility - add files to shelves; aggregate shelves into bookcases.
      * 
@@ -13,16 +15,18 @@ package view.console
      */ 
     public class ConsoleOutput
     {
+        // Currently not used...
         protected static const MAX_BOOKS_PER_BOOKCASE:uint = 30;
-        
         // 2d arrays of bookcases.
         protected var _depth_0_bookcases:Array;
         protected var _depth_1_bookcases:Array;
         protected var _depth_2_bookcases:Array;
         protected var _depth_3_bookcases:Array;
+        
         // State variables.
         protected var _total_books:uint;
         protected var _is_loose_pack:Boolean;
+        protected var _depth:uint;
 
         public function ConsoleOutput()
         {
@@ -31,6 +35,7 @@ package view.console
         public function init(options:Object):void
         {
             _is_loose_pack = options.is_loose_pack;
+            _depth = options.depth;
         }
         
 //        public function add_bookshelf():void
@@ -42,33 +47,20 @@ package view.console
         {
         }
         
-        public function add_book(file:File, depth:uint):void
+        public function add_directory(file_directory:FileDirectory, depth:uint):void
         {
-            if (!this['_depth_' + String(depth) + '_bookcases']) {
-                this['_depth_' + String(depth) + '_bookcases'] = new Array();
-                this['_depth_' + String(depth) + '_bookcases'].push(new Array());
+            print_file_data(file_directory.directory, depth, true);
+            
+            if (!file_directory.files) {
+                return;
             }
             
-            var aisle:Array = this['_depth_' + String(depth) + '_bookcases'];
-        
-/* TODO: Left off here - this logic is wrong, first of all; it's putting all books on their own bookshelf.  But furthermore,
-         the way you're adding books is fundamentally wrong.  You're adding each book to ONE bookshelf, when in truth you need
-         to add directories to TWO bookshelves - as a book on their parent bookshelf, and as a bookcase/bookshelf label/title
-         on their own bookcase/shelf.  And you need to link the two somehow.  I think shoe-horning your FileDirectory structure
-         into a series of 2d arrays just isn't working; need a better view representation of these for now.  Maybe just display
-         raw; there is little in implementation that you will be able to transfer from ConsoleOutput to EngineOutput - only the I/F
-         will likely be reusable.
-            
-*/
-// TODO resolve this here now - should only start a new bookshelf if is_loose_pack == true            
-            // Hold 30 books for now.
-            if (aisle[aisle.length - 1].length >= MAX_BOOKS_PER_BOOKCASE || 
-                _is_loose_pack && aisle[aisle.length - 1].length > 0 && file.parent != aisle[aisle.length - 1][0].parent) { // && depth != 3) {
-                aisle.push(new Array());
+            var current_file:File;
+            for (var i:uint = 0; i < file_directory.files.length; i++) 
+            {
+                current_file = file_directory.files[i].directory;
+                print_file_data(current_file, depth, false, current_file.isDirectory && depth != _depth);
             }
-
-            aisle[aisle.length - 1].push(file);    
-            _total_books++;
         }
         
 //        public function add_bookcase(files:Array):void
@@ -78,38 +70,22 @@ package view.console
         
         public function render():void
         {
-            trace('Rendering', _total_books, 'books total...');
-// TODO: Depth here is hard-coded.            
-            for (var i:uint = 0; i < 4; i++) {
-trace('rendering bookcase',i);                
-                render_bookcases_at_depth(i);
-            }
-        }
-         
-        protected function render_bookcases_at_depth(depth:uint):void
-        {
-            var bookcases:Array = this['_depth_' + String(depth) + '_bookcases'];
-            for (var i:uint = 0; i < bookcases.length; i++)
-            {
-                var depth_indicator:String = get_depth_indicator(depth);
-                trace('\n',depth_indicator, 'Rendering ' + depth + ':' + i + ' - ' + bookcases[i][0].nativePath + ' - has', bookcases[i].length, 'books.');
-                trace(depth_indicator, '* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *');
-                for (var j:uint = 0; j < bookcases[i].length; j++)
-                {
-                    print_file_data(bookcases[i][j], depth);
-                }
-            }
-        }
-        
-        public function filename_search(query:String):void
-        {
-            
+            trace(_total_books, 'rendered');
         }
         
         
-        protected function print_file_data(file:File, depth:uint = 0, delimeter:String = '--------------'):void
+        /* * * * * * * * * *
+        * Helpers
+        * * * * * * * * * */
+        
+        protected function print_file_data(file:File, depth:uint = 0, is_parent:Boolean = false, is_link:Boolean = false, delimeter:String = '--------------'):void
         {
-            trace(get_depth_indicator(depth), file.name,'type:', file.extension, 'size:', file.size, 'bytes');
+            _total_books++;
+            var depth_spacing:String = get_depth_indicator(depth);
+            var type:String = (file.extension) ? file.extension : ((file.isDirectory) ? 'directory' : null);
+            if (is_parent) trace(depth_spacing + '* * * * * * * * * * * * * * * * * * * * * * *');
+            trace(depth_spacing + (is_parent ? '* ' : '') + file.name,'type:', type, 'size:', file.size, 'bytes','   ', (is_link ? '(link)' : ''));
+            if (is_parent) trace(depth_spacing + '* * * * * * * * * * * * * * * * * * * * * * *');
         }
         
         protected function get_depth_indicator(depth:uint):String
@@ -128,5 +104,6 @@ trace('rendering bookcase',i);
 //            var native_path:String = file.nativePath;
 //            return native_path.substring(native_path.lastIndexOf(File.separator) + 1);
 //        }
+        
     }
 }
