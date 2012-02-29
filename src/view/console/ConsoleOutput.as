@@ -67,6 +67,28 @@ package view.console
             trace(_total_books, 'rendered');
         }
 
+        
+        /* * * * * * * * * * * * * * *
+        * Virtual folder management
+        * * * * * * * * * * * * * * */
+        // TODO: I imagine the I/F will change as you come to understand more about the requirements
+        // and "how the system wants to be programmed".
+        public function select_file(file:File):void
+        {
+        }
+        
+        public function highlight_file(file:File):void
+        {
+        }
+        
+        public function create_virtual_folder(name:String):void
+        {
+        }
+
+        public function add_to_virtual_folder(file:File, virtual_folder_name:String):void
+        {
+        }
+        
         //        public function add_bookcase(files:Array):void
         //        {
         //            _bookcases.push(files);      
