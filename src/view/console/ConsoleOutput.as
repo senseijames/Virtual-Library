@@ -17,36 +17,28 @@ package view.console
     {
         // Currently not used...
         protected static const MAX_BOOKS_PER_BOOKCASE:uint = 30;
-        // 2d arrays of bookcases.
-        protected var _depth_0_bookcases:Array;
-        protected var _depth_1_bookcases:Array;
-        protected var _depth_2_bookcases:Array;
-        protected var _depth_3_bookcases:Array;
         
         // State variables.
+        protected var _file_directories:Vector.<FileDirectory>;
         protected var _total_books:uint;
         protected var _is_loose_pack:Boolean;
         protected var _depth:uint;
 
         public function ConsoleOutput()
         {
+            _file_directories = new Vector.<FileDirectory>();
         }
+
+        /* * * * * * * * * * * * * * * * *
+        * Public interface
+        * * * * * * * * * * * * * * * * */
 
         public function init(options:Object):void
         {
             _is_loose_pack = options.is_loose_pack;
             _depth = options.depth;
         }
-        
-//        public function add_bookshelf():void
-//        {
-//            
-//        }
-        
-        protected function clear_bookcases():void
-        {
-        }
-        
+
         public function add_directory(file_directory:FileDirectory, depth:uint):void
         {
             print_file_data(file_directory.directory, depth, true);
@@ -63,16 +55,27 @@ package view.console
             }
         }
         
-//        public function add_bookcase(files:Array):void
-//        {
-//            _bookcases.push(files);      
-//        }
-        
+        public function clear():void
+        {
+            trace('[Console Output] Clearing...\n');
+            _file_directories.length = 0;
+            _total_books = 0;
+        }
+
         public function render():void
         {
             trace(_total_books, 'rendered');
         }
-        
+
+        //        public function add_bookcase(files:Array):void
+        //        {
+        //            _bookcases.push(files);      
+        //        }
+        //        public function add_bookshelf():void
+        //        {
+        //            
+        //        }
+
         
         /* * * * * * * * * *
         * Helpers

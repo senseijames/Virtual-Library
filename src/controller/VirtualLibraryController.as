@@ -3,6 +3,7 @@ package controller
     import flash.display.DisplayObjectContainer;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
+    import flash.events.TextEvent;
     import flash.filesystem.File;
     
     import mapper.FileSystemMapper;
@@ -20,7 +21,7 @@ package controller
         public static var CHROME_HEIGHT:uint = 30;
         
         // State.
-        protected var _directory_tree:FileDirectory;
+        protected var _directory_trees:Vector.<FileDirectory>;
         // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
         protected var _depth:uint;
         protected var _show_hidden:Boolean;
@@ -37,6 +38,7 @@ package controller
         {
             _view = new ConsoleOutput();
             _chrome = new Chrome();
+            _directory_trees = new Vector.<FileDirectory>();
         }
         
         
@@ -57,7 +59,9 @@ package controller
             _is_loose_pack = options.is_loose_pack;
             
             _chrome.init({ height: CHROME_HEIGHT, width: container.stage.stageWidth, color: 0x00FF00, alpha: 0.5 });
-            _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, open_file_browser);
+            _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, file_browser_OPEN);
+            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE); //, true);
+            _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
             
             // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
             _chrome.y = container.stage.stageHeight - _chrome.height;
@@ -103,17 +107,44 @@ package controller
 //trace('Adding to view at depth', depth, ':', file_directory.directory.name);            
         }
 
-        public function filename_search(query:String):void
+        
+        /* * * * * * * * * * * * * * * * *
+        * Live search
+        * * * * * * * * * * * * * * * * */
+        
+        protected function search_text_CHANGE(event:TextEvent):void
         {
-            trace('\n\n\nPerforming file search for query:', query);
-            trace('* * * * * * * * * * * * * * * * * * * * * * * * * *');
-            
-            if (_directory_tree.directory.name.indexOf(query) != -1) {
-//                high
-            }
+            // Note that the event is dispatched BEFORE the TextField contents change, hence
+            // the need to append the new text.
+            var query:String = event.target.text + event.text;
+            trace('[Virtual Library Controller] Search text change event caught:', query);
+            filename_search(query);
         }
 
+        public function filename_search(query:String):void
+        {
+            trace('\nPerforming file search for query:', query);
+            if (_directory_trees.length == 0) {
+                return;
+            }
+
+            /*
+            Left off here - this class should have a Vector of FileDirectory, rather than just one.  Similarly,
+            the View should probably also have that state.  What you are trying to preclude is too much encapsulation
+            because it will hurt performance - in the current decomposition, you will crawl the FileDirectory for search
+            hits and pass them to the view, one by one, but then the View will have to crawl its directory of files as well
+            (note that the View currently does not store that state), meaning order O(N ^ 2).
+            */
+            
+            for (var i:uint = 0; i < _directory_trees.length; i++)
+            {
+                if (_directory_trees[i].directory.name.indexOf(query) != -1) {
+    //                high
+                }
+            }
+        }
         
+
         /* * * * * * * * * * * * * * * * *
          * File Browser Event Handlers
          * * * * * * * * * * * * * * * * */
@@ -123,7 +154,7 @@ package controller
             On iOS devices, file and browse dialogs are not supported. This method cannot be used.
                 Solution: Use native extensions.  On iOS could parse a text field for the path.  On Android, could use open() and filter for folders.
         */
-        protected function open_file_browser(e:Event):void
+        protected function file_browser_OPEN(e:Event):void
         {
             if (!_file_browser) 
             {
@@ -153,8 +184,8 @@ package controller
         protected function file_browser_SELECT(event:Event):void
         {
             // TODO: Ammend duplication in run.  Best I/F for this?
-            _directory_tree = FileSystemMapper.get_directory_tree(File(event.target), _depth, { show_hidden: _show_hidden });
-            add_directories_to_view(_directory_tree, 0);
+            _directory_trees.push(FileSystemMapper.get_directory_tree(File(event.target), _depth, { show_hidden: _show_hidden }));
+            add_directories_to_view(_directory_trees[_directory_trees.length - 1], 0);
             _view.render();
         }
         protected function file_browser_CANCEL(event:Event):void
@@ -166,6 +197,15 @@ package controller
             trace('\nFile browser IO Error!  File Browser may be unsupported on this platform:', event.toString());
         }
 
+
+        /* * * * * * * * * * * * * * * * *
+        * Other event handling
+        * * * * * * * * * * * * * * * * */
+        
+        protected function library_CLEAR(event:Event):void
+        {
+            _view.clear();
+        }
         
         /* * * * * * * * * * * * * * * * *
         * Deprecated
