@@ -39,8 +39,22 @@ package view.console
             _depth = options.depth;
         }
 
+        public function render():void
+        {
+            trace(_total_books, 'rendered');
+        }
+
+        public function clear():void
+        {
+            trace('[Console Output] Clearing...\n');
+            _file_directories.length = 0;
+            _total_books = 0;
+        }
+        
         public function add_directory(file_directory:FileDirectory, depth:uint):void
         {
+            _file_directories.push(file_directory);
+            
             print_file_data(file_directory.directory, depth, true);
             
             if (!file_directory.files) {
@@ -55,18 +69,35 @@ package view.console
             }
         }
         
-        public function clear():void
+        public function live_search(query:String):void
         {
-            trace('[Console Output] Clearing...\n');
-            _file_directories.length = 0;
-            _total_books = 0;
+            for (var i:uint = 0; i < _file_directories.length; i++)
+            {
+                search_directory(_file_directories[i], query);
+            }
         }
-
-        public function render():void
+        
+        /*
+            Searching almost working - showing double duplicates or what?
+        */
+        
+        public function search_directory(directory:FileDirectory, query:String):void
         {
-            trace(_total_books, 'rendered');
+            if (directory.directory.name.toLowerCase().indexOf(query) != -1) {
+                highlight_file(directory.directory, directory.files && directory.files.length != 0);
+            }
+            
+            if (!directory.files || directory.files.length == 0) {
+                return;
+            }
+            
+            for (var i:uint = 0; i < directory.files.length; i++) 
+            {
+                if (directory.files[i].directory.name.toLowerCase().indexOf(query) != -1) {
+                    highlight_file(directory.files[i].directory, false);
+                }
+            }
         }
-
         
         /* * * * * * * * * * * * * * *
         * Virtual folder management
@@ -77,8 +108,10 @@ package view.console
         {
         }
         
-        public function highlight_file(file:File):void
+        protected function highlight_file(file:File, is_directory_with_children:Boolean):void
         {
+            var string:String = ((is_directory_with_children) ? 'bookcase' : 'book') + ':';
+            trace('[ConsoleOutput] Highlighting', string, file.nativePath);
         }
         
         public function create_virtual_folder(name:String):void

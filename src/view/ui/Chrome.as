@@ -3,7 +3,6 @@ package view.ui
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;
-    import flash.events.TextEvent;
     import flash.text.TextField;
     
     import utils.TextUtils;
@@ -64,7 +63,8 @@ package view.ui
             _clear_button.addEventListener(MouseEvent.CLICK, clear_library);
             _clear_button.buttonMode = true;
             
-            _live_search_text_field.addEventListener(TextEvent.TEXT_INPUT, do_live_search);
+//            _live_search_text_field.addEventListener(TextEvent.TEXT_INPUT, do_live_search);
+            _live_search_text_field.addEventListener(Event.CHANGE, do_live_search);
             _live_search_text_field.addEventListener(MouseEvent.CLICK, function(e:Event):void { TextField(e.target).text = ''; e.target.removeEventListener(e.type, arguments.callee); });
             
             addEventListener(MouseEvent.ROLL_OVER, show);
@@ -79,7 +79,7 @@ package view.ui
 
         // This method is just to satisfy the compiler; the event will propagate to the Controller through
         // the event flow anyway.
-        protected function do_live_search(event:TextEvent):void
+        protected function do_live_search(event:Event):void
         {
 //            dispatchEvent(event);
         }

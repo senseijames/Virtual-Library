@@ -3,7 +3,6 @@ package controller
     import flash.display.DisplayObjectContainer;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
-    import flash.events.TextEvent;
     import flash.filesystem.File;
     
     import mapper.FileSystemMapper;
@@ -60,7 +59,8 @@ package controller
             
             _chrome.init({ height: CHROME_HEIGHT, width: container.stage.stageWidth, color: 0x00FF00, alpha: 0.5 });
             _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, file_browser_OPEN);
-            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE); //, true);
+//            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE);
+            _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
             _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
             
             // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
@@ -112,11 +112,11 @@ package controller
         * Live search
         * * * * * * * * * * * * * * * * */
         
-        protected function search_text_CHANGE(event:TextEvent):void
+        protected function search_text_CHANGE(event:Event):void
         {
             // Note that the event is dispatched BEFORE the TextField contents change, hence
-            // the need to append the new text.
-            var query:String = event.target.text + event.text;
+            // the need to append the new text.            
+            var query:String = event.target.text;
             trace('[Virtual Library Controller] Search text change event caught:', query);
             filename_search(query);
         }
@@ -128,6 +128,7 @@ package controller
                 return;
             }
 
+            _view.live_search(query);
             /*
             Left off here - this class should have a Vector of FileDirectory, rather than just one.  Similarly,
             the View should probably also have that state.  What you are trying to preclude is too much encapsulation
@@ -136,12 +137,13 @@ package controller
             (note that the View currently does not store that state), meaning order O(N ^ 2).
             */
             
-            for (var i:uint = 0; i < _directory_trees.length; i++)
-            {
-                if (_directory_trees[i].directory.name.indexOf(query) != -1) {
-    //                high
-                }
-            }
+//            for (var i:uint = 0; i < _directory_trees.length; i++)
+//            {
+//                
+//                if (_directory_trees[i].directory.name.indexOf(query) != -1) {
+//    //                high
+//                }
+//            }
         }
         
 
