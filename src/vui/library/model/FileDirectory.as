@@ -1,4 +1,4 @@
-package model
+package vui.library.model
 {
     import flash.filesystem.File;
 

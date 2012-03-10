@@ -1,15 +1,10 @@
-package
+package // vui.library
 {
-    import controller.VirtualLibraryController;
-    
     import flash.display.Sprite;
     
-    import test.FileApiTest;
-    
-    import view.engine.AlternativaEngine;
-    
+    import vui.library.controller.VirtualLibraryController;
+    import vui.library.view.engine.AlternativaEngine;
 
-    
     // Note these are the dimensions of the stage itself.
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
@@ -52,7 +47,6 @@ package
         protected function run_tests():void
         {
             test_alternativa_engine();
-//            var file_api_test:FileApiTest = new FileApiTest();
         }
    }
 }

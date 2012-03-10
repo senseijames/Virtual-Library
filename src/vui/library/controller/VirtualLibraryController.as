@@ -1,16 +1,16 @@
-package controller
+package vui.library.controller
 {
     import flash.display.DisplayObjectContainer;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
     import flash.filesystem.File;
     
-    import mapper.FileSystemMapper;
+    import vui.library.mapper.FileSystemMapper;
     
-    import model.FileDirectory;
+    import vui.library.model.FileDirectory;
     
-    import view.console.ConsoleOutput;
-    import view.ui.Chrome;
+    import vui.library.view.console.ConsoleOutput;
+    import vui.library.view.ui.Chrome;
     
     /**
      * I don't think it should subclass Sprite; a controller should have no visual representation.

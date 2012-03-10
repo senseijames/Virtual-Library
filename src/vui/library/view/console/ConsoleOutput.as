@@ -1,8 +1,9 @@
-package view.console
+package vui.library.view.console
 {
     import flash.filesystem.File;
+    import flash.filesystem.FileStream;
     
-    import model.FileDirectory;
+    import vui.library.model.FileDirectory;
     
     /**
      *  View responsibility - add files to shelves; aggregate shelves into bookcases.
@@ -113,11 +114,31 @@ package view.console
             var string:String = ((is_directory_with_children) ? 'bookcase' : 'book') + ':';
             trace('[ConsoleOutput] Highlighting', string, file.nativePath);
         }
-        
+
+        /*
+            Left off here - figure out how to read/write to the application storage directory
+            so that you can create/open/read/write virtual folders persisently.  Nice.
+        */
+        // TODO: Move these to the Controller.
+        protected var _app_storage_directory:File;
+        protected var _app_storage_directory_file_stream:FileStream;
+        // Need them to persist across runnings of the program.
         public function create_virtual_folder(name:String):void
         {
+            if (!_app_storage_directory) {
+                _app_storage_directory = File.applicationStorageDirectory;
+            }
+            if (!_app_storage_directory_file_stream) {
+                _app_storage_directory_file_stream = new FileStream();
+            }
+//            var fileStream:FileStream = new FileStream();
+//            fileStream.open(file, FileMode.WRITE);
+//            fileStream.writeUTF(str);
+//            fileStream.close();            
         }
-
+        public function open_virtual_folder(name:String):void
+        {
+        }
         public function add_to_virtual_folder(file:File, virtual_folder_name:String):void
         {
         }

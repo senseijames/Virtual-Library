@@ -1,11 +1,11 @@
-package view.ui
+package vui.library.view.ui
 {
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.text.TextField;
     
-    import utils.TextUtils;
+    import vui.library.utils.TextUtils;
     
     public class Chrome extends Sprite
     {

@@ -1,8 +1,8 @@
-package mapper
+package vui.library.mapper
 {
     import flash.filesystem.File;
     
-    import model.FileDirectory;
+    import vui.library.model.FileDirectory;
 
     /**
      * Delegate for file system mapping; given a directory, returns a data structure (nested array, object, vector, dictionary?)
