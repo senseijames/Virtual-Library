@@ -6,18 +6,22 @@ package vui.library.controller
     import flash.filesystem.File;
     
     import vui.library.mapper.FileSystemMapper;
-    
     import vui.library.model.FileDirectory;
-    
     import vui.library.view.console.ConsoleOutput;
     import vui.library.view.ui.Chrome;
+    import vui.library.view.ui.menu.Menu;
     
     /**
      * I don't think it should subclass Sprite; a controller should have no visual representation.
      */ 
     public class VirtualLibraryController
     {
+        // TODO: Consider moving these to a "Config" class (encapsulation, and if you make vars you can change dynamically)
         public static var CHROME_HEIGHT:uint = 30;
+        public static const MENU_BG_COLOR:uint = 0xCDCDCD;
+        public static const MENU_BG_ALPHA:Number = 0.7;
+        public static const MENU_WIDTH:uint = 400;
+        public static const MENU_HEIGHT:uint = 400;
         
         // State.
         protected var _directory_trees:Vector.<FileDirectory>;
@@ -31,6 +35,7 @@ package vui.library.controller
         protected var _container:DisplayObjectContainer;
         protected var _view:ConsoleOutput;
         protected var _chrome:Chrome;
+        protected var _menu:Menu;
         
         // Convoluted to have a constructor, init and run that could all be just in the constructor?  Or good decomposition?  Time will tell?
         public function VirtualLibraryController()
@@ -62,6 +67,7 @@ package vui.library.controller
 //            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE);
             _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
             _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
+            _chrome.addEventListener(Chrome.TOGGLE_MENU_EVENT, toggle_menu_CLICK);
             
             // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
             _chrome.y = container.stage.stageHeight - _chrome.height;
@@ -70,6 +76,27 @@ package vui.library.controller
             
             _view.init({ is_loose_pack: _is_loose_pack, depth: _depth });
 //            open_file_browser();
+        }
+
+        
+        /* * * * * * * * * * * * * * * * * * *
+        * Initialization
+        * * * * * * * * * * * * * * * * * * */
+
+        protected function init_menu():void
+        {
+            _menu = new Menu();
+            _menu.init({ width: MENU_WIDTH, height: MENU_HEIGHT, bgColor: MENU_BG_COLOR, bgAlpha: MENU_BG_ALPHA });
+            // folders: array_of_virtual_folders
+            _menu.x = 0.5 * (_container.stage.stageWidth - _menu.width);
+            _menu.y = 0.5 * (_container.stage.stageHeight - _menu.height);
+            
+            _menu.addEventListener(Menu.CREATE_VIRTUAL_FOLDER_EVENT, virtual_folder_CREATE);
+            _menu.addEventListener(Menu.DELETE_VIRTUAL_FOLDER_EVENT, virtual_folder_DELETE);
+            _menu.addEventListener(Menu.ADD_FILE_TO_VIRTUAL_FOLDER_EVENT, virtual_folder_file_ADD);
+            _menu.addEventListener(Menu.REMOVE_FILE_FROM_VIRTUAL_FOLDER_EVENT, virtual_folder_file_REMOVE);
+
+            _container.addChild(_menu);
         }
 
         
@@ -201,6 +228,39 @@ package vui.library.controller
 
 
         /* * * * * * * * * * * * * * * * *
+        * Menu event handling
+        * * * * * * * * * * * * * * * * */
+        
+        protected function toggle_menu_CLICK(event:Event):void
+        {
+            if (!_menu) {
+                init_menu();
+            }
+            else {
+                _menu.visible = !_menu.visible;
+            }
+        }
+        
+        
+        protected function virtual_folder_CREATE(event:Event):void
+        {
+            trace('[Controller] Virtual folder create event caught!');
+        }
+        protected function virtual_folder_DELETE(event:Event):void
+        {
+            trace('[Controller] Virtual folder delete event caught!');
+        }
+        protected function virtual_folder_file_ADD(event:Event):void
+        {
+            trace('[Controller] Virtual folder file add event caught!');
+        }
+        protected function virtual_folder_file_REMOVE(event:Event):void
+        {
+            trace('[Controller] Virtual folder file remove event caught!');
+        }
+
+        
+        /* * * * * * * * * * * * * * * * *
         * Other event handling
         * * * * * * * * * * * * * * * * */
         
@@ -209,17 +269,18 @@ package vui.library.controller
             _view.clear();
         }
         
+        
         /* * * * * * * * * * * * * * * * *
         * Deprecated
         * * * * * * * * * * * * * * * * */
         
-        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint):void
-        {
-            for (var i:uint = 0; i < file_directory.files.length; i++)
-            {
+//        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint):void
+//        {
+//            for (var i:uint = 0; i < file_directory.files.length; i++)
+//            {
 //                _view.add_book(file_directory.files[i].directory, depth);
-            }
-        }
+//            }
+//        }
         
     }
 }

@@ -1,0 +1,15 @@
+# Variables
+VIRTUAL_LIBRARY_SRC_DIR='/Users/joverton/Documents/Prototyping\ and\ Testing/Virtual\ Library/src'
+FLEX_SDK='/Applications/Adobe\ Flash\ Builder\ 4/sdks/4.6'
+ALTERNATIVA_3D='/Users/joverton/Documents/Libraries\ &\ Tools/Alternativa3D/Alternativa3D_8.17.0/Alternativa3D.swc'
+AIR_SDK_CONFIG=$VIRTUAL_LIBRARY_SRC_DIR/../deployment/air-config-virtual-library.xml
+
+
+# CD to the source directory
+cd $VIRTUAL_LIBRARY_SRC_DIR
+
+# Compile the SWF
+$FLEX_SDK/bin/amxmlc -static-link-runtime-shared-libraries=true -library-path+=$ALTERNATIVA_3D -debug=true -swf-version=13 -load-config $AIR_SDK_CONFIG -output ../bin-debug/VirtualLibrary.swf -- Main.as 
+
+# Run the SWF
+$FLEX_SDK/bin/adl ../Virtual-Library-app.xml &

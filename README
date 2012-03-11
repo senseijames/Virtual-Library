@@ -11,7 +11,9 @@ Purpose - get the structure and workflow going before sexying up the view with t
    Key - determining the proper data structure.
 4. Final console view output - get console displaying 'bookcases'.  Determine a good I/F for the view, as the 3D engine will use the same I/F
 5. Advanced user interface - add a search box (text field) so the user can filter the results by simple filename match (contents search is beyond the scope of this project)
-* 6. Menu - adjust program settings and select virtual folders to view
+6. Basic Menu - view settings and dispatch virtual folder CRUD events
+* 7. Advanced Menu - actual virtual folder CRUD working in application directory
+8. Webcam navigation dispatching events 
 Output - the structure of the program will be complete
 
 II. 3D Engine Prototype
