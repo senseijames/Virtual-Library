@@ -9,6 +9,8 @@ package vui.library.utils
         {
         }
         
+        // TODO: add options parameter with "maxChars" defined.
+        // TODO: write options utility that overwrites with default values
         public static function get_input_text_field():TextField
         {
             var text_field:TextField = get_text_field();
@@ -28,7 +30,7 @@ package vui.library.utils
         {
             var text_field:TextField = new TextField();
             text_field.wordWrap = true;
-//            text_field.multiline = true;
+            text_field.multiline = true;
             return text_field;
         }
     }

@@ -11,14 +11,14 @@ package vui.library.view.ui
     
     public class Chrome extends Sprite
     {
-        public static const OPEN_FILE_BROWSER_EVENT:String = "open_file_browser";
-        public static const CLEAR_LIBRARY_EVENT:String = "clear_library";
-        public static const TOGGLE_MENU_EVENT:String = "toggle_menu";
+        public static const OPEN_FILE_BROWSER_EVENT : String = "open_file_browser";
+        public static const CLEAR_LIBRARY_EVENT : String = "clear_library";
+        public static const TOGGLE_MENU_EVENT : String = "toggle_menu";
         
-        protected var _open_file_browser_button:Sprite;
-        protected var _live_search_text_field:TextField;
-        protected var _clear_button:Sprite;
-        protected var _toggle_menu_button:Sprite;
+        protected var _open_file_browser_button : Sprite;
+        protected var _live_search_text_field : TextField;
+        protected var _clear_button : Sprite;
+        protected var _toggle_menu_button : Sprite;
         
         public function Chrome()
         {

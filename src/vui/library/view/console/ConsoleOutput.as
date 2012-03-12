@@ -17,13 +17,13 @@ package vui.library.view.console
     public class ConsoleOutput
     {
         // Currently not used...
-        protected static const MAX_BOOKS_PER_BOOKCASE:uint = 30;
+        protected static const MAX_BOOKS_PER_BOOKCASE : uint = 30;
         
         // State variables.
-        protected var _file_directories:Vector.<FileDirectory>;
-        protected var _total_books:uint;
-        protected var _is_loose_pack:Boolean;
-        protected var _depth:uint;
+        protected var _file_directories : Vector.<FileDirectory>;
+        protected var _total_books : uint;
+        protected var _is_loose_pack : Boolean;
+        protected var _depth : uint;
 
         public function ConsoleOutput()
         {

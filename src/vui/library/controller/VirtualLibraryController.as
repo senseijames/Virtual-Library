@@ -6,7 +6,9 @@ package vui.library.controller
     import flash.filesystem.File;
     
     import vui.library.mapper.FileSystemMapper;
+    import vui.library.mapper.VirtualFolderMapper;
     import vui.library.model.FileDirectory;
+    import vui.library.model.VirtualFolder;
     import vui.library.view.console.ConsoleOutput;
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
@@ -17,25 +19,26 @@ package vui.library.controller
     public class VirtualLibraryController
     {
         // TODO: Consider moving these to a "Config" class (encapsulation, and if you make vars you can change dynamically)
-        public static var CHROME_HEIGHT:uint = 30;
-        public static const MENU_BG_COLOR:uint = 0xCDCDCD;
-        public static const MENU_BG_ALPHA:Number = 0.7;
-        public static const MENU_WIDTH:uint = 400;
-        public static const MENU_HEIGHT:uint = 400;
+        public static var CHROME_HEIGHT : uint = 30;
+        public static const MENU_BG_COLOR : uint = 0xCDCDCD;
+        public static const MENU_BG_ALPHA : Number = 0.7;
+        public static const MENU_WIDTH : uint = 400;
+        public static const MENU_HEIGHT : uint = 400;
         
         // State.
-        protected var _directory_trees:Vector.<FileDirectory>;
+        protected var _directory_trees : Vector.<FileDirectory>;
+        protected var _virtual_folders : Vector.<VirtualFolder>;
         // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
-        protected var _depth:uint;
-        protected var _show_hidden:Boolean;
-        protected var _is_loose_pack:Boolean;
+        protected var _depth : uint;
+        protected var _show_hidden : Boolean;
+        protected var _is_loose_pack : Boolean;
         // Delegates.
-        protected var _file_browser:File;
+        protected var _file_browser : File;
         // UI Elements
-        protected var _container:DisplayObjectContainer;
-        protected var _view:ConsoleOutput;
-        protected var _chrome:Chrome;
-        protected var _menu:Menu;
+        protected var _container : DisplayObjectContainer;
+        protected var _view : ConsoleOutput;
+        protected var _chrome : Chrome;
+        protected var _menu : Menu;
         
         // Convoluted to have a constructor, init and run that could all be just in the constructor?  Or good decomposition?  Time will tell?
         public function VirtualLibraryController()
@@ -75,6 +78,9 @@ package vui.library.controller
             container.addChild(_chrome);
             
             _view.init({ is_loose_pack: _is_loose_pack, depth: _depth });
+            
+            init_virtual_folders();
+
 //            open_file_browser();
         }
 
@@ -86,7 +92,7 @@ package vui.library.controller
         protected function init_menu():void
         {
             _menu = new Menu();
-            _menu.init({ width: MENU_WIDTH, height: MENU_HEIGHT, bgColor: MENU_BG_COLOR, bgAlpha: MENU_BG_ALPHA });
+            _menu.init({ width: MENU_WIDTH, height: MENU_HEIGHT, bgColor: MENU_BG_COLOR, bgAlpha: MENU_BG_ALPHA, folders: _virtual_folders });
             // folders: array_of_virtual_folders
             _menu.x = 0.5 * (_container.stage.stageWidth - _menu.width);
             _menu.y = 0.5 * (_container.stage.stageHeight - _menu.height);
@@ -99,6 +105,12 @@ package vui.library.controller
             _container.addChild(_menu);
         }
 
+        protected function init_virtual_folders():void
+        {
+            VirtualFolderMapper.init();
+            _virtual_folders = VirtualFolderMapper.folders;
+        }
+        
         
         /* * * * * * * * * * * * * * * * * * *
         * Helpers - file aggregators 

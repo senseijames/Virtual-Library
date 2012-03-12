@@ -4,11 +4,11 @@ package vui.library.model
 
     public class FileDirectory
     {
-        protected var _directory:File;
-        protected var _files:Vector.<FileDirectory>;
+        protected var _directory : File;
+        protected var _files : Vector.<FileDirectory>;
         // TODO: This will not be accurate, as it does not reflect size added at greater than 1 depth of nesting (i.e. it only
         // reflects the size of the current members - the directory and the vector of files, but not their children (and their children's children, and so on). 
-        protected var _size:Number;
+        protected var _size : Number;
         
         public function FileDirectory(file:File)
         {

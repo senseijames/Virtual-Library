@@ -11,10 +11,10 @@ package
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
     {
-        protected static const VERSION:String = '0.0.7 (Console Prototype v. 0.7)';
-        protected static const FILE_SEARCH_DEPTH:uint = 4;
-        protected static const SHOW_HIDDEN:Boolean = false;
-        protected static const IS_LOOSE_PACK:Boolean = true;
+        protected static const VERSION:String = '0.0.8 (Console Prototype v. 0.8)';
+        protected static const FILE_SEARCH_DEPTH : uint = 4;
+        protected static const SHOW_HIDDEN : Boolean = false;
+        protected static const IS_LOOSE_PACK : Boolean = true;
         
         
         public function Main() 

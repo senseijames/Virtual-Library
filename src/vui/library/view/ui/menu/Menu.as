@@ -9,36 +9,22 @@ package vui.library.view.ui.menu
     import vui.library.utils.GraphicsUtils;
     import vui.library.utils.TextUtils;
     import vui.library.model.VirtualFolder;
-    
-    /* 
-    TODO:
-    I. Virtual Console 1.0
-    Get the menu showing and hiding properly.
-    Get create/delete folder (and add/remove from folder) dispatching events properly, and caught well in the Controller.
-    *# Get VirtualFolderMapper working well - test CRUD operations to/from the application storage directory. 
-    Get Menu displaying virtual folders when the controller pre-populates them.
-    Test end to end - creating/deleting virtual folders, adding/removing files from them.
-    
-    II. Bash cleanup
-    Get the bash script working, and add instructions to the README on how one might run this shit (make variables so it's easy to change)
-    
-    III. Alternativa Engine!!
-    */
 
+    
     public class Menu extends Sprite
     {
-        public static const CREATE_VIRTUAL_FOLDER_EVENT:String = "create_virtual_folder";
-        public static const DELETE_VIRTUAL_FOLDER_EVENT:String = "delete_virtual_folder";
-        public static const ADD_FILE_TO_VIRTUAL_FOLDER_EVENT:String = "add_file";
-        public static const REMOVE_FILE_FROM_VIRTUAL_FOLDER_EVENT:String = "remove_file";
-        public static const CLOSE_MENU_EVENT:String = "close_menu";
+        public static const CREATE_VIRTUAL_FOLDER_EVENT : String = "create_virtual_folder";
+        public static const DELETE_VIRTUAL_FOLDER_EVENT : String = "delete_virtual_folder";
+        public static const ADD_FILE_TO_VIRTUAL_FOLDER_EVENT : String = "add_file";
+        public static const REMOVE_FILE_FROM_VIRTUAL_FOLDER_EVENT : String = "remove_file";
+        public static const CLOSE_MENU_EVENT : String = "close_menu";
         
-        protected var _bg:Shape;
-        protected var _create_virtual_folder_button:Sprite;
-        protected var _delete_virtual_folder_button:Sprite;
-        protected var _add_file_to_virtual_folder_button:Sprite;
-        protected var _remove_file_from_virtual_folder_button:Sprite;
-        protected var _close_menu_button:Sprite;
+        protected var _bg : Shape;
+        protected var _create_virtual_folder_button : Sprite;
+        protected var _delete_virtual_folder_button : Sprite;
+        protected var _add_file_to_virtual_folder_button : Sprite;
+        protected var _remove_file_from_virtual_folder_button : Sprite;
+        protected var _close_menu_button : Sprite;
         
         public function Menu()
         {
@@ -68,11 +54,6 @@ package vui.library.view.ui.menu
             addChild(_remove_file_from_virtual_folder_button);
             addChild(_close_menu_button);
             
-            // Add a virtual folder viewer.
-            // ? - 'view virtual folders' ?
-            
-return;
-            
             // If there are virtual folders, display them.
             if (options.folders) 
             {
@@ -81,7 +62,7 @@ return;
                 {
                     text_field = get_virtual_folder_text_field(options.folders[i]);
                     text_field.y = 100;
-                    text_field.x = i * text_field.width;
+                    text_field.x = i * (text_field.width + 5);
                     addChild(text_field);
                 }
             }
@@ -89,16 +70,18 @@ return;
         
         
         /* * * * * * * * * *
-        * Handlers
+        * Helpers
         * * * * * * * * * */
 
         protected function get_virtual_folder_text_field(folder:VirtualFolder):TextField
         {
             var text_field:TextField = TextUtils.get_text_field();
+            trace(text_field, folder);
             text_field.text = folder.title + '\n' + '* * * * * * * * * *\n';
-            for (var i:uint = 0; i< folder.contents.length; i++)
+            text_field.width = 100;
+            for (var i:uint = 0; i < folder.contents.length; i++)
             {
-                text_field.appendText(folder.contents[i] + '\n');
+                text_field.appendText(folder.contents[i].name + '\n');
             }
             
             return text_field;
