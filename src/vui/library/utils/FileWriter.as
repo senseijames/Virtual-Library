@@ -6,6 +6,10 @@ package vui.library.utils
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
 
+    /**
+    * Simple facade pattern for the File class - simplified I/F for read/write operations.
+    */
+    // TODO: Change the name of this class once I/F settles - "FileReaderWriter" ?
     public class FileWriter
     {
 //        public static var _files:Vector.<File>;

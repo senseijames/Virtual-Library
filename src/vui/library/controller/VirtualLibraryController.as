@@ -251,8 +251,11 @@ package vui.library.controller
                 _menu.visible = !_menu.visible;
             }
         }
-        
-        
+
+        /* * * * * * * * * * * * * * * * * * * * * * *
+        * Menu - virtual folder CRUD event handling
+        * * * * * * * * * * * * * * * * * * * * * * */
+
         protected function virtual_folder_CREATE(event:Event):void
         {
             trace('[Controller] Virtual folder create event caught!');

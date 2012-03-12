@@ -14,6 +14,16 @@ package vui.library.mapper
     Responsibilities & Relationships...
     * The Controller initializes and receives events from the Menu, which is populated with VirtualFolders sent back by the VirtualFolderMapper.
     * The Menu only receives content and displays it, and dispatches events to the controller to respond to appropriately.
+    
+    LEFT OFF HERE:
+    IIX. End to end virtual CRUD
+        1. Make some unit tests for this class (optional)
+        2. Create VirtualFolderEvent class, with 'target_file' and 'target_directory' members (options Object as well?)
+        3. Confirm dispatch/receipt of those events
+        4. Write through test files, confirm local (VirtualFileMapper) and persistent (disk) harmony.  Unit tests can just involve a 'check_harmony()'
+           message that you can invoke everywhere, which will trace the results, and throw an error if there is any inconsistency.
+        5. Add file/folder select from menu (use new InteractiveTextField class), confirm it works end to end
+        6. Dance
     */
     public class VirtualFolderMapper
     {
