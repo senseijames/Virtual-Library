@@ -78,7 +78,7 @@ package vui.library.controller
             container.addChild(_chrome);
             
             _view.init({ is_loose_pack: _is_loose_pack, depth: _depth });
-            
+
             init_virtual_folders();
 
 //            open_file_browser();
@@ -107,10 +107,9 @@ package vui.library.controller
 
         protected function init_virtual_folders():void
         {
-            VirtualFolderMapper.init();
-            _virtual_folders = VirtualFolderMapper.folders;
+            _virtual_folders = VirtualFolderMapper.init();
         }
-        
+
         
         /* * * * * * * * * * * * * * * * * * *
         * Helpers - file aggregators 

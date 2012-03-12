@@ -25,10 +25,10 @@ package vui.library.mapper
         {
         }
         
-        public static function get folders():Vector.<VirtualFolder>
-        {
-            return _virtual_folders;
-        }
+//        public static function get folders():Vector.<VirtualFolder>
+//        {
+//            return _virtual_folders;
+//        }
         
         // TODO: Assumes init() has been called first.
         public static function get_folder(virtual_folder_name:String):VirtualFolder
@@ -44,13 +44,15 @@ package vui.library.mapper
         }
         
         // TODO? - make protected so as to only be called internally?  I like that.
-        public static function init():void
+        public static function init():Vector.<VirtualFolder>
         {
             init_application_storage();
             
             _virtual_folders = new Vector.<VirtualFolder>();
             
             read_from_disk();
+            
+            return _virtual_folders;
         }
         
         protected static function init_application_storage():void
