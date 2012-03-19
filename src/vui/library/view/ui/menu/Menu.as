@@ -13,7 +13,6 @@ package vui.library.view.ui.menu
     
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
-    import vui.library.utils.DisplayListUtils;
     import vui.library.utils.GraphicsUtils;
     import vui.library.utils.TextUtils;
     import vui.library.view.ui.InteractiveTextField;
@@ -30,6 +29,7 @@ package vui.library.view.ui.menu
         protected var _delete_virtual_folder_button : Sprite;
         protected var _add_file_to_virtual_folder_button : Sprite;
         protected var _remove_file_from_virtual_folder_button : Sprite;
+        protected var _open_virtual_folder_button : Sprite;
         protected var _close_menu_button : Sprite;
         // UI State.
         protected var _selected_virtual_folder_text_field:InteractiveTextField;
@@ -58,12 +58,14 @@ package vui.library.view.ui.menu
             addChild(_bg);
             
             // Create the buttons
-            _create_virtual_folder_button = GraphicsUtils.get_button(10, 10, 50, 50, 0x00FF00, 1, create_virtual_folder_CLICK);
-            _delete_virtual_folder_button = GraphicsUtils.get_button(60, 10, 50, 50, 0xFF0000, 1, delete_virtual_folder_CLICK);
-            _add_file_to_virtual_folder_button = GraphicsUtils.get_button(110, 10, 50, 50, 0x00FF00, 0.5, add_file_to_folder_CLICK);
-            _remove_file_from_virtual_folder_button = GraphicsUtils.get_button(160, 10, 50, 50, 0xFF0000, 0.5, remove_file_from_folder_CLICK);
+            _open_virtual_folder_button = GraphicsUtils.get_button(10, 10, 50, 50, 0xFFFF00, 0.5, open_virtual_folder_CLICK);
+            _create_virtual_folder_button = GraphicsUtils.get_button(60, 10, 50, 50, 0x00FF00, 1, create_virtual_folder_CLICK);
+            _delete_virtual_folder_button = GraphicsUtils.get_button(110, 10, 50, 50, 0xFF0000, 1, delete_virtual_folder_CLICK);
+            _add_file_to_virtual_folder_button = GraphicsUtils.get_button(160, 10, 50, 50, 0x00FF00, 0.5, add_file_to_folder_CLICK);
+            _remove_file_from_virtual_folder_button = GraphicsUtils.get_button(210, 10, 50, 50, 0xFF0000, 0.5, remove_file_from_folder_CLICK);
             _close_menu_button = GraphicsUtils.get_button(width - 50, 0, 50, 50, 0xFF0000, 0.3, close_menu_CLICK);
-            
+
+            addChild(_open_virtual_folder_button);
             addChild(_create_virtual_folder_button);
             addChild(_delete_virtual_folder_button);
             addChild(_add_file_to_virtual_folder_button);
@@ -99,19 +101,19 @@ package vui.library.view.ui.menu
                 return;
             }
             
-            var text_field:Sprite;
+            var virtual_folder_text_sprite:Sprite;
             var x_value:uint = 0;
             for (var i:uint = 0; i < _virtual_folders.length; i++) 
             {
-                if (text_field) {
-                    x_value += text_field.width;
+                if (virtual_folder_text_sprite) {
+                    x_value += virtual_folder_text_sprite.width;
                 }
-                text_field = get_virtual_folder_sprite(_virtual_folders[i]);
-                text_field.y = 100;
-                text_field.x = x_value;
+                virtual_folder_text_sprite = get_virtual_folder_sprite(_virtual_folders[i]);
+                virtual_folder_text_sprite.y = 100;
+                virtual_folder_text_sprite.x = x_value;
                 
-                _virtual_folder_sprites.push(text_field);
-                addChild(text_field);
+                _virtual_folder_sprites.push(virtual_folder_text_sprite);
+                addChild(virtual_folder_text_sprite);
             }
         }
         
@@ -206,6 +208,17 @@ package vui.library.view.ui.menu
         * Virtual Folder CRUD button event handlers
         * * * * * * * * * * * * * * * * * * * * * * */
         
+        protected function open_virtual_folder_CLICK(event:MouseEvent):void
+        {
+            if (!_selected_virtual_folder) {
+                return;
+            }
+            
+            trace('\n[Menu] Open virtual folder clicked!!\n');
+            
+            dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.OPEN_FOLDER, { target_folder: _selected_virtual_folder.title }));            
+        }
+        
         protected function create_virtual_folder_CLICK(event:MouseEvent):void
         {
             trace('\n[Menu] Create virtual folder clicked!!\n');
@@ -241,6 +254,7 @@ package vui.library.view.ui.menu
             
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.DELETE_FOLDER, { target_folder: _selected_virtual_folder.title }));
         }
+        
         protected function add_file_to_folder_CLICK(event:MouseEvent):void
         {
             if (!_selected_virtual_folder) {
@@ -251,6 +265,7 @@ package vui.library.view.ui.menu
             
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
         }
+        
         protected function remove_file_from_folder_CLICK(event:MouseEvent):void
         {
             if (!_selected_virtual_folder) {

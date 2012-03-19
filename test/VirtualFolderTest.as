@@ -1,5 +1,8 @@
-package
+package test
 {
+    import vui.library.model.VirtualFolder;
+    
+    
     public class VirtualFolderTest
     {
         public function VirtualFolderTest()
@@ -7,7 +10,6 @@ package
         }
         
         
-        // TODO: Test code - export.
         public static function get_test_folders():Vector.<VirtualFolder>
         {
             var test_file_set:Array = File.desktopDirectory.getDirectoryListing();

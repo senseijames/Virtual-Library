@@ -182,8 +182,8 @@ package vui.library.mapper
             }
         }
         
-        // Just removes the file extension from the input file - assumes only one extension, so no regexing required.
-        public static function get_virtual_folder_name_from_filename(filename:String):String
+        // Just removes the file extension(s) from the input filename - substrings at first instance of "." so no regexing required.
+        protected static function get_virtual_folder_name_from_filename(filename:String):String
         {
             if (filename.indexOf(".") != -1) {
                 return filename.substring(0, filename.indexOf("."));

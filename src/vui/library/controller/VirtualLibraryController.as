@@ -97,7 +97,8 @@ package vui.library.controller
             // folders: array_of_virtual_folders
             _menu.x = 0.5 * (_container.stage.stageWidth - MENU_WIDTH);
             _menu.y = 0.5 * (_container.stage.stageHeight - MENU_HEIGHT);
-            
+
+            _menu.addEventListener(VirtualFolderEvent.OPEN_FOLDER, virtual_folder_OPEN);
             _menu.addEventListener(VirtualFolderEvent.CREATE_FOLDER, virtual_folder_CREATE);
             _menu.addEventListener(VirtualFolderEvent.DELETE_FOLDER, virtual_folder_DELETE);
             _menu.addEventListener(VirtualFolderEvent.ADD_FILE, virtual_folder_file_ADD);
@@ -169,20 +170,13 @@ package vui.library.controller
 
             _view.live_search(query);
             /*
-            TODO - this class should have a Vector of FileDirectory, rather than just one.  Similarly,
-            the View should probably also have that state.  What you are trying to preclude is too much encapsulation
+            TODO:
+            The View should probably also have a Vector of file directories.  What you are trying to preclude is too much encapsulation
             because it will hurt performance - in the current decomposition, you will crawl the FileDirectory for search
             hits and pass them to the view, one by one, but then the View will have to crawl its directory of files as well
             (note that the View currently does not store that state), meaning order O(N ^ 2).
+            Probably okay for now - can optimize/complexify later.
             */
-            
-//            for (var i:uint = 0; i < _directory_trees.length; i++)
-//            {
-//                
-//                if (_directory_trees[i].directory.name.indexOf(query) != -1) {
-//    //                high
-//                }
-//            }
         }
         
 
@@ -257,6 +251,32 @@ package vui.library.controller
         * Menu - virtual folder CRUD event handling
         * * * * * * * * * * * * * * * * * * * * * * */
 
+        protected function virtual_folder_OPEN(event:VirtualFolderEvent):void
+        {
+            trace('[Controller] Virtual folder open event caught!', event.type);
+            
+            var virtual_folder:VirtualFolder = VirtualFolderMapper.get_folder(event.target_folder);
+            for (var i:uint = 0; i < virtual_folder.contents.length; i++)
+            {
+                open_file(virtual_folder.contents[i]);
+            }
+        }
+        // Basically just wraps File.openWithDefaultApplication so can continue on error nicely.
+        protected function open_file(file:File):Boolean
+        {
+            try {
+                file.openWithDefaultApplication();
+            } catch (e:Error) {
+                // TODO: Add indication to the UI.
+                // Left off here - currently mid-refactor; list errors on the menu, then hide them after click or something.
+                // Goal is to abstract out application-specific vs. more general classes.  Restructure the packages here, if you can...
+                trace('Error opening file:', file.name, '-', e);
+                return false;
+            }
+            
+            return true;
+        }
+        
         protected function virtual_folder_CREATE(event:VirtualFolderEvent):void
         {
             trace('[Controller] Virtual folder create event caught!', event.type);
@@ -289,7 +309,7 @@ package vui.library.controller
             
             synch_virtual_folders();
         }
-
+        
         protected function synch_virtual_folders():void
         {
             _menu.virtual_folders = _virtual_folders = VirtualFolderMapper.folders;

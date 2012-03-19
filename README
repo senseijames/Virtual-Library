@@ -13,7 +13,7 @@ Purpose - get the structure and workflow going before sexying up the view with t
 5. Advanced user interface - add a search box (text field) so the user can filter the results by simple filename match (contents search is beyond the scope of this project)
 6. Basic Menu - view settings and dispatch virtual folder CRUD events
 7. Virtual folder basic CRUD in application storage directory
-8. Advanced Menu - end to end virtual folder CRUD from the menu (2h)
+8. Advanced Menu - end to end virtual folder CRUD from the menu
 # 9. Webcam navigation dispatching events (1h)
 # 10. Get the bash script working, and add instructions to the README on how to run (make variables so it's easy to change) (0.5h)
 * 11. Initial refactor - abstract general from application-specific classes.
