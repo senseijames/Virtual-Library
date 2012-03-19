@@ -22,8 +22,7 @@ package vui.library.model
         public function remove_file(file:File):void
         {
             var index:int = _contents.indexOf(file);
-            if (index != -1)
-            {
+            if (index != -1) {
                 _contents.splice(index, 1);
             }
         }

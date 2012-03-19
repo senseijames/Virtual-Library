@@ -9,6 +9,7 @@ package vui.library.controller
     import vui.library.mapper.VirtualFolderMapper;
     import vui.library.model.FileDirectory;
     import vui.library.model.VirtualFolder;
+    import vui.library.model.VirtualFolderEvent;
     import vui.library.view.console.ConsoleOutput;
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
@@ -94,13 +95,13 @@ package vui.library.controller
             _menu = new Menu();
             _menu.init({ width: MENU_WIDTH, height: MENU_HEIGHT, bgColor: MENU_BG_COLOR, bgAlpha: MENU_BG_ALPHA, folders: _virtual_folders });
             // folders: array_of_virtual_folders
-            _menu.x = 0.5 * (_container.stage.stageWidth - _menu.width);
-            _menu.y = 0.5 * (_container.stage.stageHeight - _menu.height);
+            _menu.x = 0.5 * (_container.stage.stageWidth - MENU_WIDTH);
+            _menu.y = 0.5 * (_container.stage.stageHeight - MENU_HEIGHT);
             
-            _menu.addEventListener(Menu.CREATE_VIRTUAL_FOLDER_EVENT, virtual_folder_CREATE);
-            _menu.addEventListener(Menu.DELETE_VIRTUAL_FOLDER_EVENT, virtual_folder_DELETE);
-            _menu.addEventListener(Menu.ADD_FILE_TO_VIRTUAL_FOLDER_EVENT, virtual_folder_file_ADD);
-            _menu.addEventListener(Menu.REMOVE_FILE_FROM_VIRTUAL_FOLDER_EVENT, virtual_folder_file_REMOVE);
+            _menu.addEventListener(VirtualFolderEvent.CREATE_FOLDER, virtual_folder_CREATE);
+            _menu.addEventListener(VirtualFolderEvent.DELETE_FOLDER, virtual_folder_DELETE);
+            _menu.addEventListener(VirtualFolderEvent.ADD_FILE, virtual_folder_file_ADD);
+            _menu.addEventListener(VirtualFolderEvent.REMOVE_FILE, virtual_folder_file_REMOVE);
 
             _container.addChild(_menu);
         }
@@ -168,7 +169,7 @@ package vui.library.controller
 
             _view.live_search(query);
             /*
-            Left off here - this class should have a Vector of FileDirectory, rather than just one.  Similarly,
+            TODO - this class should have a Vector of FileDirectory, rather than just one.  Similarly,
             the View should probably also have that state.  What you are trying to preclude is too much encapsulation
             because it will hurt performance - in the current decomposition, you will crawl the FileDirectory for search
             hits and pass them to the view, one by one, but then the View will have to crawl its directory of files as well
@@ -256,21 +257,42 @@ package vui.library.controller
         * Menu - virtual folder CRUD event handling
         * * * * * * * * * * * * * * * * * * * * * * */
 
-        protected function virtual_folder_CREATE(event:Event):void
+        protected function virtual_folder_CREATE(event:VirtualFolderEvent):void
         {
-            trace('[Controller] Virtual folder create event caught!');
+            trace('[Controller] Virtual folder create event caught!', event.type);
+            
+            VirtualFolderMapper.create_folder(event.target_folder);
+            
+            synch_virtual_folders();
         }
-        protected function virtual_folder_DELETE(event:Event):void
+        protected function virtual_folder_DELETE(event:VirtualFolderEvent):void
         {
-            trace('[Controller] Virtual folder delete event caught!');
+            trace('[Controller] Virtual folder delete event caught!', event.type);
+            
+            VirtualFolderMapper.delete_folder(event.target_folder);
+            
+            synch_virtual_folders();
         }
-        protected function virtual_folder_file_ADD(event:Event):void
+        protected function virtual_folder_file_ADD(event:VirtualFolderEvent):void
         {
-            trace('[Controller] Virtual folder file add event caught!');
+            trace('[Controller] Virtual folder file add event caught!', event.type);
+            
+            VirtualFolderMapper.add_files_to_folder(event.target_folder, event.target_files);
+            
+            synch_virtual_folders();
         }
-        protected function virtual_folder_file_REMOVE(event:Event):void
+        protected function virtual_folder_file_REMOVE(event:VirtualFolderEvent):void
         {
-            trace('[Controller] Virtual folder file remove event caught!');
+            trace('[Controller] Virtual folder file remove event caught!', event.type);
+            
+            VirtualFolderMapper.remove_files_from_folder(event.target_folder, event.target_files);
+            
+            synch_virtual_folders();
+        }
+
+        protected function synch_virtual_folders():void
+        {
+            _menu.virtual_folders = _virtual_folders = VirtualFolderMapper.folders;
         }
 
         

@@ -115,10 +115,6 @@ package vui.library.view.console
             trace('[ConsoleOutput] Highlighting', string, file.nativePath);
         }
 
-        /*
-            Left off here - figure out how to read/write to the application storage directory
-            so that you can create/open/read/write virtual folders persisently.  Nice.
-        */
         // TODO: Move these to the Controller.
         protected var _app_storage_directory:File;
         protected var _app_storage_directory_file_stream:FileStream;
