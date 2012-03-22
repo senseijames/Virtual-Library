@@ -5,6 +5,7 @@ package
     import flash.utils.getQualifiedClassName;
     
     import vui.library.controller.VirtualLibraryController;
+    import vui.library.utils.DisplayListUtils;
     import vui.library.view.engine.AlternativaEngine;
 
     // Note these are the dimensions of the stage itself.

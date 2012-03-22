@@ -7,6 +7,7 @@ package vui.library.utils
     {
         public function TextUtils(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[TextUtils] I am a singleton class, saving myself for marriage!');
         }
         
         // TODO: add options parameter with "maxChars" defined.

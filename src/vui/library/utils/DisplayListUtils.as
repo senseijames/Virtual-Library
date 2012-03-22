@@ -7,6 +7,7 @@ package vui.library.utils
     {
         public function DisplayListUtils(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[DisplayListUtils] I am a singleton class, saving myself for marriage!');
         }
         
         public static function clear_children(target:DisplayObjectContainer, clazz:Class = null):void

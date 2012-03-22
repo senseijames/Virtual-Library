@@ -9,13 +9,13 @@ package vui.library.utils
     /**
     * Simple facade pattern for the File class - simplified I/F for read/write operations.
     */
-    // TODO: Change the name of this class once I/F settles - "FileReaderWriter" ?
-    public class FileWriter
+    public class FileReaderWriter
     {
 //        public static var _files:Vector.<File>;
         
-        public function FileWriter(chastity_belt:SingletonEnforcer)
+        public function FileReaderWriter(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[FileReaderWriter] I am a singleton class, saving myself for marriage!');
         }
         
         public static function write(file:File, content:String):void
@@ -23,7 +23,7 @@ package vui.library.utils
             var file_stream:FileStream = new FileStream();
             file_stream.addEventListener(Event.COMPLETE, function(e:Event):void
                                                         {
-trace('\ntrying to write',content,'to file',file.nativePath);                
+//trace('\ntrying to write',content,'to file',file.nativePath);                
                                                             file_stream.writeUTF(content);
                                                             file_stream.close();                
                                                         });

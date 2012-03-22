@@ -9,6 +9,7 @@ package vui.library.utils
     {
         public function GraphicsUtils(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[GraphicsUtils] I am a singleton class, saving myself for marriage!');
         }
         
         /* * * * * * * * * *

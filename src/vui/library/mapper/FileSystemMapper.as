@@ -15,6 +15,7 @@ package vui.library.mapper
     {
         public function FileSystemMapper(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[FileSystemMapper] I am a singleton class, saving myself for marriage!');
         }
         
         /*

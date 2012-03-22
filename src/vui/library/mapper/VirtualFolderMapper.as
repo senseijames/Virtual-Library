@@ -3,7 +3,7 @@ package vui.library.mapper
     import flash.filesystem.File;
     
     import vui.library.model.VirtualFolder;
-    import vui.library.utils.FileWriter;
+    import vui.library.utils.FileReaderWriter;
 
     /**
     * Mapper that the Controller uses to manage (CRUD) virtual folders; actually uses FileWriter to interact with the file system.
@@ -23,6 +23,7 @@ package vui.library.mapper
         
         public function VirtualFolderMapper(chastity_belt:SingletonEnforcer)
         {
+//            throw new Error('[VirtualFolderMapper] I am a singleton class, saving myself for marriage!');
         }
         
         public static function get folders():Vector.<VirtualFolder>
@@ -162,7 +163,7 @@ package vui.library.mapper
             for (var i:uint = 0; i < disk_virtual_folder_files.length; i++)
             {
                 // Get the text and parse it.
-                disk_current_virtual_folder_text = FileWriter.read(disk_virtual_folder_files[i]);
+                disk_current_virtual_folder_text = FileReaderWriter.read(disk_virtual_folder_files[i]);
 // TODO: null check                
                 disk_current_virtual_folder_files = disk_current_virtual_folder_text.split(VIRTUAL_FOLDER_FILE_DELIMETER);
                 current_virtual_folder_files = new Vector.<File>();
@@ -216,7 +217,7 @@ package vui.library.mapper
                 }
                 
                 current_virtual_folder_file = new File(_application_storage.nativePath + File.separator + current_virtual_folder.title + ".txt");
-                FileWriter.write(current_virtual_folder_file, current_virtual_folder_text);
+                FileReaderWriter.write(current_virtual_folder_file, current_virtual_folder_text);
             } 
         }
         
