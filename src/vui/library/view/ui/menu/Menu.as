@@ -10,6 +10,9 @@ package vui.library.view.ui.menu
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
     import flash.text.TextField;
+    import flash.text.TextFormat;
+    import flash.utils.clearTimeout;
+    import flash.utils.setTimeout;
     
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
@@ -22,6 +25,7 @@ package vui.library.view.ui.menu
     {
         public static const CLOSE_MENU_EVENT : String = "close_menu";
         public static const ITEM_SELECTED_GLOW_FILTER:GlowFilter = new GlowFilter();
+        public static const ERROR_TEXT_DISPLAY_TIME:uint = 5000;
 
         // UI.
         protected var _bg : Shape;
@@ -31,11 +35,13 @@ package vui.library.view.ui.menu
         protected var _remove_file_from_virtual_folder_button : Sprite;
         protected var _open_virtual_folder_button : Sprite;
         protected var _close_menu_button : Sprite;
+        protected var _error_text_field:TextField;
         // UI State.
         protected var _selected_virtual_folder_text_field:InteractiveTextField;
         protected var _virtual_folder_sprites : Vector.<Sprite>;
         // Delegates.
         protected var _file_browser : File;
+        protected var _timeout_descriptor:Number;
         // State.
         protected var _selected_virtual_folder : VirtualFolder;
         protected var _selected_files : Vector.<File>;
@@ -57,13 +63,19 @@ package vui.library.view.ui.menu
             _bg = GraphicsUtils.get_shape_rect(options.width, options.height, options.bgColor, options.bgAlpha);
             addChild(_bg);
             
-            // Create the buttons
+            // Create the buttons.
             _open_virtual_folder_button = GraphicsUtils.get_button(10, 10, 50, 50, 0xFFFF00, 0.5, open_virtual_folder_CLICK);
             _create_virtual_folder_button = GraphicsUtils.get_button(60, 10, 50, 50, 0x00FF00, 1, create_virtual_folder_CLICK);
             _delete_virtual_folder_button = GraphicsUtils.get_button(110, 10, 50, 50, 0xFF0000, 1, delete_virtual_folder_CLICK);
             _add_file_to_virtual_folder_button = GraphicsUtils.get_button(160, 10, 50, 50, 0x00FF00, 0.5, add_file_to_folder_CLICK);
             _remove_file_from_virtual_folder_button = GraphicsUtils.get_button(210, 10, 50, 50, 0xFF0000, 0.5, remove_file_from_folder_CLICK);
             _close_menu_button = GraphicsUtils.get_button(width - 50, 0, 50, 50, 0xFF0000, 0.3, close_menu_CLICK);
+            // Create the error text.
+            _error_text_field = TextUtils.get_text_field();
+            _error_text_field.defaultTextFormat = new TextFormat(null, 11, 0xFF0000);
+            _error_text_field.x = 5;
+            _error_text_field.width = _bg.width - 10;
+            _error_text_field.visible = false;
 
             addChild(_open_virtual_folder_button);
             addChild(_create_virtual_folder_button);
@@ -71,6 +83,7 @@ package vui.library.view.ui.menu
             addChild(_add_file_to_virtual_folder_button);
             addChild(_remove_file_from_virtual_folder_button);
             addChild(_close_menu_button);
+            addChild(_error_text_field);
             
             virtual_folders = options.folders;
         }
@@ -146,6 +159,25 @@ package vui.library.view.ui.menu
             return folder_sprite;
         }
 
+        public function show_error(error_text:String):void
+        {
+            if (_error_text_field.visible) {
+                _error_text_field.appendText('\n' + error_text);
+            }
+            else {
+                _error_text_field.text = error_text;   
+            }
+            
+            if (!isNaN(_timeout_descriptor)) {
+                clearTimeout(_timeout_descriptor);
+            }
+            
+            _timeout_descriptor = setTimeout(function():void { _timeout_descriptor = NaN; _error_text_field.visible = false; }, ERROR_TEXT_DISPLAY_TIME);
+            
+            _error_text_field.y = _bg.height - _error_text_field.textHeight - 10;
+            _error_text_field.visible = true;
+        }
+        
         // Deprecated
 //        protected function get_virtual_folder_text_field(folder:VirtualFolder):TextField
 //        {

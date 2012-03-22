@@ -267,10 +267,9 @@ package vui.library.controller
             try {
                 file.openWithDefaultApplication();
             } catch (e:Error) {
-                // TODO: Add indication to the UI.
-                // Left off here - currently mid-refactor; list errors on the menu, then hide them after click or something.
+                // Left off here - currently mid-refactor; test errors on the menu.
                 // Goal is to abstract out application-specific vs. more general classes.  Restructure the packages here, if you can...
-                trace('Error opening file:', file.name, '-', e);
+                _menu.show_error('Error opening file: ' + file.name + ' - ' + e.toString());
                 return false;
             }
             
