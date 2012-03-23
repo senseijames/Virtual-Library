@@ -16,9 +16,9 @@ package vui.library.view.ui.menu
     
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
-    import vui.library.utils.GraphicsUtils;
-    import vui.library.utils.TextUtils;
-    import vui.library.view.ui.InteractiveTextField;
+    import vui.utils.GraphicsUtils;
+    import vui.utils.TextUtils;
+    import vui.ui.InteractiveTextField;
 
     
     public class Menu extends Sprite

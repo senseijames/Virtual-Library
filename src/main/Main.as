@@ -5,14 +5,15 @@ package
     import flash.utils.getQualifiedClassName;
     
     import vui.library.controller.VirtualLibraryController;
-    import vui.library.utils.DisplayListUtils;
-    import vui.library.view.engine.AlternativaEngine;
+    // TODO: Note that this import will be moved to the controller.
+    import vui.library.view.engine.VirtualLibraryEngine;
+    import vui.utils.DisplayListUtils;
 
     // Note these are the dimensions of the stage itself.
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
     {
-        protected static const VERSION:String = '0.0.10 (Console Prototype v. 0.10)';
+        protected static const VERSION:String = '0.0.11 (Console Prototype v. 0.11)';
         protected static const FILE_SEARCH_DEPTH : uint = 4;
         protected static const SHOW_HIDDEN : Boolean = false;
         protected static const IS_LOOSE_PACK : Boolean = true;
@@ -48,7 +49,7 @@ package
         
         protected function test_alternativa_engine():void
         {
-            var engine:AlternativaEngine = new AlternativaEngine({ width: stage.stageWidth, height: stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
+            var engine:VirtualLibraryEngine = new VirtualLibraryEngine({ width: stage.stageWidth, height: stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
             addChild(engine);
         }
         

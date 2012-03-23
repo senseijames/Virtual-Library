@@ -21,11 +21,6 @@ package vui.library.mapper
         /*
             ? - how to add content over the Alternativa window such that they still receive/dispatch mouse events?  Might be for a future version.  For now,
                 just make the SWF dimensions larger than the the Alternativa window, giving space for that chrome.
-        
-            Console Prototype Milestone II - Mapper Algorithm
-                1. Implement recursive file search
-                2. Choose an appropriate data structure for the files
-            3. Console output showing the recursive structure (tabbed over well)
         */
         
         

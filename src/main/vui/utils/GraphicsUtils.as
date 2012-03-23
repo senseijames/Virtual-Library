@@ -1,4 +1,4 @@
-package vui.library.utils
+package vui.utils
 {
     import flash.display.DisplayObject;
     import flash.display.Shape;

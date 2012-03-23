@@ -1,4 +1,4 @@
-package vui.library.view.engine
+package vui.engine
 {    
     import alternativa.engine3d.controllers.SimpleObjectController;
     import alternativa.engine3d.core.Camera3D;

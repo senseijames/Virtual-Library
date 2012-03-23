@@ -15,8 +15,8 @@ Purpose - get the structure and workflow going before sexying up the view with t
 7. Virtual folder basic CRUD in application storage directory
 8. Advanced Menu - end to end virtual folder CRUD from the menu
 9. Virtual folder open.
-* 10. Initial refactor - abstract general from application-specific classes.
-# 11. Webcam navigation dispatching events and catching them only (not responding yet) (1h)
+10. Initial refactor - abstract general from application-specific classes.
+* 11. Webcam navigation dispatching events and catching them only (not responding yet) (1h)
 # 12. Get the bash script working, and add instructions to the README on how to run (make variables so it's easy to change) (0.5h) 
 Output - the structure of the program will be complete (3.5h)
 

@@ -1,4 +1,4 @@
-package vui.library.utils
+package vui.utils
 {
     import flash.events.Event;
     import flash.events.IOErrorEvent;

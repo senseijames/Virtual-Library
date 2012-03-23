@@ -267,8 +267,6 @@ package vui.library.controller
             try {
                 file.openWithDefaultApplication();
             } catch (e:Error) {
-                // Left off here - currently mid-refactor; test errors on the menu.
-                // Goal is to abstract out application-specific vs. more general classes.  Restructure the packages here, if you can...
                 _menu.show_error('Error opening file: ' + file.name + ' - ' + e.toString());
                 return false;
             }

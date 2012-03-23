@@ -1,9 +1,9 @@
-package vui.library.view.ui
+package vui.ui
 {
     import flash.display.Sprite;
     import flash.text.TextField;
     
-    import vui.library.utils.GraphicsUtils;
+    import vui.utils.GraphicsUtils;
 
     /**
     * Functionally extends TextField by adding interactivity (buttonMode, essentially) by way of a Sprite overlay.

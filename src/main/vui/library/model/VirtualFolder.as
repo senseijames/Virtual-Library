@@ -2,7 +2,7 @@ package vui.library.model
 {
     import flash.filesystem.File;
     
-    import vui.library.utils.TextUtils;
+    import vui.utils.TextUtils;
     
     public class VirtualFolder
     {

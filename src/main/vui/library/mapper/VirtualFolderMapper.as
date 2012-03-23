@@ -3,7 +3,7 @@ package vui.library.mapper
     import flash.filesystem.File;
     
     import vui.library.model.VirtualFolder;
-    import vui.library.utils.FileReaderWriter;
+    import vui.utils.FileReaderWriter;
 
     /**
     * Mapper that the Controller uses to manage (CRUD) virtual folders; actually uses FileWriter to interact with the file system.

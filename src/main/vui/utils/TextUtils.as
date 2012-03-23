@@ -1,4 +1,4 @@
-package vui.library.utils
+package vui.utils
 {
     import flash.text.TextField;
     import flash.text.TextFieldType;

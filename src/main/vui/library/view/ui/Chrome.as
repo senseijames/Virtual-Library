@@ -5,8 +5,8 @@ package vui.library.view.ui
     import flash.events.MouseEvent;
     import flash.text.TextField;
     
-    import vui.library.utils.GraphicsUtils;
-    import vui.library.utils.TextUtils;
+    import vui.utils.GraphicsUtils;
+    import vui.utils.TextUtils;
     import vui.library.view.ui.menu.Menu;
     
     public class Chrome extends Sprite
