@@ -30,7 +30,7 @@ package vui.library.mapper
          *  @param reverse_depth:uint           How deep to search, and a running countdown of the current (reverse) depth of recursion.
          *  @param options.show_hidden:Boolean  Whether to show hidden files (default false)
          */ 
-        public static function get_directory_tree(directory:File, reverse_depth:int, options:Object):FileDirectory
+        public static function get_directory_tree(directory:File, reverse_depth:int, options:Object) : FileDirectory
         {
             var file_directory:FileDirectory = new FileDirectory(directory);
             var directory_files:Array = directory.getDirectoryListing();
@@ -57,7 +57,7 @@ package vui.library.mapper
         
         // May be needed on iOS or other platforms where file browser not supported.
         // TODO: Use native extensions instead.
-//        protected static function get_file(filename:String):File
+//        protected static function get_file(filename:String) : File
 //        {
 //        }
     }

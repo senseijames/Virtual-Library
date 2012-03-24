@@ -10,7 +10,7 @@ package test
         }
         
         
-        public static function get_test_folders():Vector.<VirtualFolder>
+        public static function get_test_folders() : Vector.<VirtualFolder>
         {
             var test_file_set:Array = File.desktopDirectory.getDirectoryListing();
             var virtual_folders:Vector.<VirtualFolder> = new Vector.<VirtualFolder>(3);

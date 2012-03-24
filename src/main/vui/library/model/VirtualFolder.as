@@ -15,11 +15,11 @@ package vui.library.model
             _contents = (contents) ? contents : new Vector.<File>();
         }
         
-        public function add_file(file:File):void
+        public function add_file(file:File) : void
         {
             contents.push(file);
         }
-        public function remove_file(file:File):void
+        public function remove_file(file:File) : void
         {
             var index:int = _contents.indexOf(file);
             if (index != -1) {
@@ -27,18 +27,18 @@ package vui.library.model
             }
         }
         
-        public function render():void
+        public function render() : void
         {
             // Create text fields from the Strings here...
         }
           
         
-        public function get title():String
+        public function get title() : String
         {
             return _title;
         }
         
-        public function get contents():Vector.<File>
+        public function get contents() : Vector.<File>
         {
             return _contents;
         }

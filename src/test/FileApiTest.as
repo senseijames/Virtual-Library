@@ -19,7 +19,7 @@ package test
         2. Drop - Selecting any folder from a file browser popup and having it print out the contents.
         */
         
-        protected function print_single_folder(file:File, message:String):void
+        protected function print_single_folder(file:File, message:String) : void
         {
             var files:Array = file.getDirectoryListing();
             //	var files:Array = file.getDirectoryListingAsync();
@@ -31,13 +31,13 @@ package test
             }
         }
         
-        protected function get_filename(file:File):String
+        protected function get_filename(file:File) : String
         {
             var native_path:String = file.nativePath;
             return native_path.substring(native_path.lastIndexOf(File.separator) + 1);
         }
         
-        protected function print_file_data(file:File, message:String, depth:uint = 0, delimeter:String = '--------------'):void
+        protected function print_file_data(file:File, message:String, depth:uint = 0, delimeter:String = '--------------') : void
         {
             var depth_indicator:String = get_depth_indicator(depth);
             
@@ -55,7 +55,7 @@ package test
             trace(depth_indicator, 'parent directory name:', get_filename(file.parent),'and native path is',file.parent.nativePath);
         }
         
-        protected function print_file_system_data():void
+        protected function print_file_system_data() : void
         {
             print_single_folder(File.desktopDirectory, 'desktop directory');
 return;
@@ -63,7 +63,7 @@ return;
             print_single_folder(File.documentsDirectory, 'documents directory');
         }
         
-        protected function get_depth_indicator(depth:uint):String
+        protected function get_depth_indicator(depth:uint) : String
         {
             var depth_indicator:String = '';
             for (var i:uint = 0; i < depth; i++)

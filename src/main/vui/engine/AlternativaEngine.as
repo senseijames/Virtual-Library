@@ -58,7 +58,7 @@ package vui.engine
             init_lights();
         }
         
-        protected function init_engine():void
+        protected function init_engine() : void
         {
             init_camera();
             init_controller();

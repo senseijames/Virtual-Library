@@ -36,7 +36,7 @@ package vui.library.view.ui
         /**
          *  @params options     width:uint, height:uint, color:uint, alpha:Number
          */ 
-        public function init(options:Object):void
+        public function init(options:Object) : void
         {
             // Draw the bg.
             graphics.clear();
@@ -64,7 +64,7 @@ package vui.library.view.ui
             addEventListeners();
         }
         
-        protected function init_live_search_text_field():void
+        protected function init_live_search_text_field() : void
         {
             _live_search_text_field.text = "Search";
             _live_search_text_field.height = _live_search_text_field.textHeight + 5;
@@ -74,10 +74,10 @@ package vui.library.view.ui
             
             //            _live_search_text_field.addEventListener(TextEvent.TEXT_INPUT, do_live_search);
             _live_search_text_field.addEventListener(Event.CHANGE, do_live_search);
-            _live_search_text_field.addEventListener(MouseEvent.CLICK, function(e:Event):void { TextField(e.target).text = ''; e.target.removeEventListener(e.type, arguments.callee); });
+            _live_search_text_field.addEventListener(MouseEvent.CLICK, function(e:Event) : void { TextField(e.target).text = ''; e.target.removeEventListener(e.type, arguments.callee); });
         }
 
-        protected function addEventListeners():void
+        protected function addEventListeners() : void
         {
             addEventListener(MouseEvent.ROLL_OVER, show);
             addEventListener(MouseEvent.ROLL_OUT, hide);
@@ -90,38 +90,38 @@ package vui.library.view.ui
 
         // This method is just to satisfy the compiler; the event will propagate to the Controller through
         // the event flow anyway.
-        protected function do_live_search(event:Event):void
+        protected function do_live_search(event:Event) : void
         {
 //            dispatchEvent(event);
         }
         
-        protected function open_file_browser_CLICK(e:MouseEvent):void
+        protected function open_file_browser_CLICK(e:MouseEvent) : void
         {
             dispatchEvent(new Event(OPEN_FILE_BROWSER_EVENT, true));
         }
         
-        protected function clear_library_CLICK(e:MouseEvent):void
+        protected function clear_library_CLICK(e:MouseEvent) : void
         {
             dispatchEvent(new Event(CLEAR_LIBRARY_EVENT));
         }
         
-        protected function toggle_menu_CLICK(e:MouseEvent):void
+        protected function toggle_menu_CLICK(e:MouseEvent) : void
         {
 trace('\n[Chrome] Toggle menu clicked!\n');            
             dispatchEvent(new Event(TOGGLE_MENU_EVENT));
         }
 
-        // protected function removeEventListeners():void
+        // protected function removeEventListeners() : void
         
         /* * * * * * * * * * * * * * * * *
         * Helpers
         * * * * * * * * * * * * * * * * */
 
-        protected function show(e:Event):void
+        protected function show(e:Event) : void
         {
             this.alpha = 1;
         }
-        protected function hide(e:Event):void
+        protected function hide(e:Event) : void
         {
             this.alpha = 0;
         }
@@ -130,7 +130,7 @@ trace('\n[Chrome] Toggle menu clicked!\n');
         /* * * * * * * * * * * * * * * * * * *
         * TODO: Implement for mobile devices.
         * * * * * * * * * * * * * * * * * * */
-        public function resize(options:Object):void
+        public function resize(options:Object) : void
         {
             
         }

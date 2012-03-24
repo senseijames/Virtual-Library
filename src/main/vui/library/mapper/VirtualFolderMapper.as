@@ -26,7 +26,7 @@ package vui.library.mapper
 //            throw new Error('[VirtualFolderMapper] I am a singleton class, saving myself for marriage!');
         }
         
-        public static function get folders():Vector.<VirtualFolder>
+        public static function get folders() : Vector.<VirtualFolder>
         {
             return _virtual_folders;
         }
@@ -37,7 +37,7 @@ package vui.library.mapper
         * * * * * * * * * * */
         
         // TODO? - make protected so as to only be called internally?  I like that.
-        public static function init():Vector.<VirtualFolder>
+        public static function init() : Vector.<VirtualFolder>
         {
             init_application_storage();
             
@@ -48,7 +48,7 @@ package vui.library.mapper
             return _virtual_folders;
         }
         
-        protected static function init_application_storage():void
+        protected static function init_application_storage() : void
         {
             _application_storage = File.applicationStorageDirectory.resolvePath('virtual_folders' + File.separator);
             if (!_application_storage.exists) {
@@ -64,7 +64,7 @@ package vui.library.mapper
         * Read
         * * * * * * * * * * */
         
-        public static function get_folder(virtual_folder_name:String):VirtualFolder
+        public static function get_folder(virtual_folder_name:String) : VirtualFolder
         {
             for (var i:uint = 0; i < _virtual_folders.length; i++)
             {
@@ -80,7 +80,7 @@ package vui.library.mapper
         /* * * * * * * * * * *
         * Write
         * * * * * * * * * * */
-        public static function create_folder(virtual_folder_name:String, flush_to_disk:Boolean = true):VirtualFolder
+        public static function create_folder(virtual_folder_name:String, flush_to_disk:Boolean = true) : VirtualFolder
         {
             trace('[Virtual Folder Mapper] Creating virtual folder with name:', virtual_folder_name);
             
@@ -94,7 +94,7 @@ package vui.library.mapper
             return new_folder; 
         }
         
-        public static function delete_folder(virtual_folder_name:String, flush_to_disk:Boolean = true):void
+        public static function delete_folder(virtual_folder_name:String, flush_to_disk:Boolean = true) : void
         {
             var target_folder:VirtualFolder = get_folder(virtual_folder_name);
             if (!target_folder) {
@@ -108,7 +108,7 @@ package vui.library.mapper
             }
         }
         
-        public static function add_files_to_folder(virtual_folder_name:String, files:Vector.<File>, flush_to_disk:Boolean = true):void
+        public static function add_files_to_folder(virtual_folder_name:String, files:Vector.<File>, flush_to_disk:Boolean = true) : void
         {
             var target_folder:VirtualFolder = get_folder(virtual_folder_name);
             if (!target_folder) {
@@ -124,9 +124,9 @@ package vui.library.mapper
             }
         }
         
-        // public static function add_files_to_folder(virtual_folder_name:String, files:Vector.<File>):void
+        // public static function add_files_to_folder(virtual_folder_name:String, files:Vector.<File>) : void
         
-        public static function remove_files_from_folder(virtual_folder_name:String, files:Vector.<File>, flush_to_disk:Boolean = true):void
+        public static function remove_files_from_folder(virtual_folder_name:String, files:Vector.<File>, flush_to_disk:Boolean = true) : void
         {
             var target_folder:VirtualFolder = get_folder(virtual_folder_name);
             if (!target_folder) {
@@ -148,7 +148,7 @@ package vui.library.mapper
         * * * * * * * * * * */
         
         // Read the virtual folders from persistent storage and write them through to VirtualFolder models.
-        protected static function read_from_disk():void
+        protected static function read_from_disk() : void
         {
             _virtual_folders.length = 0;
             
@@ -184,7 +184,7 @@ package vui.library.mapper
         }
         
         // Just removes the file extension(s) from the input filename - substrings at first instance of "." so no regexing required.
-        protected static function get_virtual_folder_name_from_filename(filename:String):String
+        protected static function get_virtual_folder_name_from_filename(filename:String) : String
         {
             if (filename.indexOf(".") != -1) {
                 return filename.substring(0, filename.indexOf("."));
@@ -196,7 +196,7 @@ package vui.library.mapper
         // Write through changes to the local (cached) virtual folders to persistent storage (the application storage directory).
         // TODO: Clear the application storage directory in a SAFE way; try moving them to a timestamped "backup" location before each flush()
         // so the user can recover them in the event of error (future feature).
-        public static function flush():void
+        public static function flush() : void
         {
             backup_virtual_folders();
             delete_virtual_folders();
@@ -221,11 +221,11 @@ package vui.library.mapper
             } 
         }
         
-        protected static function backup_virtual_folders():void
+        protected static function backup_virtual_folders() : void
         {
             trace('[Virtual Folder Mapper] Backing up virtual folders...');
         }
-        protected static function delete_virtual_folders():void
+        protected static function delete_virtual_folders() : void
         {
             trace('[Virtual Folder Mapper] Deleting virtual folders...');
             

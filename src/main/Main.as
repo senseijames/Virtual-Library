@@ -27,7 +27,7 @@ package
             run_tests();
         }
         
-        protected function run():void
+        protected function run() : void
         {
             var container:Sprite = new Sprite();
             addChild(container);
@@ -40,21 +40,21 @@ package
         * Testing (remove from production with conditional compilation)
         * * * * * * * * */
         
-        protected function trace_boilerplate():void
+        protected function trace_boilerplate() : void
         {
             trace('\n\nVirtual Library version', VERSION);
             trace('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n');            
         }
         
-        protected function run_tests():void
+        protected function run_tests() : void
         {
 //            test_alternativa_engine();
 //            init_click_test();
         }
         
-        protected function init_click_test():void
+        protected function init_click_test() : void
         {
-            stage.addEventListener(flash.events.MouseEvent.CLICK, function(e:Event):void
+            stage.addEventListener(flash.events.MouseEvent.CLICK, function(e:Event) : void
                                                      {
                                                         trace('Clicked target', e.target, 'currentTarget', e.currentTarget, 'name', e.target.name, flash.utils.getQualifiedClassName(e.target));
                                                      });

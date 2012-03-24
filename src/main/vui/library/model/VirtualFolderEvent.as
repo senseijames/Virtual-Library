@@ -32,11 +32,11 @@ package vui.library.model
             _target_files = options.target_files;
         }
         
-        public function get target_folder():String
+        public function get target_folder() : String
         {
             return _target_folder;
         }
-        public function get target_files():Vector.<File>
+        public function get target_files() : Vector.<File>
         {
             return _target_files;
         }
@@ -46,12 +46,12 @@ package vui.library.model
         * Event class overrides
         * * * * * * * * * * * */
         
-        public override function clone():Event
+        public override function clone() : Event
         {
             return new VirtualFolderEvent(type, _options, bubbles, cancelable);
         }
         
-        public override function toString():String
+        public override function toString() : String
         {
             return formatToString("VirtualFolderEvent", "params", "type", "bubbles", "cancelable");
         }

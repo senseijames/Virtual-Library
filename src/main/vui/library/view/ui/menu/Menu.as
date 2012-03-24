@@ -57,7 +57,7 @@ package vui.library.view.ui.menu
         *   @param options.width, height
         *   @param options.folders      Array of VirtualFolders
         */
-        public function init(options:Object):void
+        public function init(options:Object) : void
         {
             // Add the bg.
             _bg = GraphicsUtils.get_shape_rect(options.width, options.height, options.bgColor, options.bgAlpha);
@@ -88,18 +88,18 @@ package vui.library.view.ui.menu
             virtual_folders = options.folders;
         }
 
-        public function set virtual_folders(folders:Vector.<VirtualFolder>):void
+        public function set virtual_folders(folders:Vector.<VirtualFolder>) : void
         {
             _virtual_folders = folders;
             
             display_virtual_folders();
         }
         
-        public function display_virtual_folders():void
+        public function display_virtual_folders() : void
         {
             if (_virtual_folder_sprites) 
             {
-                _virtual_folder_sprites.forEach(function(object:Sprite, index:int, vector:Vector.<Sprite>):void { removeChild(object); });
+                _virtual_folder_sprites.forEach(function(object:Sprite, index:int, vector:Vector.<Sprite>) : void { removeChild(object); });
                 _virtual_folder_sprites.length = 0;
                 _selected_virtual_folder = null;
                 _selected_files.length = 0;
@@ -130,7 +130,7 @@ package vui.library.view.ui.menu
             }
         }
         
-        protected function get_virtual_folder_sprite(folder:VirtualFolder):Sprite
+        protected function get_virtual_folder_sprite(folder:VirtualFolder) : Sprite
         {
             var folder_sprite:Sprite = new Sprite();
             
@@ -159,7 +159,7 @@ package vui.library.view.ui.menu
             return folder_sprite;
         }
 
-        public function show_error(error_text:String):void
+        public function show_error(error_text:String) : void
         {
             if (_error_text_field.visible) {
                 _error_text_field.appendText('\n' + error_text);
@@ -172,14 +172,14 @@ package vui.library.view.ui.menu
                 clearTimeout(_timeout_descriptor);
             }
             
-            _timeout_descriptor = setTimeout(function():void { _timeout_descriptor = NaN; _error_text_field.visible = false; }, ERROR_TEXT_DISPLAY_TIME);
+            _timeout_descriptor = setTimeout(function() : void { _timeout_descriptor = NaN; _error_text_field.visible = false; }, ERROR_TEXT_DISPLAY_TIME);
             
             _error_text_field.y = _bg.height - _error_text_field.textHeight - 10;
             _error_text_field.visible = true;
         }
         
         // Deprecated
-//        protected function get_virtual_folder_text_field(folder:VirtualFolder):TextField
+//        protected function get_virtual_folder_text_field(folder:VirtualFolder) : TextField
 //        {
 //            var text_field:TextField = TextUtils.get_text_field();
 //            trace(text_field, folder);
@@ -198,7 +198,7 @@ package vui.library.view.ui.menu
         * Folder/file select event handlers
         * * * * * * * * * * * * * * * * * * */
         
-        protected function virtual_folder_CLICKED(event:MouseEvent):void
+        protected function virtual_folder_CLICKED(event:MouseEvent) : void
         {
             trace('[Menu] Virtual folder clicked and current folder is', event.currentTarget.content.title);
             if (_selected_virtual_folder == event.currentTarget.content)
@@ -218,7 +218,7 @@ package vui.library.view.ui.menu
             trace('Virtual folder now', _selected_virtual_folder);
         }
         
-        protected function virtual_folder_file_CLICKED(event:MouseEvent):void
+        protected function virtual_folder_file_CLICKED(event:MouseEvent) : void
         {
             trace('[Menu] Virtual file clicked and current file is', event.currentTarget.content.name);
             var file_index:int = _selected_files.indexOf(event.currentTarget.content);
@@ -240,7 +240,7 @@ package vui.library.view.ui.menu
         * Virtual Folder CRUD button event handlers
         * * * * * * * * * * * * * * * * * * * * * * */
         
-        protected function open_virtual_folder_CLICK(event:MouseEvent):void
+        protected function open_virtual_folder_CLICK(event:MouseEvent) : void
         {
             if (!_selected_virtual_folder) {
                 return;
@@ -251,7 +251,7 @@ package vui.library.view.ui.menu
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.OPEN_FOLDER, { target_folder: _selected_virtual_folder.title }));            
         }
         
-        protected function create_virtual_folder_CLICK(event:MouseEvent):void
+        protected function create_virtual_folder_CLICK(event:MouseEvent) : void
         {
             trace('\n[Menu] Create virtual folder clicked!!\n');
             // Show an input text field and a 'submit' button, and dispatch the event on save.
@@ -265,7 +265,7 @@ package vui.library.view.ui.menu
             addChild(input_text_field);
             addChild(submit_button);
             
-            function submit_virtual_folder_CLICK(event:MouseEvent):void
+            function submit_virtual_folder_CLICK(event:MouseEvent) : void
             {
                 trace('[Menu] Attempting to create virtual folder!');
                 
@@ -276,7 +276,7 @@ package vui.library.view.ui.menu
             }
         }
         
-        protected function delete_virtual_folder_CLICK(event:MouseEvent):void
+        protected function delete_virtual_folder_CLICK(event:MouseEvent) : void
         {
             if (!_selected_virtual_folder) {
                 return;
@@ -287,7 +287,7 @@ package vui.library.view.ui.menu
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.DELETE_FOLDER, { target_folder: _selected_virtual_folder.title }));
         }
         
-        protected function add_file_to_folder_CLICK(event:MouseEvent):void
+        protected function add_file_to_folder_CLICK(event:MouseEvent) : void
         {
             if (!_selected_virtual_folder) {
                 return;
@@ -298,7 +298,7 @@ package vui.library.view.ui.menu
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
         }
         
-        protected function remove_file_from_folder_CLICK(event:MouseEvent):void
+        protected function remove_file_from_folder_CLICK(event:MouseEvent) : void
         {
             if (!_selected_virtual_folder) {
                 return;
@@ -314,7 +314,7 @@ package vui.library.view.ui.menu
         * Helpers
         * * * * * * * * * */
 
-        protected function open_file_browser(file_browser_SELECT:Function, file_browser_title:String):void
+        protected function open_file_browser(file_browser_SELECT:Function, file_browser_title:String) : void
         {
             if (!_file_browser) {
                 _file_browser = new File();
@@ -345,7 +345,7 @@ package vui.library.view.ui.menu
         * Event Handlers
         * * * * * * * * * */
 
-        protected function close_menu_CLICK(event:MouseEvent):void
+        protected function close_menu_CLICK(event:MouseEvent) : void
         {
             trace('\n[Menu] Closing menu!\n');
 

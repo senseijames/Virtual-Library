@@ -13,7 +13,7 @@ package vui.utils
         
         // TODO: add options parameter with "maxChars" defined.
         // TODO: write options utility that overwrites with default values
-        public static function get_input_text_field(options:Object = null):TextField
+        public static function get_input_text_field(options:Object = null) : TextField
         {
             options ||= { };
             var text_field:TextField = get_text_field(options);
@@ -30,7 +30,7 @@ package vui.utils
             return text_field;
         }
         
-        public static function get_text_field(options:Object = null):TextField
+        public static function get_text_field(options:Object = null) : TextField
         {
             options ||= { }
             var text_field:TextField = new TextField();

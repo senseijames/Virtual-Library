@@ -46,7 +46,7 @@ package test
             addEventListener(Event.ENTER_FRAME, onRender);
         }
         
-        protected function initMolehill(e:Event):void
+        protected function initMolehill(e:Event) : void
         {
 trace('initializing molehill');            
             context3D = stage.stage3Ds[0].context3D;			
@@ -86,7 +86,7 @@ trace('before vertex shader work');
 trace('end of init');            
         }	
         
-        protected function onRender(e:Event):void
+        protected function onRender(e:Event) : void
         {
             if ( !context3D ) 
                 return;
@@ -109,7 +109,7 @@ trace('end of init');
             context3D.present();	
         }
        
-        public static function get confirm_player_11_install():Boolean
+        public static function get confirm_player_11_install() : Boolean
         {
             trace('[TestUtils] Confirming player 11 install...');
             return Boolean(Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);

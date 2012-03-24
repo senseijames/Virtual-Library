@@ -15,7 +15,7 @@ package vui.utils
         /* * * * * * * * * *
         * Button utils
         * * * * * * * * * */
-        public static function get_button(x:uint, y:uint, width:uint, height:uint, color:uint, alpha:Number, on_click_callback:Function = null):Sprite
+        public static function get_button(x:uint, y:uint, width:uint, height:uint, color:uint, alpha:Number, on_click_callback:Function = null) : Sprite
         {
             var button:Sprite = GraphicsUtils.get_sprite_rect(width, height, color, alpha);
             button.x = x;
@@ -28,7 +28,7 @@ package vui.utils
         
         // TODO: May want to extend this with more callback options; or just make use of the SimpleButton class
         // rather than "monkey patching", as they say.  This does work, however, for this simplified use case.
-        public static function init_button(button:Sprite, on_click_callback:Function = null):void
+        public static function init_button(button:Sprite, on_click_callback:Function = null) : void
         {
             button.buttonMode = true;
             
@@ -44,21 +44,21 @@ package vui.utils
         * * * * * * * * * */
         
         // getSpriteRect
-        public static function get_sprite_rect(width:uint, height:uint, color:uint, alpha:Number = 1):Sprite
+        public static function get_sprite_rect(width:uint, height:uint, color:uint, alpha:Number = 1) : Sprite
         {
             var sprite:Sprite = new Sprite();
             draw_rect(sprite, width, height, color, alpha);
             return sprite;
         }
         
-        public static function get_shape_rect(width:uint, height:uint, color:uint, alpha:Number = 1):Shape
+        public static function get_shape_rect(width:uint, height:uint, color:uint, alpha:Number = 1) : Shape
         {
             var shape:Shape = new Shape();
             draw_rect(shape, width, height, color, alpha);
             return shape;
         }
         
-        protected static function draw_rect(shape_or_sprite:Object, width:uint, height:uint, color:uint, alpha:Number):void
+        protected static function draw_rect(shape_or_sprite:Object, width:uint, height:uint, color:uint, alpha:Number) : void
         {
             if (!shape_or_sprite.hasOwnProperty('graphics')) {
                 return;

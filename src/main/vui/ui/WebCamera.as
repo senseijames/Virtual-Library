@@ -37,7 +37,7 @@ package vui.ui
         * @param    options.videoWidth
         * @param    options.videoHeight
         */
-        public function init(options:Object):void
+        public function init(options:Object) : void
         {
             connect({ activity_level: options.activity_level, activity_time: options.activity_time }); 
 
@@ -65,7 +65,7 @@ package vui.ui
             }
         }
         
-        public function get is_available():Boolean
+        public function get is_available() : Boolean
         {
             // return Camera.isSupported;
             return Boolean(_camera);
@@ -86,14 +86,14 @@ package vui.ui
             addChild(_video);
         }
         
-        protected function connect(options:Object = null):void 
+        protected function connect(options:Object = null) : void 
         {
             options ||= { };
             _camera.setMotionLevel(options.motion_level, options.activity_time || 1000);
             _camera.addEventListener(ActivityEvent.ACTIVITY, activity_EVENT);
         }
         
-        protected function activity_EVENT(event:ActivityEvent):void 
+        protected function activity_EVENT(event:ActivityEvent) : void 
         {
             if (event.activating == true) 
             {
@@ -107,7 +107,7 @@ package vui.ui
             }    
         }
         
-        protected function activity_reader_TICK(event:TimerEvent):void 
+        protected function activity_reader_TICK(event:TimerEvent) : void 
         {
             _activity_text.y = _camera.height + 20;
             _activity_text.text = "Activity: " + _camera.activityLevel;

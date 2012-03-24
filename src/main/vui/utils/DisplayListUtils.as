@@ -10,7 +10,7 @@ package vui.utils
 //            throw new Error('[DisplayListUtils] I am a singleton class, saving myself for marriage!');
         }
         
-        public static function clear_children(target:DisplayObjectContainer, clazz:Class = null):void
+        public static function clear_children(target:DisplayObjectContainer, clazz:Class = null) : void
         {
             var current_child:DisplayObject;
             for (var i:int = target.numChildren - 1; i >= 0; i--)

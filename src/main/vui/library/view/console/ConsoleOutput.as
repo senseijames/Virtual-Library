@@ -34,25 +34,25 @@ package vui.library.view.console
         * Public interface
         * * * * * * * * * * * * * * * * */
 
-        public function init(options:Object):void
+        public function init(options:Object) : void
         {
             _is_loose_pack = options.is_loose_pack;
             _depth = options.depth;
         }
 
-        public function render():void
+        public function render() : void
         {
             trace(_total_books, 'rendered');
         }
 
-        public function clear():void
+        public function clear() : void
         {
             trace('[Console Output] Clearing...\n');
             _file_directories.length = 0;
             _total_books = 0;
         }
         
-        public function add_directory(file_directory:FileDirectory, depth:uint):void
+        public function add_directory(file_directory:FileDirectory, depth:uint) : void
         {
             _file_directories.push(file_directory);
             
@@ -70,7 +70,7 @@ package vui.library.view.console
             }
         }
         
-        public function live_search(query:String):void
+        public function live_search(query:String) : void
         {
             for (var i:uint = 0; i < _file_directories.length; i++)
             {
@@ -82,7 +82,7 @@ package vui.library.view.console
             Searching almost working - showing double duplicates or what?
         */
         
-        public function search_directory(directory:FileDirectory, query:String):void
+        public function search_directory(directory:FileDirectory, query:String) : void
         {
             if (directory.directory.name.toLowerCase().indexOf(query) != -1) {
                 highlight_file(directory.directory, directory.files && directory.files.length != 0);
@@ -105,11 +105,11 @@ package vui.library.view.console
         * * * * * * * * * * * * * * */
         // TODO: I imagine the I/F will change as you come to understand more about the requirements
         // and "how the system wants to be programmed".
-        public function select_file(file:File):void
+        public function select_file(file:File) : void
         {
         }
         
-        protected function highlight_file(file:File, is_directory_with_children:Boolean):void
+        protected function highlight_file(file:File, is_directory_with_children:Boolean) : void
         {
             var string:String = ((is_directory_with_children) ? 'bookcase' : 'book') + ':';
             trace('[ConsoleOutput] Highlighting', string, file.nativePath);
@@ -119,7 +119,7 @@ package vui.library.view.console
         protected var _app_storage_directory:File;
         protected var _app_storage_directory_file_stream:FileStream;
         // Need them to persist across runnings of the program.
-        public function create_virtual_folder(name:String):void
+        public function create_virtual_folder(name:String) : void
         {
             if (!_app_storage_directory) {
                 _app_storage_directory = File.applicationStorageDirectory;
@@ -132,18 +132,18 @@ package vui.library.view.console
 //            fileStream.writeUTF(str);
 //            fileStream.close();            
         }
-        public function open_virtual_folder(name:String):void
+        public function open_virtual_folder(name:String) : void
         {
         }
-        public function add_to_virtual_folder(file:File, virtual_folder_name:String):void
+        public function add_to_virtual_folder(file:File, virtual_folder_name:String) : void
         {
         }
         
-        //        public function add_bookcase(files:Array):void
+        //        public function add_bookcase(files:Array) : void
         //        {
         //            _bookcases.push(files);      
         //        }
-        //        public function add_bookshelf():void
+        //        public function add_bookshelf() : void
         //        {
         //            
         //        }
@@ -153,7 +153,7 @@ package vui.library.view.console
         * Helpers
         * * * * * * * * * */
         
-        protected function print_file_data(file:File, depth:uint = 0, is_parent:Boolean = false, is_link:Boolean = false, delimeter:String = '--------------'):void
+        protected function print_file_data(file:File, depth:uint = 0, is_parent:Boolean = false, is_link:Boolean = false, delimeter:String = '--------------') : void
         {
             _total_books++;
             var depth_spacing:String = get_depth_indicator(depth);
@@ -163,7 +163,7 @@ package vui.library.view.console
             if (is_parent) trace(depth_spacing + '* * * * * * * * * * * * * * * * * * * * * * *');
         }
         
-        protected function get_depth_indicator(depth:uint):String
+        protected function get_depth_indicator(depth:uint) : String
         {
             var depth_indicator:String = '';
             for (var i:uint = 0; i < depth; i++)
@@ -174,7 +174,7 @@ package vui.library.view.console
             return depth_indicator;
         }
         
-//        protected function get_filename(file:File):String
+//        protected function get_filename(file:File) : String
 //        {
 //            var native_path:String = file.nativePath;
 //            return native_path.substring(native_path.lastIndexOf(File.separator) + 1);

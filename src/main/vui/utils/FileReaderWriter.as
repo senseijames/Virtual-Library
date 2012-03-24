@@ -18,10 +18,10 @@ package vui.utils
 //            throw new Error('[FileReaderWriter] I am a singleton class, saving myself for marriage!');
         }
         
-        public static function write(file:File, content:String):void
+        public static function write(file:File, content:String) : void
         {
             var file_stream:FileStream = new FileStream();
-            file_stream.addEventListener(Event.COMPLETE, function(e:Event):void
+            file_stream.addEventListener(Event.COMPLETE, function(e:Event) : void
                                                         {
 //trace('\ntrying to write',content,'to file',file.nativePath);                
                                                             file_stream.writeUTF(content);
@@ -32,7 +32,7 @@ package vui.utils
         }
 
         // TODO: Consider making this asynchronous and dispatching an event whose member is the text.
-        public static function read(file:File):String
+        public static function read(file:File) : String
         {
             var file_stream:FileStream = new FileStream();
             file_stream.open(file, FileMode.READ);

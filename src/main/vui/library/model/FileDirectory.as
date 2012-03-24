@@ -18,7 +18,7 @@ package vui.library.model
             } catch (e:Error) { trace('[FileDirectory] File.size threw an error:', e); trace(e.getStackTrace()); }
         }
         
-        public function push(file_directory:FileDirectory):void
+        public function push(file_directory:FileDirectory) : void
         {
             if (!_files) _files = new Vector.<FileDirectory>();
             
@@ -28,17 +28,17 @@ package vui.library.model
             _size += file_directory._size;
         }
         
-        public function get size():Number
+        public function get size() : Number
         {
             return _size;
         }
         
-        public function get directory():File 
+        public function get directory() : File 
         {
             return _directory;
         }
         
-        public function get files():Vector.<FileDirectory>
+        public function get files() : Vector.<FileDirectory>
         {
             return _files;
         }
