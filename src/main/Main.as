@@ -13,7 +13,7 @@ package
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
     {
-        protected static const VERSION:String = '0.0.11 (Console Prototype v. 0.11)';
+        protected static const VERSION:String = '0.1.1 (Console Prototype v. 1.1)';
         protected static const FILE_SEARCH_DEPTH : uint = 4;
         protected static const SHOW_HIDDEN : Boolean = false;
         protected static const IS_LOOSE_PACK : Boolean = true;

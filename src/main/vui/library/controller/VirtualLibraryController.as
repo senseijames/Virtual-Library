@@ -14,9 +14,6 @@ package vui.library.controller
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
     
-    /**
-     * I don't think it should subclass Sprite; a controller should have no visual representation.
-     */ 
     public class VirtualLibraryController
     {
         // TODO: Consider moving these to a "Config" class (encapsulation, and if you make vars you can change dynamically)

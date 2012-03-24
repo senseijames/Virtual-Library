@@ -6,6 +6,7 @@ package test
     import flash.display3D.Context3D;
     import flash.display3D.Context3DProgramType;
     import flash.display3D.Context3DVertexBufferFormat;
+    import flash.display3D.Context3DBlendFactor;
     import flash.display3D.IndexBuffer3D;
     import flash.display3D.Program3D;
     import flash.display3D.VertexBuffer3D;
@@ -107,5 +108,12 @@ trace('end of init');
             
             context3D.present();	
         }
+       
+        public static function get confirm_player_11_install():Boolean
+        {
+            trace('[TestUtils] Confirming player 11 install...');
+            return Boolean(Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+        }            
+
     }
 }
