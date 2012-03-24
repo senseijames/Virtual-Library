@@ -2,7 +2,7 @@ package
 {
     public class VirtualLibraryConfig
     {
-        public static const VERSION:String = 'Console Prototype v. 1.5 (0.1.5 - Webcam Support)';
+        public static const VERSION:String = '3D Engine Prototype v. 0.2.0 (Console Prototype 2.0 Complete)';
         public static const FILE_SEARCH_DEPTH : uint = 4;
         public static const SHOW_HIDDEN : Boolean = false;
         public static const IS_LOOSE_PACK : Boolean = true;

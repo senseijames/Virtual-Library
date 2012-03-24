@@ -36,7 +36,6 @@ package vui.library.mapper
         * Initialization
         * * * * * * * * * * */
         
-        // TODO? - make protected so as to only be called internally?  I like that.
         public static function init() : Vector.<VirtualFolder>
         {
             init_application_storage();

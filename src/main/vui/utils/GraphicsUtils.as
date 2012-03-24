@@ -17,6 +17,7 @@ package vui.utils
         * * * * * * * * * */
         public static function get_button(x:uint, y:uint, width:uint, height:uint, color:uint, alpha:Number, on_click_callback:Function = null) : Sprite
         {
+            // TODO: maybe add SimpleButton to this, else write another utility that just wraps the donuts.
             var button:Sprite = GraphicsUtils.get_sprite_rect(width, height, color, alpha);
             button.x = x;
             button.y = y;

@@ -4,7 +4,7 @@ package vui.library.model
     import flash.filesystem.File;
 
     
-    // TODO: Consider moving to vui.library.events
+    // NOTE: If more types, consider moving to vui.library.events
     public class VirtualFolderEvent extends Event
     {
         // Event types.

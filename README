@@ -20,13 +20,13 @@ Purpose - get the structure and workflow going before sexying up the view with t
 # 12. Get the bash script working, and add instructions to the README on how to run (make variables so it's easy to change)
 13. Webcam navigation dispatching events and catching them only (not responding yet)
 14. Webcam motion/display tweaking 
-* 15. Final code cleanup!
-Output - the structure of the program will be complete (3.5h)
+15. Final code cleanup!
+Output - program architecture
 
 II. 3D Engine Prototype
 Purpose - replace the console view with a sexy 3D Virtual Library.
 Also - touch up the user interface (file browser and live search)
-1. Create the room
+* 1. Create the room
 2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
 2. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
 3. Replace circles with file icons

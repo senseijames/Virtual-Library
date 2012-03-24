@@ -256,7 +256,6 @@ package vui.library.view.ui.menu
             trace('\n[Menu] Create virtual folder clicked!!\n');
             // Show an input text field and a 'submit' button, and dispatch the event on save.
             var input_text_field:TextField = TextUtils.get_input_text_field();
-            // TODO: Standardize this?
             input_text_field.width = 100;
             input_text_field.height = 20;
             input_text_field.y = height - input_text_field.height;

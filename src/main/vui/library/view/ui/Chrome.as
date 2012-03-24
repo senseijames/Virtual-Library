@@ -45,7 +45,6 @@ package vui.library.view.ui
             graphics.endFill();
 
             // Init the buttons.
-            // TODO: Event listener nomenclature is breaking from convention.
             GraphicsUtils.init_button(_open_file_browser_button, open_file_browser_CLICK);
             GraphicsUtils.init_button(_clear_button, clear_library_CLICK);
             GraphicsUtils.init_button(_toggle_menu_button, toggle_menu_CLICK);

@@ -215,7 +215,7 @@ package vui.library.controller
 
             _view.live_search(query);
             /*
-            TODO:
+            NOTE:
             The View should probably also have a Vector of file directories.  What you are trying to preclude is too much encapsulation
             because it will hurt performance - in the current decomposition, you will crawl the FileDirectory for search
             hits and pass them to the view, one by one, but then the View will have to crawl its directory of files as well
@@ -263,7 +263,6 @@ package vui.library.controller
         
         protected function file_browser_SELECT(event:Event) : void
         {
-            // TODO: Ammend duplication in run.  Best I/F for this?
             _directory_trees.push(FileSystemMapper.get_directory_tree(File(event.target), _depth, { show_hidden: _show_hidden }));
             add_directories_to_view(_directory_trees[_directory_trees.length - 1], 0);
             _view.render();

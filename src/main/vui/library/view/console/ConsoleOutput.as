@@ -114,30 +114,6 @@ package vui.library.view.console
             var string:String = ((is_directory_with_children) ? 'bookcase' : 'book') + ':';
             trace('[ConsoleOutput] Highlighting', string, file.nativePath);
         }
-
-        // TODO: Move these to the Controller.
-        protected var _app_storage_directory:File;
-        protected var _app_storage_directory_file_stream:FileStream;
-        // Need them to persist across runnings of the program.
-        public function create_virtual_folder(name:String) : void
-        {
-            if (!_app_storage_directory) {
-                _app_storage_directory = File.applicationStorageDirectory;
-            }
-            if (!_app_storage_directory_file_stream) {
-                _app_storage_directory_file_stream = new FileStream();
-            }
-//            var fileStream:FileStream = new FileStream();
-//            fileStream.open(file, FileMode.WRITE);
-//            fileStream.writeUTF(str);
-//            fileStream.close();            
-        }
-        public function open_virtual_folder(name:String) : void
-        {
-        }
-        public function add_to_virtual_folder(file:File, virtual_folder_name:String) : void
-        {
-        }
         
         //        public function add_bookcase(files:Array) : void
         //        {
