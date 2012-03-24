@@ -37,6 +37,7 @@ package vui.library.controller
         // Delegates
         protected var _file_browser : File;
         // State
+        protected var _config : Object;
         protected var _depth : uint; // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
         protected var _show_hidden : Boolean;
         protected var _is_loose_pack : Boolean;
@@ -71,6 +72,7 @@ package vui.library.controller
         public function init(container:DisplayObjectContainer, options:Object) : void
         {
             _container = container;
+            _config = options;
             _depth = (options.depth != undefined) ? options.depth : 3;
             _show_hidden = options.show_hidden;
             _is_loose_pack = options.is_loose_pack;
@@ -95,7 +97,7 @@ package vui.library.controller
 //            open_file_browser();
             
             if (options.use_webcam) {
-                init_webcam({ activity_level: options.webcam_activity_level || 50, activity_time: options.webcam_activity_time || 1000, show_video: options.webcam_show_video || false });
+                init_webcam();
             }
         }
 
@@ -133,16 +135,18 @@ package vui.library.controller
             _virtual_folders = VirtualFolderMapper.init();
         }
 
-        protected function init_webcam(options:Object) : void
+        protected function init_webcam() : void
         {
             _webcam = new WebCamera();
-            _webcam.init(options);
-            
+            _webcam.init({ activity_level: _config.webcam_activity_level, activity_time: _config.webcam_activity_time, 
+                           show_video: _config.webcam_show_video, show_activity : _config.webcam_show_activity });
             _webcam.addEventListener(ActivityEvent.ACTIVITY, webcam_ACTIVITY);
 
-            if (options.show_video) {
+            if (_config.webcam_show_video)
+            {
                 var video:Video = _webcam.video;
-                if (video) {
+                if (video)
+                {
                     _container.addChild(video);
                     _container.addChild(_webcam);
                 }
@@ -151,7 +155,7 @@ package vui.library.controller
         
         protected function webcam_ACTIVITY(event:ActivityEvent) : void
         {
-            trace('[VirtualLibraryController] Webcam Activity Event caught:', WebCamera(event.target).activity_level);
+            trace('[VirtualLibraryController] Webcam Activity Event:', WebCamera(event.target).activity_level);
         }
         
         /* * * * * * * * * * * * * * * * * * *
