@@ -26,8 +26,6 @@ package vui.library.view.ui
             _clear_button = GraphicsUtils.get_sprite_rect(30, 30, 0x0000FF);
             _toggle_menu_button = GraphicsUtils.get_sprite_rect(30, 30, 0x00FF00);
             _live_search_text_field = TextUtils.get_input_text_field();
-            
-            
         }
         
         

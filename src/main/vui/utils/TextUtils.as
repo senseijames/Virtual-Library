@@ -15,7 +15,9 @@ package vui.utils
         // TODO: write options utility that overwrites with default values
         public static function get_input_text_field(options:Object = null):TextField
         {
+            options ||= { };
             var text_field:TextField = get_text_field(options);
+            
             with (text_field)
             {
                 multiline = options.multiline; // || false;

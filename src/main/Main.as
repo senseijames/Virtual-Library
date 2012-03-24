@@ -5,7 +5,6 @@ package
     import flash.utils.getQualifiedClassName;
     
     import vui.library.controller.VirtualLibraryController;
-    // TODO: Note that this import will be moved to the controller.
     import vui.library.view.engine.VirtualLibraryEngine;
     import vui.utils.DisplayListUtils;
 
@@ -13,7 +12,7 @@ package
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
     {
-        protected static const VERSION:String = '0.1.1 (Console Prototype v. 1.1)';
+        protected static const VERSION:String = '0.1.2 (Console Prototype v. 1.2)';
         protected static const FILE_SEARCH_DEPTH : uint = 4;
         protected static const SHOW_HIDDEN : Boolean = false;
         protected static const IS_LOOSE_PACK : Boolean = true;
@@ -47,19 +46,10 @@ package
             trace('* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n');            
         }
         
-        protected function test_alternativa_engine():void
-        {
-            var engine:VirtualLibraryEngine = new VirtualLibraryEngine({ width: stage.stageWidth, height: stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
-            addChild(engine);
-        }
-        
         protected function run_tests():void
         {
-            test_alternativa_engine();
+//            test_alternativa_engine();
 //            init_click_test();
-            
-            // Put the container foremost in the display list.
-            setChildIndex(getChildAt(0), numChildren - 1);
         }
         
         protected function init_click_test():void

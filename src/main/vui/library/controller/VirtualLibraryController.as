@@ -11,6 +11,9 @@ package vui.library.controller
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
     import vui.library.view.console.ConsoleOutput;
+    import vui.library.view.engine.VirtualLibraryEngine;
+    // TODO: Remove when done testing.
+    import vui.library.view.engine.VirtualLibraryEngineTest;
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
     
@@ -23,14 +26,17 @@ package vui.library.controller
         public static const MENU_WIDTH : uint = 400;
         public static const MENU_HEIGHT : uint = 400;
         
-        // State.
+        // Entities
+//        protected var _engine : VirtualLibraryEngine;
+        protected var _engine : VirtualLibraryEngineTest;
+        // State
         protected var _directory_trees : Vector.<FileDirectory>;
         protected var _virtual_folders : Vector.<VirtualFolder>;
         // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
         protected var _depth : uint;
         protected var _show_hidden : Boolean;
         protected var _is_loose_pack : Boolean;
-        // Delegates.
+        // Delegates
         protected var _file_browser : File;
         // UI Elements
         protected var _container : DisplayObjectContainer;
@@ -56,7 +62,7 @@ package vui.library.controller
          *  @param options  show_hidden:Boolean     whether to show hidden files
          *  @param options  is_loose_pack:Boolean   whether to place files (books) tightly on the shelves (false), or to make a folder = a shelf (minimum) (true)
          */ 
-        public function init(container:DisplayObjectContainer, options:Object):void
+        public function init(container:DisplayObjectContainer, options:Object) : void
         {
             _container = container;
             _depth = (options.depth != undefined) ? options.depth : 3;
@@ -79,6 +85,7 @@ package vui.library.controller
 
             init_virtual_folders();
 
+            init_engine();
 //            open_file_browser();
         }
 
@@ -87,7 +94,14 @@ package vui.library.controller
         * Initialization
         * * * * * * * * * * * * * * * * * * */
 
-        protected function init_menu():void
+        protected function init_engine() : void
+        {
+//            _engine = new VirtualLibraryEngine({ width: _container.stage.stageWidth, height: _container.stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
+            _engine = new VirtualLibraryEngineTest({ width: _container.stage.stageWidth, height: _container.stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
+            _container.addChildAt(_engine, 0);
+        }
+
+        protected function init_menu() : void
         {
             _menu = new Menu();
             _menu.init({ width: MENU_WIDTH, height: MENU_HEIGHT, bgColor: MENU_BG_COLOR, bgAlpha: MENU_BG_ALPHA, folders: _virtual_folders });
@@ -104,7 +118,7 @@ package vui.library.controller
             _container.addChild(_menu);
         }
 
-        protected function init_virtual_folders():void
+        protected function init_virtual_folders() : void
         {
             _virtual_folders = VirtualFolderMapper.init();
         }
@@ -120,7 +134,7 @@ package vui.library.controller
          * 
          */
         // Eligible for public I/F, should one be needed.
-        protected function add_directories_to_view(file_directory:FileDirectory, depth:int):void //, options:Object):void
+        protected function add_directories_to_view(file_directory:FileDirectory, depth:int) : void //, options:Object) : void
         {
             if (!file_directory.directory.isDirectory) {
                 return;
@@ -138,7 +152,7 @@ package vui.library.controller
             }
         }
         
-        protected function add_directory_to_view(file_directory:FileDirectory, depth:uint):void
+        protected function add_directory_to_view(file_directory:FileDirectory, depth:uint) : void
         {
             _view.add_directory(file_directory, depth);
 //trace('Adding to view at depth', depth, ':', file_directory.directory.name);            
@@ -149,7 +163,7 @@ package vui.library.controller
         * Live search
         * * * * * * * * * * * * * * * * */
         
-        protected function search_text_CHANGE(event:Event):void
+        protected function search_text_CHANGE(event:Event) : void
         {
             // Note that the event is dispatched BEFORE the TextField contents change, hence
             // the need to append the new text.            
@@ -158,7 +172,7 @@ package vui.library.controller
             filename_search(query);
         }
 
-        public function filename_search(query:String):void
+        public function filename_search(query:String) : void
         {
             trace('\nPerforming file search for query:', query);
             if (_directory_trees.length == 0) {
@@ -186,7 +200,7 @@ package vui.library.controller
             On iOS devices, file and browse dialogs are not supported. This method cannot be used.
                 Solution: Use native extensions.  On iOS could parse a text field for the path.  On Android, could use open() and filter for folders.
         */
-        protected function file_browser_OPEN(e:Event):void
+        protected function file_browser_OPEN(e:Event) : void
         {
             if (!_file_browser) 
             {
@@ -213,18 +227,18 @@ package vui.library.controller
             }
         }
         
-        protected function file_browser_SELECT(event:Event):void
+        protected function file_browser_SELECT(event:Event) : void
         {
             // TODO: Ammend duplication in run.  Best I/F for this?
             _directory_trees.push(FileSystemMapper.get_directory_tree(File(event.target), _depth, { show_hidden: _show_hidden }));
             add_directories_to_view(_directory_trees[_directory_trees.length - 1], 0);
             _view.render();
         }
-        protected function file_browser_CANCEL(event:Event):void
+        protected function file_browser_CANCEL(event:Event) : void
         {
             trace('\nFile browser Cancel!  File browser possibly closed by user:', event.toString());
         }
-        protected function file_browser_IO_ERROR(event:Event):void
+        protected function file_browser_IO_ERROR(event:Event) : void
         {
             trace('\nFile browser IO Error!  File Browser may be unsupported on this platform:', event.toString());
         }
@@ -234,7 +248,7 @@ package vui.library.controller
         * Menu event handling
         * * * * * * * * * * * * * * * * */
         
-        protected function toggle_menu_CLICK(event:Event):void
+        protected function toggle_menu_CLICK(event:Event) : void
         {
             if (!_menu) {
                 init_menu();
@@ -248,7 +262,7 @@ package vui.library.controller
         * Menu - virtual folder CRUD event handling
         * * * * * * * * * * * * * * * * * * * * * * */
 
-        protected function virtual_folder_OPEN(event:VirtualFolderEvent):void
+        protected function virtual_folder_OPEN(event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder open event caught!', event.type);
             
@@ -259,7 +273,7 @@ package vui.library.controller
             }
         }
         // Basically just wraps File.openWithDefaultApplication so can continue on error nicely.
-        protected function open_file(file:File):Boolean
+        protected function open_file(file:File) : Boolean
         {
             try {
                 file.openWithDefaultApplication();
@@ -271,7 +285,7 @@ package vui.library.controller
             return true;
         }
         
-        protected function virtual_folder_CREATE(event:VirtualFolderEvent):void
+        protected function virtual_folder_CREATE(event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder create event caught!', event.type);
             
@@ -279,7 +293,7 @@ package vui.library.controller
             
             synch_virtual_folders();
         }
-        protected function virtual_folder_DELETE(event:VirtualFolderEvent):void
+        protected function virtual_folder_DELETE(event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder delete event caught!', event.type);
             
@@ -287,7 +301,7 @@ package vui.library.controller
             
             synch_virtual_folders();
         }
-        protected function virtual_folder_file_ADD(event:VirtualFolderEvent):void
+        protected function virtual_folder_file_ADD(event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder file add event caught!', event.type);
             
@@ -295,7 +309,7 @@ package vui.library.controller
             
             synch_virtual_folders();
         }
-        protected function virtual_folder_file_REMOVE(event:VirtualFolderEvent):void
+        protected function virtual_folder_file_REMOVE(event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder file remove event caught!', event.type);
             
@@ -304,7 +318,7 @@ package vui.library.controller
             synch_virtual_folders();
         }
         
-        protected function synch_virtual_folders():void
+        protected function synch_virtual_folders() : void
         {
             _menu.virtual_folders = _virtual_folders = VirtualFolderMapper.folders;
         }
@@ -314,7 +328,7 @@ package vui.library.controller
         * Other event handling
         * * * * * * * * * * * * * * * * */
         
-        protected function library_CLEAR(event:Event):void
+        protected function library_CLEAR(event:Event) : void
         {
             _view.clear();
         }
@@ -324,7 +338,7 @@ package vui.library.controller
         * Deprecated
         * * * * * * * * * * * * * * * * */
         
-//        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint):void
+//        protected function add_directory_children_to_view(file_directory:FileDirectory, depth:uint) : void
 //        {
 //            for (var i:uint = 0; i < file_directory.files.length; i++)
 //            {
