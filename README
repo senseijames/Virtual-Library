@@ -2,6 +2,21 @@ Virtual Library
 * * * * * * * * * * * 
 by James Overton V
 
+The Vision
+* * * * * * *
+The VUI, or Virtual User Interface, IS the next generation user interface.  But the challenges of a 3d user interface have outweighed its benefits as early as it has been attempted.  No application outside of gaming has been able to breakthrough to the mainstream with a 3D UI, mainly because they fail to provide the combination of:
+a) motivate and make good use of the third dimension versus a simpler 2d representation
+b) borrow real world semantics
+c) advantage computer efficiency and power
+d) solve a problem.  Enable!
+I believe that this set of qualities in an application could continue the paradigm shift of dominant computer UX - away from WIMP and into a gesture and voice controlled virtual environment.
+
+The Virtual Library
+* * * * * * * * * * * * *
+The Virtual Library allows for the creation and maintenance of virtual folders - user selected collections of files or folders that are relevant to a workspace or task (i.e. - when I code this program I have these applications open, when researching this I have these tabs/docs/apps open, etc.)
+
+A virtual folder is analogous to and in support of a workspace; it essentially allows you to abstract a 'working set' of files/folders from the actual file system organization.  We typically organize our files in a contextual hierarchy - this might be deemed long term organization; a task-, project- or workspace-based organization is much more relevant in the shorter term.  A workspace might be described as a set of files that experience temporal locality of use (I work on these N files while coding this project, these M files while writing this paper, etc).
+
                                     Milestones
 I. Console Output Prototype
 Purpose - get the structure and workflow going before sexying up the view with the 3D engine
@@ -35,6 +50,7 @@ Also - touch up the user interface (file browser and live search)
 6. Live search effects
 7. Adding files to a virtual folder
 8. Viewing virtual folders
+9. Final polish
 
 
 # later
