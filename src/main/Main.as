@@ -12,10 +12,15 @@ package
     [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class Main extends Sprite
     {
-        protected static const VERSION:String = '0.1.3 (Console Prototype v. 1.3)';
+        // TODO: Consider externalizing these config settings to a "VirtualLibraryConfig" class...
+        protected static const VERSION:String = '0.1.4 (Console Prototype v. 1.4)';
         protected static const FILE_SEARCH_DEPTH : uint = 4;
         protected static const SHOW_HIDDEN : Boolean = false;
         protected static const IS_LOOSE_PACK : Boolean = true;
+        protected static const USE_WEBCAM : Boolean = true;
+        protected static const WEBCAM_ACTIVITY_LEVEL : uint = 50;
+        protected static const WEBCAM_ACTIVITY_TIME : uint = 1000;
+        protected static const WEBCAM_SHOW_VIDEO : Boolean = true;
         
         
         public function Main() 
@@ -32,7 +37,8 @@ package
             var container:Sprite = new Sprite();
             addChild(container);
             var virtual_library_controller:VirtualLibraryController = new VirtualLibraryController();
-            virtual_library_controller.init(container, {depth: FILE_SEARCH_DEPTH, show_hidden: SHOW_HIDDEN, is_loose_pack: IS_LOOSE_PACK });
+            virtual_library_controller.init(container, {depth: FILE_SEARCH_DEPTH, show_hidden: SHOW_HIDDEN, is_loose_pack: IS_LOOSE_PACK, use_webcam: USE_WEBCAM,
+                                                        webcam_activity_level: WEBCAM_ACTIVITY_LEVEL, webcam_activity_time: WEBCAM_ACTIVITY_TIME, webcam_show_video: WEBCAM_SHOW_VIDEO });
         }
 
         

@@ -15,12 +15,12 @@ package vui.ui
 
     public class WebCamera extends Sprite
     {
-        // Entities.
+        // Entities
         protected var _camera : Camera;
         protected var _video : Video;
-        // Delegates.
+        // Delegates
         protected var _activity_reader_timer : Timer = new Timer(1000);
-        // UI.
+        // UI
         protected var _activity_text : TextField;
         protected var _activity_bar : Shape;
 
@@ -31,23 +31,21 @@ package vui.ui
         }
 
         /**
-        * @param    options.activityLevel
-        * @param    options.activityTime
-        * @param    options.showVideo
-        * @param    options.videoWidth
-        * @param    options.videoHeight
+        * @param    options.activity_level
+        * @param    options.activity_time
+        * @param    options.show_video
+        * @param    options.video_width (unused)
+        * @param    options.video_height (unused)
         */
         public function init(options:Object) : void
         {
             connect({ activity_level: options.activity_level, activity_time: options.activity_time }); 
 
-            if (options.show_video) 
+            if (options.show_video) // options.show_activity_level) 
             {
-                add_video(new Rectangle(0, 0, options.videoWidth, options.videoHeight);
-            }
-            if (options.show_activity_level) 
-            {
-                _activity_text = TextUtils.get_text_field({ background: true, selectable: false, auto_size: TextFieldAutoSize.LEFT });
+                _activity_text = TextUtils.get_text_field({ selectable: false, auto_size: TextFieldAutoSize.LEFT });
+                _activity_text.x = _camera.width + 10;
+                
                 _activity_bar =  new Shape();
                 
                 if (_camera) {
@@ -56,8 +54,8 @@ package vui.ui
                     addChild(_activity_text);
                     
                     _activity_reader_timer.addEventListener(TimerEvent.TIMER, activity_reader_TICK);
-                    _shape.graphics.beginFill(0xFF0000, 1);
-                    _shape.graphics.drawRect(0, 0, 1, _camera.width / 4);
+                    _activity_bar.graphics.beginFill(0xFF0000, 1);
+                    _activity_bar.graphics.drawRect(_camera.width, 0, _camera.width / 4, 1);
                 }
                 else {
                     _activity_text.text = "No camera is installed.";
@@ -71,25 +69,28 @@ package vui.ui
             return Boolean(_camera);
         }
         
-        protected function add_video(rect:Rectangle) : void
+        public function get activity_level() : uint
+        {
+            return _camera.activityLevel;
+        }
+        
+        public function get video() : Video
         {
             if (!_camera) {
-                return;
+                return null;
             }
             
             _video = new Video(_camera.width, _camera.height);
-            _video.x = rect.x;
-            _video.y = rect.y;
-// TODO: Left off doing the web camera - test that it's dispatching events; possible to do without popup requiring user okay?
             // Note that this pops up the dialog box!  Need to handle this better!!
             _video.attachCamera(_camera);
-            addChild(_video);
+            
+            return _video;
         }
         
         protected function connect(options:Object = null) : void 
         {
             options ||= { };
-            _camera.setMotionLevel(options.motion_level, options.activity_time || 1000);
+            _camera.setMotionLevel(options.activity_level, options.activity_time || 1000);
             _camera.addEventListener(ActivityEvent.ACTIVITY, activity_EVENT);
         }
         
@@ -102,19 +103,18 @@ package vui.ui
             } 
             else 
             {
-                _activity_text.text = "Everything is quiet.";
+                _activity_text.text = "0";
                 _activity_reader_timer.stop();
             }    
         }
         
         protected function activity_reader_TICK(event:TimerEvent) : void 
         {
-            _activity_text.y = _camera.height + 20;
-            _activity_text.text = "Activity: " + _camera.activityLevel;
+            _activity_text.text = String(_camera.activityLevel);
+            _activity_text.y = _camera.height - _activity_text.textHeight - 10;
             
             _activity_bar.height = _camera.height * _camera.activityLevel / 100;
             _activity_bar.y = _camera.height - _activity_bar.height;
         }
     }
-}
 }

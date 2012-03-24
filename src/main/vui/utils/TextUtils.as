@@ -35,7 +35,7 @@ package vui.utils
             options ||= { }
             var text_field:TextField = new TextField();
 
-            text_field.background = options.background || false;
+//            text_field.background = options.background || false;
             text_field.selectable = options.selectable || true;
             text_field.autoSize = options.auto_size || TextFieldAutoSize.LEFT;
             text_field.wordWrap = options.word_wrap || true;

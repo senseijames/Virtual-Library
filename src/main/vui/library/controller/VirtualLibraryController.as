@@ -1,9 +1,11 @@
 package vui.library.controller
 {
     import flash.display.DisplayObjectContainer;
+    import flash.events.ActivityEvent;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
     import flash.filesystem.File;
+    import flash.media.Video;
     
     import vui.library.mapper.FileSystemMapper;
     import vui.library.mapper.VirtualFolderMapper;
@@ -12,10 +14,10 @@ package vui.library.controller
     import vui.library.model.VirtualFolderEvent;
     import vui.library.view.console.ConsoleOutput;
     import vui.library.view.engine.VirtualLibraryEngine;
-    // TODO: Remove when done testing.
     import vui.library.view.engine.VirtualLibraryEngineTest;
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
+    import vui.ui.WebCamera;
     
     public class VirtualLibraryController
     {
@@ -29,15 +31,15 @@ package vui.library.controller
         // Entities
 //        protected var _engine : VirtualLibraryEngine;
         protected var _engine : VirtualLibraryEngineTest;
-        // State
-        protected var _directory_trees : Vector.<FileDirectory>;
+        protected var _webcam : WebCamera;
         protected var _virtual_folders : Vector.<VirtualFolder>;
-        // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
-        protected var _depth : uint;
-        protected var _show_hidden : Boolean;
-        protected var _is_loose_pack : Boolean;
+        protected var _directory_trees : Vector.<FileDirectory>;
         // Delegates
         protected var _file_browser : File;
+        // State
+        protected var _depth : uint; // TODO: Replace this, either by pulling off of the Chrome input field directly (okay) or by sending with the event (better).
+        protected var _show_hidden : Boolean;
+        protected var _is_loose_pack : Boolean;
         // UI Elements
         protected var _container : DisplayObjectContainer;
         protected var _view : ConsoleOutput;
@@ -61,6 +63,10 @@ package vui.library.controller
          *  @param options  depth:uint              depth for recursive directory search
          *  @param options  show_hidden:Boolean     whether to show hidden files
          *  @param options  is_loose_pack:Boolean   whether to place files (books) tightly on the shelves (false), or to make a folder = a shelf (minimum) (true)
+         *  @param options  use_webcam:Boolean      whether to use the webcam for 'gesture' navigation
+         *  @param options  webcam_activity_level:uint
+         *  @param options  webcam_activity_time:uint
+         *  @param options  webcam_show_video:Boolean
          */ 
         public function init(container:DisplayObjectContainer, options:Object) : void
         {
@@ -87,6 +93,10 @@ package vui.library.controller
 
             init_engine();
 //            open_file_browser();
+            
+            if (options.use_webcam) {
+                init_webcam({ activity_level: options.webcam_activity_level || 50, activity_time: options.webcam_activity_time || 1000, show_video: options.webcam_show_video || false });
+            }
         }
 
         
@@ -123,6 +133,26 @@ package vui.library.controller
             _virtual_folders = VirtualFolderMapper.init();
         }
 
+        protected function init_webcam(options:Object) : void
+        {
+            _webcam = new WebCamera();
+            _webcam.init(options);
+            
+            _webcam.addEventListener(ActivityEvent.ACTIVITY, webcam_ACTIVITY);
+
+            if (options.show_video) {
+                var video:Video = _webcam.video;
+                if (video) {
+                    _container.addChild(video);
+                    _container.addChild(_webcam);
+                }
+            }
+        }
+        
+        protected function webcam_ACTIVITY(event:ActivityEvent) : void
+        {
+            trace('[VirtualLibraryController] Webcam Activity Event caught:', WebCamera(event.target).activity_level);
+        }
         
         /* * * * * * * * * * * * * * * * * * *
         * Helpers - file aggregators 

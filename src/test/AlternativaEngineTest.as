@@ -22,12 +22,8 @@ package test
     
     import vui.engine.AlternativaEngine;
     import vui.utils.GraphicsUtils;
-    
-    // TODO: Left off here - make this extend AlternativaEngine, and remove test code from that class, placing it in here.  Then
-    // move to the test folder.
-    // Get webcam activity events caught well in controller
-    // Get bash script working to build well, else give up and push on that for the time being (ask in StackOverflow?)
-    
+
+
 //    [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
     public class AlternativaEngineTest extends AlternativaEngine
     {
