@@ -31,14 +31,14 @@ package vui.library.view.engine
             var sphere_color:Number = 0xFF0000;
             sphere.setMaterialToAllSurfaces(new FillMaterial(sphere_color, 0.9));
             
-            root_container.addChild(sphere);
+            _root_container.addChild(sphere);
         }
         
         private function add_test_plane() : void
         {
             plane = new Plane(600, 600, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0x00FFFF));
             
-            root_container.addChild(plane);
+            _root_container.addChild(plane);
         }
         
         private function rotate(object:Object3D, x:Number, y:Number, z:Number) : void
