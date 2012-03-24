@@ -1,9 +1,10 @@
 package vui.ui
 {
     import flash.display.Sprite;
+    import flash.geom.Rectangle;
     import flash.text.TextField;
     
-    import vui.utils.GraphicsUtils;
+    import vui.utils.ButtonUtils;
 
     /**
     * Functionally extends TextField by adding interactivity (buttonMode, essentially) by way of a Sprite overlay.
@@ -38,7 +39,8 @@ package vui.ui
         
         public function set_overlay() : void
         {
-            _overlay = GraphicsUtils.get_button(0, 0, textWidth, textHeight, 0xFFFFFF, 0);
+            _overlay = ButtonUtils.get_simple_button(new Rectangle(0, 0, textWidth, textHeight), 0xFFFFFF);
+            _overlay.alpha = 0;
             _overlay.buttonMode = true;
             addChild(_overlay);
         }

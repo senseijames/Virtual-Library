@@ -9,6 +9,7 @@ package vui.library.view.ui.menu
     import flash.filesystem.File;
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
+    import flash.geom.Rectangle;
     import flash.text.TextField;
     import flash.text.TextFormat;
     import flash.utils.clearTimeout;
@@ -16,9 +17,10 @@ package vui.library.view.ui.menu
     
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
+    import vui.ui.InteractiveTextField;
+    import vui.utils.ButtonUtils;
     import vui.utils.GraphicsUtils;
     import vui.utils.TextUtils;
-    import vui.ui.InteractiveTextField;
 
     
     public class Menu extends Sprite
@@ -64,12 +66,12 @@ package vui.library.view.ui.menu
             addChild(_bg);
             
             // Create the buttons.
-            _open_virtual_folder_button = GraphicsUtils.get_button(10, 10, 50, 50, 0xFFFF00, 0.5, open_virtual_folder_CLICK);
-            _create_virtual_folder_button = GraphicsUtils.get_button(60, 10, 50, 50, 0x00FF00, 1, create_virtual_folder_CLICK);
-            _delete_virtual_folder_button = GraphicsUtils.get_button(110, 10, 50, 50, 0xFF0000, 1, delete_virtual_folder_CLICK);
-            _add_file_to_virtual_folder_button = GraphicsUtils.get_button(160, 10, 50, 50, 0x00FF00, 0.5, add_file_to_folder_CLICK);
-            _remove_file_from_virtual_folder_button = GraphicsUtils.get_button(210, 10, 50, 50, 0xFF0000, 0.5, remove_file_from_folder_CLICK);
-            _close_menu_button = GraphicsUtils.get_button(width - 50, 0, 50, 50, 0xFF0000, 0.3, close_menu_CLICK);
+            _open_virtual_folder_button = ButtonUtils.get_button(new Rectangle(10, 10, 50, 50), 'OPEN', 0xFFFF00, true, open_virtual_folder_CLICK);
+            _create_virtual_folder_button = ButtonUtils.get_button(new Rectangle(60, 10, 50, 50), 'CREATE', 0x00FF00, true, create_virtual_folder_CLICK);
+            _delete_virtual_folder_button = ButtonUtils.get_button(new Rectangle(110, 10, 50, 50), 'DELETE', 0xFF0000, true, delete_virtual_folder_CLICK);
+            _add_file_to_virtual_folder_button = ButtonUtils.get_button(new Rectangle(160, 10, 50, 50), 'ADD FILE', 0x00FF00, true, add_file_to_folder_CLICK);
+            _remove_file_from_virtual_folder_button = ButtonUtils.get_button(new Rectangle(210, 10, 50, 50), 'REMOVE FILE', 0xFF0000, true, remove_file_from_folder_CLICK);
+            _close_menu_button = ButtonUtils.get_button(new Rectangle(width - 50, 0, 50, 50), 'X', 0xFF0000, true, close_menu_CLICK);
             // Create the error text.
             _error_text_field = TextUtils.get_text_field();
             _error_text_field.defaultTextFormat = new TextFormat(null, 11, 0xFF0000);
@@ -259,7 +261,7 @@ package vui.library.view.ui.menu
             input_text_field.width = 100;
             input_text_field.height = 20;
             input_text_field.y = height - input_text_field.height;
-            var submit_button:Sprite = GraphicsUtils.get_button(input_text_field.width, height - 50, 50, 50, 0xFF0000, 0.5, submit_virtual_folder_CLICK);
+            var submit_button:Sprite = ButtonUtils.get_button(new Rectangle(input_text_field.width, height - 50, 50, 50), 'CREATE', 0xFF0000, true, submit_virtual_folder_CLICK);
             
             addChild(input_text_field);
             addChild(submit_button);

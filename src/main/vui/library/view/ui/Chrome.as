@@ -3,11 +3,13 @@ package vui.library.view.ui
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.filters.BevelFilter;
+    import flash.geom.Rectangle;
     import flash.text.TextField;
     
-    import vui.utils.GraphicsUtils;
-    import vui.utils.TextUtils;
     import vui.library.view.ui.menu.Menu;
+    import vui.utils.ButtonUtils;
+    import vui.utils.TextUtils;
     
     public class Chrome extends Sprite
     {
@@ -22,9 +24,9 @@ package vui.library.view.ui
         
         public function Chrome()
         {
-            _open_file_browser_button = GraphicsUtils.get_sprite_rect(60, 30, 0xFF0000);
-            _clear_button = GraphicsUtils.get_sprite_rect(30, 30, 0x0000FF);
-            _toggle_menu_button = GraphicsUtils.get_sprite_rect(30, 30, 0x00FF00);
+            _open_file_browser_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'BROWSE', 0xFF0000, false);
+            _clear_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'CLEAR', 0xFF0000, false);
+            _toggle_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'MENU', 0x00FF00, false);
             _live_search_text_field = TextUtils.get_input_text_field();
         }
         
@@ -45,9 +47,10 @@ package vui.library.view.ui
             graphics.endFill();
 
             // Init the buttons.
-            GraphicsUtils.init_button(_open_file_browser_button, open_file_browser_CLICK);
-            GraphicsUtils.init_button(_clear_button, clear_library_CLICK);
-            GraphicsUtils.init_button(_toggle_menu_button, toggle_menu_CLICK);
+            var bevel_filter:BevelFilter = new BevelFilter();
+            ButtonUtils.init_button(_open_file_browser_button, [ bevel_filter ], open_file_browser_CLICK);
+            ButtonUtils.init_button(_clear_button, [ bevel_filter ], clear_library_CLICK);
+            ButtonUtils.init_button(_toggle_menu_button, [ bevel_filter ], toggle_menu_CLICK);
 
             init_live_search_text_field();
             

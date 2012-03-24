@@ -1,50 +1,18 @@
 package vui.utils
 {
-    import flash.display.DisplayObject;
     import flash.display.Shape;
     import flash.display.Sprite;
-    import flash.events.MouseEvent;
     
     public class GraphicsUtils
     {
+        /** * * * * * * * * *
+        * Vector graphics
+        * * * * * * * * * */
         public function GraphicsUtils(chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[GraphicsUtils] I am a singleton class, saving myself for marriage!');
         }
-        
-        /* * * * * * * * * *
-        * Button utils
-        * * * * * * * * * */
-        public static function get_button(x:uint, y:uint, width:uint, height:uint, color:uint, alpha:Number, on_click_callback:Function = null) : Sprite
-        {
-            // TODO: maybe add SimpleButton to this, else write another utility that just wraps the donuts.
-            var button:Sprite = GraphicsUtils.get_sprite_rect(width, height, color, alpha);
-            button.x = x;
-            button.y = y;
-            
-            GraphicsUtils.init_button(button, on_click_callback);
-            
-            return button;
-        }
-        
-        // TODO: May want to extend this with more callback options; or just make use of the SimpleButton class
-        // rather than "monkey patching", as they say.  This does work, however, for this simplified use case.
-        public static function init_button(button:Sprite, on_click_callback:Function = null) : void
-        {
-            button.buttonMode = true;
-            
-            if (on_click_callback != null) {
-                button.addEventListener(MouseEvent.CLICK, on_click_callback);
-            }
-        }
-
-//        public static function init_button(button:Sprite, onClick:
-        
-        /* * * * * * * * * *
-        * Vector graphics
-        * * * * * * * * * */
-        
-        // getSpriteRect
+                
         public static function get_sprite_rect(width:uint, height:uint, color:uint, alpha:Number = 1) : Sprite
         {
             var sprite:Sprite = new Sprite();
