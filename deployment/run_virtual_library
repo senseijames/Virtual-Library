@@ -1,3 +1,5 @@
+# Note that this is a guideline only - currently the variables don't accept spaces in their filepaths
+
 # Variables
 VIRTUAL_LIBRARY_SRC_DIR='/Users/joverton/Documents/Prototyping\ and\ Testing/Virtual\ Library/src/main'
 FLEX_SDK='/Applications/Adobe\ Flash\ Builder\ 4/sdks/4.6'
