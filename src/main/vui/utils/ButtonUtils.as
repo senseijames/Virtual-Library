@@ -17,25 +17,38 @@ package vui.utils
         public static const BUTTON_MOUSE_DOWN_ALPHA : Number = 1;
 
         
-        public function ButtonUtils(chastity_belt:SingletonEnforcer)
+        public function ButtonUtils (chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[GraphicsUtils] I am a singleton class, saving myself for marriage!');
         }
         
-        public static function get_button(rect:Rectangle, text:String, color:uint, init_button:Boolean = true, on_click_callback:Function = null) : Sprite
+        /**
+        * 
+        * @param options    color:uint = Math.random() * 0xffffff, init:Boolean = true, text_color:uint = 0x000000, autosize:Boolean = false
+        */
+        public static function get_button (rect:Rectangle, text:String, options:Object = null, on_click_callback:Function = null) : Sprite
         {
-            // TODO: maybe add SimpleButton to this, else write another utility that just wraps the donuts.
-            var button:Sprite = ButtonUtils.get_simple_button(rect, color);
+            options ||= {};
+            ConfigUtils.set_defaults(options, { color: Math.random() * 0xFFFFFF, init: true, text_color: 0x000000, autosize: true });
             
-            var text_field:TextField = TextUtils.get_text_field({ multiline: false });
+            var text_field:TextField = TextUtils.get_text_field({ multiline: false, word_wrap: false });
             text_field.text = text;
-            text_field.width = text_field.textWidth + 5;
+            text_field.textColor = options.text_color;
+            text_field.width = text_field.textWidth + 10;
+
+            if (options.autosize) {
+                rect.width = text_field.textWidth + 20;
+                rect.height = text_field.textHeight + 20;
+            }
+            // TODO: maybe add SimpleButton to this, else write another utility that just wraps the donuts.
+            var button:Sprite = ButtonUtils.get_simple_button(rect, !isNaN(options.color) ? options.color : Math.random() * 0xFFFFFF);
+            
             text_field.x = 0.5 * (button.width - text_field.textWidth);
             text_field.y = 0.5 * (button.height - text_field.textHeight);
             text_field.mouseEnabled = false;
             button.addChild(text_field);
 
-            if (init_button) {
+            if (options.init) {
                 // [ new BevelFilter() ]; //2, 45, 0xFFFFFF, 0.5, 0x000000, 0.5)];
                 ButtonUtils.init_button(button, [ new BevelFilter()], on_click_callback);
             }
@@ -45,7 +58,7 @@ package vui.utils
         
         // TODO: May want to extend this with more callback options; or just make use of the SimpleButton class
         // rather than "monkey patching", as they say.  This does work, however, for this simplified use case.
-        public static function init_button(button:Sprite, filters:Array, on_click_callback:Function = null) : void
+        public static function init_button (button:Sprite, filters:Array, on_click_callback:Function = null) : void
         {
             button.filters = filters;
             button.buttonMode = true;
@@ -62,7 +75,7 @@ package vui.utils
 
         }
         
-        public static function get_simple_button(rect:Rectangle, color:uint) : Sprite
+        public static function get_simple_button (rect:Rectangle, color:uint) : Sprite
         {
             var button:Sprite = GraphicsUtils.get_sprite_rect(rect.width, rect.height, color, 1);
             button.x = rect.x;

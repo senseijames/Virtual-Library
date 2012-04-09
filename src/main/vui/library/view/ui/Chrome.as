@@ -24,9 +24,10 @@ package vui.library.view.ui
         
         public function Chrome()
         {
-            _open_file_browser_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'BROWSE', 0xFF0000, false);
-            _clear_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'CLEAR', 0xFF0000, false);
-            _toggle_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'MENU', 0x00FF00, false);
+            // color:uint = Math.random() * 0xffffff, init_button:Boolean = true, text_color:uint = 0x000000, autosize
+            _open_file_browser_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'BROWSE', { color: 0xFF0000, init: false });
+            _clear_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'CLEAR', { color: 0xFF0000, init: false });
+            _toggle_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'MENU', { color: 0x00FF00, init: false });
             _live_search_text_field = TextUtils.get_input_text_field();
         }
         
@@ -55,8 +56,8 @@ package vui.library.view.ui
             init_live_search_text_field();
             
             _clear_button.x = width - _clear_button.width;
-            _toggle_menu_button.x = _live_search_text_field.x - _toggle_menu_button.width;
-            _toggle_menu_button.y = _live_search_text_field.y;
+            _toggle_menu_button.x = _open_file_browser_button.x + _open_file_browser_button.width + 10;
+            _toggle_menu_button.y = _open_file_browser_button.y;
 
             addChild(_clear_button);
             addChild(_open_file_browser_button);
@@ -71,7 +72,7 @@ package vui.library.view.ui
             _live_search_text_field.text = "Search";
             _live_search_text_field.height = _live_search_text_field.textHeight + 5;
             _live_search_text_field.width = Math.max(0.25 * width, 100);
-            _live_search_text_field.x = width - _live_search_text_field.width - 10;
+            _live_search_text_field.x = width - _live_search_text_field.width - _clear_button.width - 10;
             _live_search_text_field.y = 0.5 * (height - _live_search_text_field.height);
             
             //            _live_search_text_field.addEventListener(TextEvent.TEXT_INPUT, do_live_search);
