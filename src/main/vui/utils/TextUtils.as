@@ -30,6 +30,7 @@ package vui.utils
             return text_field;
         }
         
+        // TODO: ConfigUtils support here.
         public static function get_text_field(options:Object = null) : TextField
         {
             options ||= { }

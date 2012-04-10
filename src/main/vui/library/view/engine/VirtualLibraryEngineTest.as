@@ -3,14 +3,12 @@ package vui.library.view.engine
     import alternativa.engine3d.core.Object3D;
     import alternativa.engine3d.materials.FillMaterial;
     import alternativa.engine3d.primitives.GeoSphere;
-    import alternativa.engine3d.primitives.Plane;
     
     import flash.events.Event;
     
     public class VirtualLibraryEngineTest extends VirtualLibraryEngine
     {
         private var sphere:GeoSphere;
-        private var plane:Plane;
 
         
         public function VirtualLibraryEngineTest(options:Object)
@@ -34,13 +32,6 @@ package vui.library.view.engine
             _root_container.addChild(sphere);
         }
         
-        private function add_test_plane() : void
-        {
-            plane = new Plane(600, 600, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0x00FFFF));
-            
-            _root_container.addChild(plane);
-        }
-        
         private function rotate(object:Object3D, x:Number, y:Number, z:Number) : void
         {
             object.rotationX += x;
@@ -51,7 +42,6 @@ package vui.library.view.engine
         protected function test() : void
         {
             add_test_sphere();
-            add_test_plane();
             sphere.x = 50;
         }
 

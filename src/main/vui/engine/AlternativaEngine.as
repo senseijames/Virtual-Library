@@ -27,6 +27,8 @@ package vui.engine
         protected var _camera : Camera3D;
         protected var _root_container : Object3D;
         protected var _controller : SimpleObjectController;
+        // Delegates
+        protected var _root_container_buffer : Object3D;
         // State
         protected var _rectangle : Rectangle;
         // Test lights
@@ -39,7 +41,7 @@ package vui.engine
         screen through the 3d engine is bottom-most so as to be written to the GPU directly.
         */
         
-        public function AlternativaEngine(options:Object) 
+        public function AlternativaEngine (options:Object) 
         {
             // ...
 
@@ -48,7 +50,12 @@ package vui.engine
             (stage) ? init() : addEventListener(Event.ADDED_TO_STAGE, init);
         }
         
-        protected function init(event:Event = null) : void
+        public function render () : void
+        {
+            upload_buffer_to_GPU();
+        }
+
+        protected function init (event:Event = null) : void
         {
             if (event) {
                 removeEventListener(event.type, init);
@@ -58,14 +65,14 @@ package vui.engine
             init_lights();
         }
         
-        protected function init_engine() : void
+        protected function init_engine () : void
         {
             init_camera();
             init_controller();
             init_stage_3d();
         }
 
-        protected function init_lights() : void
+        protected function init_lights () : void
         {
             _directional_light = new DirectionalLight(0xFF0000);
             _directional_light.intensity = 10;
@@ -79,7 +86,7 @@ package vui.engine
             //            root_container.addChild(ambient_light);
         }
         
-        protected function init_camera() : void
+        protected function init_camera () : void
         {
             _camera = new Camera3D(0.01, 10000000000);
             _camera.x = -50;
@@ -89,37 +96,52 @@ package vui.engine
             _camera.view = new View(_rectangle.width, _rectangle.height, false, 0x404040, 0, 4);
             addChild(_camera.view);
             // Add the camera to the root container.
-            _root_container = new Object3D();
+            _root_container = new Object3D;
             _root_container.addChild(_camera);
+            // Add a container buffer to optimize uploading new resources to the GPU.
+            _root_container_buffer = new Object3D;
         }
         
-        protected function init_controller() : void
+        protected function init_controller () : void
         {
             // NOTE: The controller controls the speed & sensitivity of navigation!
             _controller = new SimpleObjectController(stage, _camera, 200);
             _controller.lookAtXYZ(0,0,0);
         }
         
-        protected function init_stage_3d() : void
+        protected function init_stage_3d () : void
         {
             _stage3D = stage.stage3Ds[0];
             _stage3D.addEventListener(Event.CONTEXT3D_CREATE, init_resource_upload);
             _stage3D.requestContext3D();
         }
         
-        protected function init_resource_upload(event:Event) : void 
+        protected function init_resource_upload (event:Event) : void 
         {
-            for each (var resource:Resource in _root_container.getResources(true)) {
+            upload_resources_to_GPU();
+            addEventListener(Event.ENTER_FRAME, on_ENTER_FRAME)
+        }
+
+        protected function upload_buffer_to_GPU () : void
+        {
+            upload_resources_to_GPU(_root_container_buffer);
+            
+            for (var i:int = _root_container_buffer.numChildren - 1; i >= 0; i--) {
+                _root_container.addChild(_root_container_buffer.getChildAt(i));
+            } 
+        }
+
+        protected function upload_resources_to_GPU (container:Object3D = null) : void
+        {
+            container ||= _root_container;
+            trace(AlternativaEngine, 'doing resource upload for', container);
+            for each (var resource:Resource in container.getResources(true)) {
                 resource.upload(_stage3D.context3D);
             }
-            addEventListener(Event.ENTER_FRAME, on_ENTER_FRAME)
         }
         
         protected function on_ENTER_FRAME(event:Event) : void 
         {
-//            rotate(box, 0.02, 0.02, 0.02);
-//            rotate(sphere, 0.03, 0.03, 0.03);
-            
             _controller.update();
             _camera.render(_stage3D);
         }
