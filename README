@@ -41,15 +41,15 @@ Output - program architecture
 II. 3D Engine Prototype
 Purpose - replace the console view with a sexy 3D Virtual Library.
 Also - touch up the user interface (file browser and live search)
-* 1. Create the room
-2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
+# 1. Create the room
+# 2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
 2. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
 3. Replace circles with file icons
-4. Create bookcase models, replace rectangles with bookcases
+# 4. Create bookcase models, replace rectangles with bookcases
 5. Click each file to select it, double click to open it (open menu instead?  No, just a prototype!)
-6. Live search effects
-7. Adding files to a virtual folder
-8. Viewing virtual folders
+# 6. Live search effects
+* 7. Adding files to a virtual folder
+* 8. Viewing virtual folders
 9. Final polish
 
 

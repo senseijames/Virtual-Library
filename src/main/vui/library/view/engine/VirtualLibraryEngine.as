@@ -137,7 +137,14 @@ package vui.library.view.engine
         }
         
 /*
-    Left off here - need to be able to drag/drop all files that are selected, and then add them to the bookcase upon which they are dropped.        
+        CRUD:
+        1. Add files to virtual folder (future feature, holding control key moves them instead?)
+        2. Remove file from a virtual folder (rely on menu??)
+    Left off here - need to be able to drag/drop all files that are selected, and then add them to the bookcase upon which they are dropped.    
+        
+        // Add moust down listener to book
+        // activates mouse move listener that moves all the selected files
+        // on mouse up, see if mouse is over a bookcase (if yes, move them to that Virtual Folder, else I'ld be 
 */
         protected function add_file_to_folder_CLICK (event:MouseEvent) : void
         {
