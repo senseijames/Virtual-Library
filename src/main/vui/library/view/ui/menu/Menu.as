@@ -140,7 +140,7 @@ package vui.library.view.ui.menu
             var title_text_field:InteractiveTextField = new InteractiveTextField();
             title_text_field.content = folder;
             title_text_field.text = folder.title;
-            title_text_field.addEventListener(MouseEvent.CLICK, virtual_folder_CLICKED);
+            title_text_field.addEventListener(MouseEvent.CLICK, virtual_folder_CLICK);
             folder_sprite.addChild(title_text_field);
 
             var virtual_folder_file:InteractiveTextField;
@@ -152,7 +152,7 @@ package vui.library.view.ui.menu
                 virtual_folder_file.text = folder.contents[i].name;
                 virtual_folder_file.y = current_y;
                 
-                virtual_folder_file.addEventListener(MouseEvent.CLICK, virtual_folder_file_CLICKED);
+                virtual_folder_file.addEventListener(MouseEvent.CLICK, virtual_folder_file_CLICK);
                 
                 folder_sprite.addChild(virtual_folder_file);
                 
@@ -181,27 +181,12 @@ package vui.library.view.ui.menu
             _error_text_field.visible = true;
         }
         
-        // Deprecated
-//        protected function get_virtual_folder_text_field(folder:VirtualFolder) : TextField
-//        {
-//            var text_field:TextField = TextUtils.get_text_field();
-//            trace(text_field, folder);
-//            text_field.text = folder.title + '\n' + '* * * * * * * * * *\n';
-//            text_field.width = 100;
-//            for (var i:uint = 0; i < folder.contents.length; i++)
-//            {
-//                text_field.appendText(folder.contents[i].name + '\n');
-//            }
-//            
-//            return text_field;
-//        }
-        
         
         /* * * * * * * * * * * * * * * * * * *
         * Folder/file select event handlers
         * * * * * * * * * * * * * * * * * * */
         
-        protected function virtual_folder_CLICKED (event:MouseEvent) : void
+        protected function virtual_folder_CLICK (event:MouseEvent) : void
         {
             trace('[Menu] Virtual folder clicked and current folder is', event.currentTarget.content.title);
             if (_selected_virtual_folder == event.currentTarget.content)
@@ -221,7 +206,7 @@ package vui.library.view.ui.menu
             trace('Virtual folder now', _selected_virtual_folder);
         }
         
-        protected function virtual_folder_file_CLICKED (event:MouseEvent) : void
+        protected function virtual_folder_file_CLICK (event:MouseEvent) : void
         {
             trace('[Menu] Virtual file clicked and current file is', event.currentTarget.content.name);
             var file_index:int = _selected_files.indexOf(event.currentTarget.content);
@@ -300,6 +285,7 @@ package vui.library.view.ui.menu
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
         }
         
+        // TODO: Bug - should not have to select the folder in order to remove files from it.
         protected function remove_file_from_folder_CLICK (event:MouseEvent) : void
         {
             if (!_selected_virtual_folder) {

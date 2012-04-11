@@ -13,11 +13,14 @@ package vui.library.view.ui
     
     public class Chrome extends Sprite
     {
+        // Event types
         public static const OPEN_FILE_BROWSER_EVENT : String = "open_file_browser";
+        public static const VIEW_VIRTUAL_FOLDERS_EVENT : String = "view_virtual_folders";
         public static const CLEAR_LIBRARY_EVENT : String = "clear_library";
         public static const TOGGLE_MENU_EVENT : String = "toggle_menu";
-        
+        // UI
         protected var _open_file_browser_button : Sprite;
+        protected var _view_virtual_folders_button : Sprite;
         protected var _live_search_text_field : TextField;
         protected var _clear_button : Sprite;
         protected var _toggle_menu_button : Sprite;
@@ -26,6 +29,7 @@ package vui.library.view.ui
         {
             // color:uint = Math.random() * 0xffffff, init_button:Boolean = true, text_color:uint = 0x000000, autosize
             _open_file_browser_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'BROWSE', { color: 0xFF0000, init: false });
+            _view_virtual_folders_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'VIEW', { color: 0x0000FF, init: false });
             _clear_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'CLEAR', { color: 0xFF0000, init: false });
             _toggle_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'MENU', { color: 0x00FF00, init: false });
             _live_search_text_field = TextUtils.get_input_text_field();
@@ -50,18 +54,21 @@ package vui.library.view.ui
             // Init the buttons.
             var bevel_filter:BevelFilter = new BevelFilter();
             ButtonUtils.init_button(_open_file_browser_button, [ bevel_filter ], open_file_browser_CLICK);
+            ButtonUtils.init_button(_view_virtual_folders_button, [ bevel_filter ], open_virtual_folders_CLICK);
             ButtonUtils.init_button(_clear_button, [ bevel_filter ], clear_library_CLICK);
             ButtonUtils.init_button(_toggle_menu_button, [ bevel_filter ], toggle_menu_CLICK);
 
             init_live_search_text_field();
             
             _clear_button.x = width - _clear_button.width;
-            _toggle_menu_button.x = _open_file_browser_button.x + _open_file_browser_button.width + 10;
-            _toggle_menu_button.y = _open_file_browser_button.y;
+            _view_virtual_folders_button.x = _open_file_browser_button.x + _open_file_browser_button.width + 10;
+            _toggle_menu_button.x = _view_virtual_folders_button.x + _view_virtual_folders_button.width + 10;
+            _toggle_menu_button.y = _view_virtual_folders_button.y = _open_file_browser_button.y;
 
             addChild(_clear_button);
             addChild(_open_file_browser_button);
             addChild(_live_search_text_field);
+            addChild(_view_virtual_folders_button);
             addChild(_toggle_menu_button);
             
             addEventListeners();
@@ -93,24 +100,25 @@ package vui.library.view.ui
 
         // This method is just to satisfy the compiler; the event will propagate to the Controller through
         // the event flow anyway.
-        protected function do_live_search(event:Event) : void
+        protected function do_live_search (event:Event) : void
         {
 //            dispatchEvent(event);
         }
         
-        protected function open_file_browser_CLICK(e:MouseEvent) : void
+        protected function open_file_browser_CLICK (e:MouseEvent) : void
         {
             dispatchEvent(new Event(OPEN_FILE_BROWSER_EVENT, true));
         }
-        
-        protected function clear_library_CLICK(e:MouseEvent) : void
+        protected function open_virtual_folders_CLICK (e:MouseEvent) : void
+        {
+            dispatchEvent(new Event(VIEW_VIRTUAL_FOLDERS_EVENT));
+        }
+        protected function clear_library_CLICK (e:MouseEvent) : void
         {
             dispatchEvent(new Event(CLEAR_LIBRARY_EVENT));
         }
-        
-        protected function toggle_menu_CLICK(e:MouseEvent) : void
+        protected function toggle_menu_CLICK (e:MouseEvent) : void
         {
-trace('\n[Chrome] Toggle menu clicked!\n');            
             dispatchEvent(new Event(TOGGLE_MENU_EVENT));
         }
 

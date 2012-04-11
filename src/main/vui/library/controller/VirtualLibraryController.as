@@ -79,6 +79,7 @@ package vui.library.controller
             
             _chrome.init({ height: CHROME_HEIGHT, width: container.stage.stageWidth, color: 0x00FF00, alpha: 0.5 });
             _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, file_browser_OPEN);
+            _chrome.addEventListener(Chrome.VIEW_VIRTUAL_FOLDERS_EVENT, virtual_folders_VIEW);
 //            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE);
             _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
             _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
@@ -111,6 +112,13 @@ package vui.library.controller
         {
             _engine = new VirtualLibraryEngine({ width: _container.stage.stageWidth, height: _container.stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
 //            _engine = new VirtualLibraryEngineTest({ width: _container.stage.stageWidth, height: _container.stage.stageHeight - VirtualLibraryController.CHROME_HEIGHT });
+            
+            _engine.addEventListener(VirtualFolderEvent.OPEN_FOLDER, virtual_folder_OPEN);
+//            _engine.addEventListener(VirtualFolderEvent.CREATE_FOLDER, virtual_folder_CREATE);
+            _engine.addEventListener(VirtualFolderEvent.DELETE_FOLDER, virtual_folder_DELETE);
+//            _engine.addEventListener(VirtualFolderEvent.ADD_FILE, virtual_folder_file_ADD);
+//            _engine.addEventListener(VirtualFolderEvent.REMOVE_FILE, virtual_folder_file_REMOVE);
+
             _container.addChildAt(_engine, 0);
         }
 
@@ -190,7 +198,7 @@ package vui.library.controller
         protected function add_directory_to_view (file_directory:FileDirectory, depth:uint) : void
         {
             _view.add_directory(file_directory, depth);
-            _engine.add_directory(file_directory, depth);
+            _engine.add_directory(file_directory); //, depth);
         }
 
         
@@ -298,6 +306,17 @@ package vui.library.controller
         * Menu - virtual folder CRUD event handling
         * * * * * * * * * * * * * * * * * * * * * * */
 
+        protected function virtual_folders_VIEW (event:Event) : void
+        {
+            trace('view virtual folder event caught in controller!!');
+            
+            synch_virtual_folders();
+            
+            // xxx
+            /*
+                add_directories_to_view(_directory_trees[_directory_trees.length - 1], 0);
+            */
+        }
         protected function virtual_folder_OPEN (event:VirtualFolderEvent) : void
         {
             trace('[Controller] Virtual folder open event caught!', event.type);
@@ -356,7 +375,10 @@ package vui.library.controller
         
         protected function synch_virtual_folders () : void
         {
-            _menu.virtual_folders = _virtual_folders = VirtualFolderMapper.folders;
+            _engine.virtual_folders = _virtual_folders = VirtualFolderMapper.folders;
+            if (_menu) _menu.virtual_folders = _virtual_folders;
+            
+            _engine.render();
         }
 
         
@@ -366,8 +388,8 @@ package vui.library.controller
         
         protected function library_CLEAR (event:Event) : void
         {
-            // TODOE:
             _view.clear();
+            _engine.clear();
         }
         
         

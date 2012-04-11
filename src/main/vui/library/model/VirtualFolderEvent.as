@@ -9,6 +9,7 @@ package vui.library.model
     {
         // Event types.
         public static const OPEN_FOLDER : String = "open_virtual_folder";
+//        public static const OPEN_FILE : String = "open_file";
         public static const CREATE_FOLDER : String = "create_virtual_folder";
         public static const DELETE_FOLDER : String = "delete_virtual_folder";
         public static const ADD_FILE : String = "add_file";
