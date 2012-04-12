@@ -7,7 +7,10 @@ package vui.library.view.engine
     import alternativa.engine3d.primitives.Plane;
     
     import flash.events.Event;
+    import flash.events.MouseEvent;
     import flash.filesystem.File;
+    import flash.geom.Point;
+    import flash.geom.Vector3D;
     
     import vui.engine.AlternativaEngine;
     import vui.library.model.FileDirectory;
@@ -27,7 +30,7 @@ package vui.library.view.engine
         //State
         protected var _selected_virtual_folder : VirtualFolder;
         protected var _selected_bookcase : Bookcase;
-        protected var _selected_files : Vector.<File>;
+        protected var _selected_files : Vector.<Book>;
 
         
         // TODO: add free navigation (v2 feature?)
@@ -38,7 +41,7 @@ package vui.library.view.engine
             _file_system_folders = new Vector.<FileDirectory>;
             _bookcases = new Vector.<Bookcase>;
             _virtual_folders = new Vector.<VirtualFolder>;
-            _selected_files = new Vector.<File>;
+            _selected_files = new Vector.<Book>;
         }
         
         /* * * * * * * * * * *
@@ -67,6 +70,7 @@ package vui.library.view.engine
 //            addEventListener(VirtualFolderEvent.
         }
         
+        
         /* * * * * * * * * * * * * * *
         * Virtual Folder CRUD
         * * * * * * * * * * * * * * */
@@ -94,21 +98,25 @@ package vui.library.view.engine
         protected function book_CLICK (event:MouseEvent3D) : void
         {
             trace('[VirtualLibraryEngine] Virtual file clicked and current file is', event.currentTarget.content.name);
-            var file_index:int = _selected_files.indexOf(event.currentTarget.content);
+            toggle_book_select(Book(event.currentTarget));
+
+            // Stop the event from reaching the bookcase incorrectly.
+            event.stopImmediatePropagation();
+        }
+        
+        protected function toggle_book_select (book:Book) : void
+        {
+            var file_index:int = _selected_files.indexOf(book);
             if (file_index != -1)
             {
                 _selected_files.splice(file_index, 1);
-                event.currentTarget.deselect();
+                book.deselect();
             }
             else 
             {
-                _selected_files.push(event.currentTarget.content);
-                event.currentTarget.select();
+                _selected_files.push(book);
+                book.select();
             }
-            
-            // Stop the event from reaching the bookcase incorrectly.
-            event.stopImmediatePropagation();
-            
             trace('Files are now', _selected_files);
         }
         
@@ -125,7 +133,7 @@ package vui.library.view.engine
         
 // xxxx        
         // TODO: Bug - should not have to select the folder in order to remove files from it.
-        protected function remove_file_from_folder_CLICK (event:MouseEvent) : void
+        protected function remove_file_from_folder_CLICK (event:MouseEvent3D) : void
         {
             if (!_selected_virtual_folder) {
                 return;
@@ -142,24 +150,102 @@ package vui.library.view.engine
         2. Remove file from a virtual folder (rely on menu??)
     Left off here - need to be able to drag/drop all files that are selected, and then add them to the bookcase upon which they are dropped.    
         
-        // Add moust down listener to book
+        // Add mouse down listener to book
         // activates mouse move listener that moves all the selected files
         // on mouse up, see if mouse is over a bookcase (if yes, move them to that Virtual Folder, else I'ld be 
 */
-        protected function add_file_to_folder_CLICK (event:MouseEvent) : void
+//        protected function add_files_to_folder_DROP (event:MouseEvent3D) : void
+//        {
+//// How to determine whether the mouse is over the bookcase???            
+//            if (!_selected_virtual_folder) {
+//                return;
+//            }
+//            
+//            trace('\n[Menu] Add file to folder clicked!!\n');
+//            
+//            dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
+//        }
+        
+        
+        
+        
+        /* * * * * * * * * * * * * *
+        * Drag and drop support
+        * * * * * * * * * * * * * */
+        
+        protected var _prev_mouse_x : Number;
+        protected var _prev_mouse_y : Number;
+        protected function book_MOUSE_DOWN (event:MouseEvent3D) : void
         {
-            if (!_selected_virtual_folder) {
+            var book:Book = Book(event.currentTarget);
+            toggle_book_select(book);
+            var globalCoords:Vector3D = book.localToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
+            _prev_mouse_x = globalCoords.x;
+            _prev_mouse_y = globalCoords.y;
+            trace('\nmouse down', event.localX, event.localY);
+            trace('global', globalCoords.x, globalCoords.y);
+            stage.addEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
+            stage.addEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
+        }
+        protected function book_MOUSE_UP (event:MouseEvent) : void
+        {
+trace('mouse up');
+            var target_folder:VirtualFolder;
+            for (var i:uint = 0; i < _bookcases.length; i++)
+            {
+                
+// TODO:        
+/*
+                Left off here here.
+                Major roadblocks here - dragging stuff, and detecting a collision with the bookcase.  Must be a way.  Google.
+                
+                Definitely need to address the 'add ish to menu doubly draws stuff' bug.
+                
+                */
+                // If there is a collision with the target folder.
+                break;
+            }
+            
+            if (!target_folder) {
                 return;
             }
             
-            trace('\n[Menu] Add file to folder clicked!!\n');
+            // TODO: Add to virtual folder.        
+            dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: target_folder.title, target_files: _selected_files }));
             
-            dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
+            stage.removeEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
+        }
+        protected function book_MOUSE_MOVE (event:MouseEvent) : void
+        {
+            //            trace(event.localX, event.localY, event.stageX, event.stageY);
+            /*
+            
+            Left off here - get the deltas right, then continue with CRUD.  Once you have that, it's polish all the way!  Integrating webcam is a nice to have.
+            
+            */
+            trace('Deltas:', event.localX - _prev_mouse_x, event.localY - _prev_mouse_y, 'Local:', event.localX, event.localY);            
+            
+            if (Math.abs(event.localX - _prev_mouse_x) > 100) {
+                _prev_mouse_x = event.localX;
+                _prev_mouse_y = event.localY;
+                trace('returning');                
+                return;
+            }
+            for (var i:uint = 0; i < _selected_files.length; i++)
+            {
+                //                _selected_files[i].x += event.localX - _prev_mouse_x;
+                //                _selected_files[i].y += event.localY - _prev_mouse_y;
+                _selected_files[i].x = event.localX - _selected_files[i].parent.x;
+                _selected_files[i].y = event.localY - _selected_files[i].parent.y;
+            }
+            
+            _prev_mouse_x = event.localX;
+            _prev_mouse_y = event.localY;
         }
         
         
-        
-        
+
         
         
         
@@ -186,7 +272,7 @@ package vui.library.view.engine
                 display_virtual_folder(_virtual_folders[i]);
             }
         }
-
+       
         protected function display_virtual_folder (virtual_folder:VirtualFolder) : void
         {
             var bookcase:Bookcase = new Bookcase(virtual_folder);
@@ -196,6 +282,8 @@ package vui.library.view.engine
             {
                 current_book = new Book(virtual_folder.contents[i], _stage3D);
                 current_book.addEventListener(MouseEvent3D.CLICK, book_CLICK);
+                // TODO: Re-attempt drag and drop support.
+//                current_book.addEventListener(MouseEvent3D.MOUSE_DOWN, book_MOUSE_DOWN);
                 bookcase.add_book(current_book);
             }
             

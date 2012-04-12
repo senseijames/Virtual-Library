@@ -26,7 +26,7 @@ package vui.engine
         protected var _stage3D : Stage3D;
         protected var _camera : Camera3D;
         protected var _root_container : Object3D;   // Persistent content.
-        protected var _controller : SimpleObjectController;
+        protected var _camera_controller : SimpleObjectController;
         // Delegates
         protected var _content_container : Object3D; // Temporary content (can be 'cleared')
         protected var _content_container_buffer : Object3D; // Optimized upload of content to GPU
@@ -73,7 +73,7 @@ package vui.engine
         
         public function set camera_sight (point : Vector3D) : void
         {
-            _controller.lookAt(point);
+            _camera_controller.lookAt(point);
         }
         
         public function clear () : void
@@ -100,7 +100,7 @@ package vui.engine
         protected function init_engine () : void
         {
             init_camera();
-            init_controller();
+            init_camera_controller();
             init_stage_3d();
         }
 
@@ -136,11 +136,14 @@ package vui.engine
             _content_container_buffer = new Object3D;
         }
         
-        protected function init_controller () : void
+        protected function init_camera_controller () : void
         {
             // NOTE: The controller controls the speed & sensitivity of navigation!
-            _controller = new SimpleObjectController(stage, _camera, 200);
-            _controller.lookAtXYZ(0,0,0);
+            _camera_controller = new SimpleObjectController(stage, _camera, 200);
+            // TODO: What do these do?
+            // _camera_controller.mouseSensitivity = 0;
+            // _camera_controller.unbindAll();
+            _camera_controller.lookAtXYZ(0,0,0);
         }
         
         protected function init_stage_3d () : void
@@ -186,7 +189,7 @@ package vui.engine
 
         protected function on_ENTER_FRAME(event:Event) : void 
         {
-            _controller.update();
+            _camera_controller.update();
             _camera.render(_stage3D);
         }
         
