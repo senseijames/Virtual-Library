@@ -1,6 +1,7 @@
 package vui.library.view.engine
 {
     import alternativa.engine3d.core.Object3D;
+    import alternativa.engine3d.core.RayIntersectionData;
     import alternativa.engine3d.core.events.MouseEvent3D;
     import alternativa.engine3d.materials.FillMaterial;
     import alternativa.engine3d.primitives.GeoSphere;
@@ -13,6 +14,7 @@ package vui.library.view.engine
     import flash.geom.Vector3D;
     
     import vui.engine.AlternativaEngine;
+    import vui.engine.utils.GeomUtils;
     import vui.library.model.FileDirectory;
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
@@ -56,6 +58,10 @@ package vui.library.view.engine
             add_floor();
             
             addEventListeners();
+            
+//            _camera_controller.startMouseLook();
+            // _camera_controller.stopMouseLook();
+
 //            upload_resources_to_GPU(_root_container);
         }
         
@@ -166,42 +172,55 @@ package vui.library.view.engine
 //            dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: _selected_virtual_folder.title, target_files: _selected_files }));
 //        }
         
-        
-        
+// xxx        
         
         /* * * * * * * * * * * * * *
         * Drag and drop support
         * * * * * * * * * * * * * */
         
-        protected var _prev_mouse_x : Number;
-        protected var _prev_mouse_y : Number;
+//        protected var _prev_mouse_x : Number;
+//        protected var _prev_mouse_y : Number;
+        protected var _drag_start_point : Vector3D;
+        
         protected function book_MOUSE_DOWN (event:MouseEvent3D) : void
         {
+trace('mouse down...');            
             var book:Book = Book(event.currentTarget);
             toggle_book_select(book);
-            var globalCoords:Vector3D = book.localToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
-            _prev_mouse_x = globalCoords.x;
-            _prev_mouse_y = globalCoords.y;
-            trace('\nmouse down', event.localX, event.localY);
-            trace('global', globalCoords.x, globalCoords.y);
+//            var globalCoords:Vector3D = book.localToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
+//            _prev_mouse_x = globalCoords.x;
+//            _prev_mouse_y = globalCoords.y;
+//            trace('\nmouse down', event.localX, event.localY);
+//            trace('global', globalCoords.x, globalCoords.y);
+            
+            _camera_controller.mouseSensitivity = 0;
+            
+//            var tempObject:Object3D = event.target as Object3D;
+            // No longer supported!!  Fuunk
+//            var data:RayIntersectionData = book.intersectRay(event.localOrigin, event.localDirection);
+// TODO: Will need some doctoring here...            
+var data:RayIntersectionData = book.intersectRay(new Vector3D(event.localX, event.localY, event.localZ), new Vector3D(1, 1, 1));
+            _drag_start_point = data.point;
+            
             stage.addEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
             stage.addEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
         }
         protected function book_MOUSE_UP (event:MouseEvent) : void
         {
+            stage.removeEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
+            stage.removeEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
 trace('mouse up');
+            _camera_controller.mouseSensitivity = 0.5;
+return;
             var target_folder:VirtualFolder;
             for (var i:uint = 0; i < _bookcases.length; i++)
             {
-                
-// TODO:        
 /*
                 Left off here here.
                 Major roadblocks here - dragging stuff, and detecting a collision with the bookcase.  Must be a way.  Google.
                 
                 Definitely need to address the 'add ish to menu doubly draws stuff' bug.
-                
-                */
+*/
                 // If there is a collision with the target folder.
                 break;
             }
@@ -213,36 +232,49 @@ trace('mouse up');
             // TODO: Add to virtual folder.        
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: target_folder.title, target_files: _selected_files }));
             
-            stage.removeEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
-            stage.removeEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
         }
+        // Move parallel to the drag target distance is moved parallel to CENTER of cameraView, the distance between the Object3D
         protected function book_MOUSE_MOVE (event:MouseEvent) : void
         {
+            var origin:Vector3D = new Vector3D;
+            var directionA:Vector3D = new Vector3D;
+            var directionB:Vector3D = new Vector3D;
+            var direction:Vector3D = new Vector3D;
+trace('Moving:', mouseX, mouseY);            
+            _camera.calculateRay(origin, directionA, _camera.view.width/2, _camera.view.height/2);
+            _camera.calculateRay(origin, directionB, mouseX, mouseY);
+            var pos:Vector3D = GeomUtils.get_intersection_point(origin, directionB, new Vector3D(0, _drag_start_point.y, 0), new Vector3D(0, 1, 0));
+            
+            for (var i:uint = 0; i < _selected_files.length; i++)
+            {
+                _selected_files[i].x = pos.x - _drag_start_point.x;
+                _selected_files[i].y = pos.y - _drag_start_point.y;
+                _selected_files[i].z = pos.z - _drag_start_point.z;
+            }
+            
+            
+            
             //            trace(event.localX, event.localY, event.stageX, event.stageY);
             /*
             
             Left off here - get the deltas right, then continue with CRUD.  Once you have that, it's polish all the way!  Integrating webcam is a nice to have.
             
             */
-            trace('Deltas:', event.localX - _prev_mouse_x, event.localY - _prev_mouse_y, 'Local:', event.localX, event.localY);            
             
-            if (Math.abs(event.localX - _prev_mouse_x) > 100) {
-                _prev_mouse_x = event.localX;
-                _prev_mouse_y = event.localY;
-                trace('returning');                
-                return;
-            }
-            for (var i:uint = 0; i < _selected_files.length; i++)
-            {
-                //                _selected_files[i].x += event.localX - _prev_mouse_x;
-                //                _selected_files[i].y += event.localY - _prev_mouse_y;
-                _selected_files[i].x = event.localX - _selected_files[i].parent.x;
-                _selected_files[i].y = event.localY - _selected_files[i].parent.y;
-            }
-            
-            _prev_mouse_x = event.localX;
-            _prev_mouse_y = event.localY;
+//            if (Math.abs(event.localX - _prev_mouse_x) > 100) {
+//                _prev_mouse_x = event.localX;
+//                _prev_mouse_y = event.localY;
+//                trace('returning');                
+//                return;
+//            }
+
+//            
+//            _prev_mouse_x = event.localX;
+//            _prev_mouse_y = event.localY;
         }
+        
+        
+        
         
         
 
@@ -283,7 +315,7 @@ trace('mouse up');
                 current_book = new Book(virtual_folder.contents[i], _stage3D);
                 current_book.addEventListener(MouseEvent3D.CLICK, book_CLICK);
                 // TODO: Re-attempt drag and drop support.
-//                current_book.addEventListener(MouseEvent3D.MOUSE_DOWN, book_MOUSE_DOWN);
+                current_book.addEventListener(MouseEvent3D.MOUSE_DOWN, book_MOUSE_DOWN);
                 bookcase.add_book(current_book);
             }
             

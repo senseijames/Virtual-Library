@@ -6,6 +6,7 @@ package vui.library.controller
     import flash.events.IOErrorEvent;
     import flash.filesystem.File;
     import flash.media.Video;
+    import flash.utils.setTimeout;
     
     import vui.library.mapper.FileSystemMapper;
     import vui.library.mapper.VirtualFolderMapper;
@@ -14,7 +15,6 @@ package vui.library.controller
     import vui.library.model.VirtualFolderEvent;
     import vui.library.view.console.ConsoleOutput;
     import vui.library.view.engine.VirtualLibraryEngine;
-//    import vui.library.view.engine.VirtualLibraryEngineTest;
     import vui.library.view.ui.Chrome;
     import vui.library.view.ui.menu.Menu;
     import vui.ui.WebCamera;
@@ -101,6 +101,10 @@ package vui.library.controller
             if (options.use_webcam) {
                 init_webcam();
             }
+            
+// TODO: Remove!  For testing only.
+//            synch_virtual_folders();
+//setTimeout(synch_virtual_folders, 1000);
         }
 
         
