@@ -12,8 +12,10 @@ package vui.library.view.engine.models
     import flash.display.Stage3D;
     import flash.events.Event;
     import flash.events.MouseEvent;
+    import flash.events.TimerEvent;
     import flash.filesystem.File;
     import flash.text.TextField;
+    import flash.utils.Timer;
     
     import vui.engine.models.Object3DModel;
     import vui.utils.FileUtils;
@@ -32,6 +34,8 @@ package vui.library.view.engine.models
         protected var _file : File;
         protected var _icon : Bitmap;
         protected var _cube : Box;
+        // TODO: Externalize this here (to engine) as an optimization/encapsulation.
+        protected var _rotation_timer:Timer;
         
         
         public function Book (file:File, stage3D:Stage3D)
@@ -50,6 +54,9 @@ package vui.library.view.engine.models
             addEventListeners();
             
             addChild(_cube);
+            
+            _rotation_timer = new Timer(10);
+            _rotation_timer.addEventListener(TimerEvent.TIMER, rotate);
         }
         
         protected function addEventListeners () : void
@@ -93,13 +100,22 @@ package vui.library.view.engine.models
         
         public function select () : void
         {
-            trace('book selected!');
+            _rotation_timer.start();
+//            stage.addEventListener(Event.ENTER_FRAME, rotate);
         }
         public function deselect () : void
         {
-            trace('book deselected');
+            _rotation_timer.stop();
+//            stage.removeEventListener(Event.ENTER_FRAME, rotate);
         }
 
+        protected function rotate (event:Event) : void
+        {
+//            _cube.rotationX += 0.01;
+            _cube.rotationY += 0.01;
+//            _cube.rotationZ += 0.01;
+        }
+        
         public function get content () : File
         {
             return _file;

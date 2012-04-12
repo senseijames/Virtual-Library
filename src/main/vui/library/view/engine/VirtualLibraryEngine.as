@@ -8,12 +8,15 @@ package vui.library.view.engine
     import alternativa.engine3d.primitives.Plane;
     
     import flash.events.Event;
+    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.filesystem.File;
     import flash.geom.Point;
     import flash.geom.Vector3D;
+    import flash.ui.Keyboard;
     
     import vui.engine.AlternativaEngine;
+    import vui.engine.utils.CollisionResult;
     import vui.engine.utils.GeomUtils;
     import vui.library.model.FileDirectory;
     import vui.library.model.VirtualFolder;
@@ -23,6 +26,12 @@ package vui.library.view.engine
     
     public class VirtualLibraryEngine extends AlternativaEngine
     {
+        // TODO: Consider externalizing as config options.
+        public static const FLOOR_WIDTH : uint = 600;
+        public static const FLOOR_DEPTH : uint = 600;
+        public static const FILE_SYSTEM_FOLDER_COLOR : uint = 0x0000FF;
+        public static const VIRTUAL_FOLDER_COLOR : uint = 0xFF0000;
+        
         // Entities
         protected var _floor : Plane;
         // TODO: Will want to distinguish between file system folders and virtual folders somehow...
@@ -46,6 +55,21 @@ package vui.library.view.engine
             _selected_files = new Vector.<Book>;
         }
         
+        public function get selected_files () : Vector.<File>
+        {
+            var files:Vector.<File> = new Vector.<File>;
+            for (var i:uint = 0; i < _selected_files.length; i++) {
+                files.push(_selected_files[i].content);
+            }
+            return files; 
+        }
+        
+        public function get virtual_folders () : Vector.<VirtualFolder>
+        {
+            // TODO: Consider concat() here.  The protection is probably not worth the complexity.
+            return _virtual_folders;
+        }
+        
         /* * * * * * * * * * *
         * Initialization
         * * * * * * * * * * */
@@ -58,22 +82,31 @@ package vui.library.view.engine
             add_floor();
             
             addEventListeners();
-            
-//            _camera_controller.startMouseLook();
-            // _camera_controller.stopMouseLook();
 
 //            upload_resources_to_GPU(_root_container);
         }
         
         protected function add_floor () : void
         {
-            _floor = new Plane(600, 600, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0x00FFFF));
+            _floor = new Plane(FLOOR_WIDTH, FLOOR_DEPTH, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0x00FFFF));
             _root_container.addChild(_floor);
         }
         
         protected function addEventListeners () : void
         {
+            stage.addEventListener(KeyboardEvent.KEY_DOWN, key_DOWN);
 //            addEventListener(VirtualFolderEvent.
+        }
+        
+        protected function key_DOWN (event:KeyboardEvent) : void
+        {
+            switch (event.keyCode)
+            {
+                case Keyboard.X:
+                    toggle_mouse_look();
+                default:
+                    break;
+            }
         }
         
         
@@ -133,11 +166,6 @@ package vui.library.view.engine
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.OPEN_FOLDER, { target_folder: event.currentTarget.content.title }));            
         }
 
-        
-        
-        
-        
-// xxxx        
         // TODO: Bug - should not have to select the folder in order to remove files from it.
         protected function remove_file_from_folder_CLICK (event:MouseEvent3D) : void
         {
@@ -174,6 +202,12 @@ package vui.library.view.engine
         
 // xxx        
         
+        
+        
+        
+        
+        
+        
         /* * * * * * * * * * * * * *
         * Drag and drop support
         * * * * * * * * * * * * * */
@@ -181,38 +215,70 @@ package vui.library.view.engine
 //        protected var _prev_mouse_x : Number;
 //        protected var _prev_mouse_y : Number;
         protected var _drag_start_point : Vector3D;
+
+        
+        
+        protected function get_drag_start_point (object:Object3D, event:MouseEvent3D) : Vector3D
+        {
+//            return new Vector3D(event.localX, event.localY, event.localZ);
+            return new Vector3D(object.x, object.y, object.z);
+            //            var globalCoords:Vector3D = book.localToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
+            //            _prev_mouse_x = globalCoords.x;
+            //            _prev_mouse_y = globalCoords.y;
+            //            var tempObject:Object3D = event.target as Object3D;
+            // No longer supported!!  Fuunk
+            //            var data:RayIntersectionData = book.intersectRay(event.localOrigin, event.localDirection);
+            
+            //camera has calculateRay method
+            //which calculates center and direction of ray
+            //            _camera.calculateRay(localOrigin, localDirection, stage.mouseX, stage.mouseY);
+            var local_origin:Vector3D = new Vector3D(event.localX, event.localY, event.localZ);
+            //var local_origin:Vector3D = new Vector3D(book.x, book.y, book.z); //_camera.view.x, _camera.view.y, 1);
+            
+            var local_direction:Vector3D = new Vector3D; // = book.globalToLocal(global_direction);
+            trace('before', local_direction);
+            _camera.calculateRay(local_origin, local_direction, _camera.view.x, _camera.view.y); //stage.mouseX, stage.mouseY);
+            trace('after', local_direction);
+            var data:RayIntersectionData = book.intersectRay(local_origin, local_direction);
+            if (!data) {
+                trace('no ray intersection data!!!!');
+                return null;   
+            }
+            else data.point;
+            //_drag_start_point = data.point;
+            
+            //            _drag_start_point = new Vector3D(event.localX, event.localY, event.localZ); //data.point;
+            //            var point:Point = local3DToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
+            // new Vector3D(data.point.xpoint.x, point.y, 1);
+        }
+
+        
+        
         
         protected function book_MOUSE_DOWN (event:MouseEvent3D) : void
         {
+            // Keep the event from triggering a bookcase select.
+            event.stopImmediatePropagation();
+            
 trace('mouse down...');            
             var book:Book = Book(event.currentTarget);
             toggle_book_select(book);
-//            var globalCoords:Vector3D = book.localToGlobal(new Vector3D(event.localX, event.localY, event.localZ));
-//            _prev_mouse_x = globalCoords.x;
-//            _prev_mouse_y = globalCoords.y;
-//            trace('\nmouse down', event.localX, event.localY);
-//            trace('global', globalCoords.x, globalCoords.y);
-            
-            _camera_controller.mouseSensitivity = 0;
-            
-//            var tempObject:Object3D = event.target as Object3D;
-            // No longer supported!!  Fuunk
-//            var data:RayIntersectionData = book.intersectRay(event.localOrigin, event.localDirection);
-// TODO: Will need some doctoring here...            
-var data:RayIntersectionData = book.intersectRay(new Vector3D(event.localX, event.localY, event.localZ), new Vector3D(1, 1, 1));
-            _drag_start_point = data.point;
-            
+// TODO: Re-enable this when you get mouse move working...            
+return;         
+            _drag_start_point = get_drag_start_point(book, event); 
+
             stage.addEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
             stage.addEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
         }
+        
         protected function book_MOUSE_UP (event:MouseEvent) : void
         {
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, book_MOUSE_MOVE);
             stage.removeEventListener(MouseEvent.MOUSE_UP, book_MOUSE_UP);
 trace('mouse up');
-            _camera_controller.mouseSensitivity = 0.5;
-return;
+//            _camera_controller.mouseSensitivity = 0.5;
             var target_folder:VirtualFolder;
+return;            
             for (var i:uint = 0; i < _bookcases.length; i++)
             {
 /*
@@ -233,6 +299,9 @@ return;
             dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.ADD_FILE, { target_folder: target_folder.title, target_files: _selected_files }));
             
         }
+        
+protected var previous_position : Vector3D;
+        
         // Move parallel to the drag target distance is moved parallel to CENTER of cameraView, the distance between the Object3D
         protected function book_MOUSE_MOVE (event:MouseEvent) : void
         {
@@ -240,7 +309,7 @@ return;
             var directionA:Vector3D = new Vector3D;
             var directionB:Vector3D = new Vector3D;
             var direction:Vector3D = new Vector3D;
-trace('Moving:', mouseX, mouseY);            
+//trace('Moving:', mouseX, mouseY,'and', _selected_files.length, 'were selected');            
             _camera.calculateRay(origin, directionA, _camera.view.width/2, _camera.view.height/2);
             _camera.calculateRay(origin, directionB, mouseX, mouseY);
             var pos:Vector3D = GeomUtils.get_intersection_point(origin, directionB, new Vector3D(0, _drag_start_point.y, 0), new Vector3D(0, 1, 0));
@@ -277,6 +346,11 @@ trace('Moving:', mouseX, mouseY);
         
         
         
+        
+        
+        
+        
+        
 
         
         
@@ -288,7 +362,10 @@ trace('Moving:', mouseX, mouseY);
         
         public function set virtual_folders (folders:Vector.<VirtualFolder>) : void
         {
-            _virtual_folders = folders;
+            // TODO: Make sure this doesn't invalidate other arrays.
+            var holder:Vector.<VirtualFolder> = folders.concat();
+            clear();
+            _virtual_folders = holder;
             
             display_virtual_folders();
         }
@@ -298,7 +375,6 @@ trace('Moving:', mouseX, mouseY);
             if (!_virtual_folders) {
                 return;
             }
-            
             for (var i:uint = 0; i < _virtual_folders.length; i++) 
             {
                 display_virtual_folder(_virtual_folders[i]);
@@ -307,14 +383,13 @@ trace('Moving:', mouseX, mouseY);
        
         protected function display_virtual_folder (virtual_folder:VirtualFolder) : void
         {
-            var bookcase:Bookcase = new Bookcase(virtual_folder);
+            var bookcase:Bookcase = new Bookcase(virtual_folder, VIRTUAL_FOLDER_COLOR);
             var current_book:Book;
             // Add each file in the virtual folder.
             for (var i:uint = 0; i < virtual_folder.contents.length; i++) 
             {
                 current_book = new Book(virtual_folder.contents[i], _stage3D);
-                current_book.addEventListener(MouseEvent3D.CLICK, book_CLICK);
-                // TODO: Re-attempt drag and drop support.
+//                current_book.addEventListener(MouseEvent3D.CLICK, book_CLICK);
                 current_book.addEventListener(MouseEvent3D.MOUSE_DOWN, book_MOUSE_DOWN);
                 bookcase.add_book(current_book);
             }
@@ -334,10 +409,13 @@ trace('Moving:', mouseX, mouseY);
                 return;
             }
 
-            var bookcase:Bookcase = new Bookcase(file_directory);
+            var bookcase:Bookcase = new Bookcase(file_directory, FILE_SYSTEM_FOLDER_COLOR);
+            var current_book:Book;
             for (var i:uint = 0; i < file_directory.files.length; i++) 
             {
-                bookcase.add_book(new Book(file_directory.files[i].directory, _stage3D));
+                current_book = new Book(file_directory.files[i].directory, _stage3D);
+                current_book.addEventListener(MouseEvent3D.MOUSE_DOWN, book_MOUSE_DOWN);
+                bookcase.add_book(current_book);
             }
             
             _file_system_folders.push(file_directory);
@@ -365,7 +443,7 @@ trace('Moving:', mouseX, mouseY);
         // TODO: Position the content better.
         protected function position_bookcase (bookcase:Bookcase) : void
         {
-            bookcase.x = _bookcases.length * 110;
+            bookcase.x = -0.5 * FLOOR_WIDTH + 0.5 * Bookcase.DEFAULT_WIDTH + _bookcases.length * (Bookcase.DEFAULT_WIDTH + 10);
         }
 
 

@@ -17,6 +17,7 @@ package vui.engine
     import flash.events.Event;
     import flash.geom.Rectangle;
     import flash.geom.Vector3D;
+//    import flash.ui.Keyboard;
 
     
 //    [SWF(backgroundColor = "0x909090", width = "800", height = "600")]
@@ -32,6 +33,7 @@ package vui.engine
         protected var _content_container_buffer : Object3D; // Optimized upload of content to GPU
         // State
         protected var _rectangle : Rectangle;
+        protected var _is_mouse_look_enabled : Boolean;
         // Test lights
         private var _directional_light : DirectionalLight;
         private var _ambient_light : AmbientLight;
@@ -82,6 +84,15 @@ package vui.engine
                 _content_container.removeChildAt(i);
             }
         }
+        
+        public function toggle_mouse_look () : void
+        {
+            _is_mouse_look_enabled ? _camera_controller.stopMouseLook() : _camera_controller.startMouseLook();
+            _is_mouse_look_enabled = !_is_mouse_look_enabled;
+            //            _camera_controller.unbindKey(Keyboard.X);
+            // _camera_controller.bindKey(Keyboard.Q, SimpleObjectController.ACTION_MOUSE_LOOK);
+        }
+        
         
         /** * * * * * * * * * *
         * Initialization
@@ -138,10 +149,10 @@ package vui.engine
         
         protected function init_camera_controller () : void
         {
-            // NOTE: The controller controls the speed & sensitivity of navigation!
+            // Set the speed & sensitivity of navigation!
             _camera_controller = new SimpleObjectController(stage, _camera, 200);
-            // TODO: What do these do?
-            // _camera_controller.mouseSensitivity = 0;
+             // Default is 1.
+             _camera_controller.mouseSensitivity = 0.5;
             // _camera_controller.unbindAll();
             _camera_controller.lookAtXYZ(0,0,0);
         }

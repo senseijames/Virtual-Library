@@ -84,6 +84,7 @@ package vui.library.controller
             _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
             _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
             _chrome.addEventListener(Chrome.TOGGLE_MENU_EVENT, toggle_menu_CLICK);
+            _chrome.addEventListener(VirtualFolderEvent.CREATE_FOLDER_AND_ADD_FILES, virtual_folder_CREATE_AND_ADD);
             
             // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
             _chrome.y = container.stage.stageHeight - _chrome.height;
@@ -104,7 +105,7 @@ package vui.library.controller
             
 // TODO: Remove!  For testing only.
 //            synch_virtual_folders();
-//setTimeout(synch_virtual_folders, 1000);
+//setTimeout(synch_virtual_folders, 400);
         }
 
         
@@ -304,6 +305,16 @@ package vui.library.controller
             else {
                 _menu.visible = !_menu.visible;
             }
+        }
+
+        protected function virtual_folder_CREATE_AND_ADD (event:VirtualFolderEvent) : void
+        {
+            var virtual_folder_name:String = 'Virtual Folder ' + String(_engine.virtual_folders.length + 1);
+            VirtualFolderMapper.create_folder(virtual_folder_name);
+            
+            VirtualFolderMapper.add_files_to_folder(virtual_folder_name, _engine.selected_files);
+            
+            synch_virtual_folders();
         }
 
         /* * * * * * * * * * * * * * * * * * * * * * *

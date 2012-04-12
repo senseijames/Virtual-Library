@@ -28,7 +28,7 @@ package vui.library.view.engine.models
 //        protected var _files : Vector.<Book>;
         
         
-        public function Bookcase (content:Object)
+        public function Bookcase (content:Object, bg_color:uint)
         {
             super();
             
@@ -39,7 +39,7 @@ package vui.library.view.engine.models
             _next_y = 0.5 * DEFAULT_HEIGHT;
             
             // TODO: Decouple into render method?
-            _bookcase = new Plane(DEFAULT_WIDTH, DEFAULT_HEIGHT, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0xFF0000));
+            _bookcase = new Plane(DEFAULT_WIDTH, DEFAULT_HEIGHT, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(bg_color));
             _bookcase.rotationX = 90;
             // TODO: Confirm.
             // NOTE: This means that translating an object moves it with respect to its coordinate system.
@@ -60,6 +60,7 @@ package vui.library.view.engine.models
 
             book.x = _next_x + 0.5 * book_size;
             book.y = _next_y - 0.5 * book_size;
+            book.z = 0.5 * book_size;
             _bookcase.addChild(book);
             _books.push(book);
 

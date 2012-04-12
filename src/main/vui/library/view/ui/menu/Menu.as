@@ -247,7 +247,7 @@ package vui.library.view.ui.menu
             input_text_field.width = 100;
             input_text_field.height = 20;
             input_text_field.y = height - input_text_field.height;
-            var submit_button:Sprite = ButtonUtils.get_button(new Rectangle(input_text_field.width, height - 50, 50, 50), 'CREATE', { color: 0xFF0000, init: true }, submit_virtual_folder_CLICK);
+            var submit_button:Sprite = ButtonUtils.get_button(new Rectangle(input_text_field.x + input_text_field.width + 10, input_text_field.y, 50, 50), 'CREATE', { color: 0xFF0000, init: true }, submit_virtual_folder_CLICK);
             
             addChild(input_text_field);
             addChild(submit_button);

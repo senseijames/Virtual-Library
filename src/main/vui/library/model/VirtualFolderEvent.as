@@ -14,6 +14,7 @@ package vui.library.model
         public static const DELETE_FOLDER : String = "delete_virtual_folder";
         public static const ADD_FILE : String = "add_file";
         public static const REMOVE_FILE : String = "remove_file";
+        public static const CREATE_FOLDER_AND_ADD_FILES : String = "create_and_add_files";
         // Members.
 //        protected var _target_folder : VirtualFolder;
         protected var _target_folder : String;
@@ -28,9 +29,9 @@ package vui.library.model
         {
             super(type, bubbles, cancelable);
             
-            _options = options;
-            _target_folder = options.target_folder;
-            _target_files = options.target_files;
+            _options = options || {};
+            _target_folder = _options.target_folder;
+            _target_files = _options.target_files;
         }
         
         public function get target_folder() : String
