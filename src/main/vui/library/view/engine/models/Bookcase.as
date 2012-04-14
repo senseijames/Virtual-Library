@@ -67,6 +67,11 @@ package vui.library.view.engine.models
             _next_x += book_size + 10;
         }
         
+        public function get books () : Vector.<Book>
+        {
+            return _books;
+        }
+        
         // TODO: Add visual indication of current selection.
         public function select () : void
         {

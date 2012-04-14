@@ -47,10 +47,12 @@ Also - touch up the user interface (file browser and live search)
 3. Replace circles with file icons
 # 4. Create bookcase models, replace rectangles with bookcases
 5. Click each file to select it, double click to open it (open menu instead?  No, just a prototype!)
-# 6. Live search effects
-* 7. Adding files to a virtual folder
-* 8. Viewing virtual folders
-9. Final polish
+6. Live search effects
+* 7. Adding files to a virtual folder with drag
+8. Viewing virtual folders
+# 9. Better/smarter room layout (bookcases in better places)
+# 10. Animation effects (zoom to bookcases, bookcase carousel, link into webcam activity)
+# 11. Final polish
 
 
 # later

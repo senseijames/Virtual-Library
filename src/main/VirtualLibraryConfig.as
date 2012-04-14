@@ -2,7 +2,7 @@ package
 {
     public class VirtualLibraryConfig
     {
-        public static const VERSION:String = '3D Engine Prototype v. 0.2.2 (3D Engine Prototype 0.2)';
+        public static const VERSION:String = '3D Engine Prototype v. 0.2.4 (3D Engine Prototype 0.4)';
         public static const FILE_SEARCH_DEPTH : uint = 4;
         public static const SHOW_HIDDEN : Boolean = false;
         public static const IS_LOOSE_PACK : Boolean = true;

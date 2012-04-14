@@ -169,7 +169,7 @@ package vui.library.controller
         
         protected function webcam_ACTIVITY (event:ActivityEvent) : void
         {
-            trace('[VirtualLibraryController] Webcam Activity Event:', WebCamera(event.target).activity_level);
+//            trace('[VirtualLibraryController] Webcam Activity Event:', WebCamera(event.target).activity_level);
         }
         
         /* * * * * * * * * * * * * * * * * * *
@@ -223,12 +223,12 @@ package vui.library.controller
         public function filename_search (query:String) : void
         {
             trace('\nPerforming file search for query:', query);
-            if (_directory_trees.length == 0) {
+            if (_directory_trees.length == 0 && _virtual_folders.length == 0) {
                 return;
             }
 
-            // TODOE:
             _view.live_search(query);
+            _engine.live_search(query);
             /*
             NOTE:
             The View should probably also have a Vector of file directories.  What you are trying to preclude is too much encapsulation
@@ -309,7 +309,8 @@ package vui.library.controller
 
         protected function virtual_folder_CREATE_AND_ADD (event:VirtualFolderEvent) : void
         {
-            var virtual_folder_name:String = 'Virtual Folder ' + String(_engine.virtual_folders.length + 1);
+            // TODO: Ammend this - virtual folder names are assumed unique!
+            var virtual_folder_name:String = 'Virtual Folder ' + String(Math.random()).substr(2, 3);
             VirtualFolderMapper.create_folder(virtual_folder_name);
             
             VirtualFolderMapper.add_files_to_folder(virtual_folder_name, _engine.selected_files);

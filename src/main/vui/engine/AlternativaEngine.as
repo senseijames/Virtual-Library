@@ -132,7 +132,6 @@ package vui.engine
         protected function init_camera () : void
         {
             _camera = new Camera3D(0.01, 10000000000);
-            // TODO: Make the initial camera position configurable.
             camera_position = new Vector3D(-50, -420, 100);
             // Add a view to the camera.
             _camera.view = new View(_rectangle.width, _rectangle.height, false, 0x404040, 0, 4);

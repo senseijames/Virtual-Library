@@ -34,7 +34,7 @@ package vui.library.view.engine
         
         // Entities
         protected var _floor : Plane;
-        // TODO: Will want to distinguish between file system folders and virtual folders somehow...
+        // TODO: May want to distinguish between file system folder bookcases and virtual folder bookcases somehow...
         protected var _bookcases : Vector.<Bookcase>;
         protected var _virtual_folders : Vector.<VirtualFolder>;
         protected var _file_system_folders : Vector.<FileDirectory>;
@@ -69,6 +69,26 @@ package vui.library.view.engine
             // TODO: Consider concat() here.  The protection is probably not worth the complexity.
             return _virtual_folders;
         }
+        
+        public function live_search (query:String) : void
+        {
+            var current_virtual_folder:VirtualFolder;
+            var current_book:Book;
+            for (var i:uint = 0; i < _bookcases.length; i++)
+            {
+                for (var j:uint = 0; j < _bookcases[i].books.length; j++)
+                {
+                    current_book = _bookcases[i].books[j];
+                    if (current_book.content.name.indexOf(query) != -1) {
+                        current_book.select();
+                    }
+                    else {
+                        current_book.deselect();
+                    }
+                }
+            }
+        }
+        
         
         /* * * * * * * * * * *
         * Initialization
