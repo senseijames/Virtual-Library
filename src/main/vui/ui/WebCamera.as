@@ -13,6 +13,7 @@ package vui.ui
     import flash.utils.Timer;
     import flash.utils.setTimeout;
     
+    import vui.utils.ConfigUtils;
     import vui.utils.TextUtils;
 
     
@@ -27,6 +28,7 @@ package vui.ui
         protected var _activity_text : TextField;
         protected var _activity_bar : Shape;
         // State
+        protected var _config : Object;
 //        protected var _is_init_activity_display_queued : Boolean;
 
         public static const DEFAULT_ACTIVITY_LEVEL : uint = 15;
@@ -62,15 +64,47 @@ package vui.ui
                 _camera = Camera.getCamera();
             }
             
+            _config = ConfigUtils.set_defaults(options, { activity_level: DEFAULT_ACTIVITY_LEVEL, activity_time: DEFAULT_ACTIVITY_TIME, show_video: false });
+            
+            enable();
+        }
+        
+        public function enable () : void
+        {
             // TODO: Consider removing activity_time from I/F
-            connect({ activity_level: options.activity_level, activity_time: options.activity_time }); 
+            connect({ activity_level: _config.activity_level, activity_time: _config.activity_time }); 
 
-            if (options.show_activity)
+            if (_config.show_activity)
             {
                 init_activity_display();
             }
+            
+            if (_video) {
+                _video.attachCamera(_camera);
+                _video.visible = true;
+            }
+            
+            this.visible = true;
         }
         
+        public function disable () : void
+        {
+            try
+            {
+                disable_activity_display();
+                _camera.setMotionLevel(100, 0);
+                stop_video();
+                this.visible = false;
+            } 
+            catch (ignored:Error) { trace(WebCamera,'disable error caught:', ignored, ignored.getStackTrace()); }
+        }
+        public function teardown () : void
+        {
+            disable();
+            _camera = null;
+            _video = null;
+        }
+
         public function get video() : Video
         {
             if (!_camera) {
@@ -80,24 +114,20 @@ package vui.ui
                 }
             }
             
-            _video = new Video(_camera.width, _camera.height);
-            // Note that this pops up the dialog box.
-            _video.attachCamera(_camera);
+            if (!_video) {
+                _video = new Video(_camera.width, _camera.height);
+                // Note that this pops up the dialog box.
+                _video.attachCamera(_camera);
+            }
             
             return _video;
-        }
-        
-        public function stop() : void
-        {
-            _camera.setMotionLevel(100, 0);
-            stop_video();
         }
         
         public function stop_video() : void
         {
             _video.clear();
-            removeChild(_video);
-            _video = null;
+            _video.attachCamera(null);
+            _video.visible = false;
         }
         
         public function get activity_level() : uint
@@ -118,7 +148,7 @@ package vui.ui
         protected function connect(options:Object = null) : void 
         {
             options ||= { }
-            _camera.setMotionLevel((options.activity_level != null) ? options.activity_level : DEFAULT_ACTIVITY_LEVEL, (options.activity_level != null) ? options.activity_time : DEFAULT_ACTIVITY_TIME);
+            _camera.setMotionLevel(options.activity_level, options.activity_time);
             _camera.addEventListener(ActivityEvent.ACTIVITY, activity_EVENT);
         }
 

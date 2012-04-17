@@ -72,12 +72,9 @@ package vui.library.view.engine
         
         public function live_search (query:String) : void
         {
-            var current_virtual_folder:VirtualFolder;
             var current_book:Book;
-            for (var i:uint = 0; i < _bookcases.length; i++)
-            {
-                for (var j:uint = 0; j < _bookcases[i].books.length; j++)
-                {
+            for (var i:uint = 0; i < _bookcases.length; i++) {
+                for (var j:uint = 0; j < _bookcases[i].books.length; j++) {
                     current_book = _bookcases[i].books[j];
                     if (current_book.content.name.indexOf(query) != -1) {
                         current_book.select();
@@ -100,8 +97,6 @@ package vui.library.view.engine
             // ...
             
             add_floor();
-            
-            addEventListeners();
 
 //            upload_resources_to_GPU(_root_container);
         }
@@ -110,23 +105,6 @@ package vui.library.view.engine
         {
             _floor = new Plane(FLOOR_WIDTH, FLOOR_DEPTH, 5, 5, true, false, new FillMaterial(0x0000FF), new FillMaterial(0x00FFFF));
             _root_container.addChild(_floor);
-        }
-        
-        protected function addEventListeners () : void
-        {
-            stage.addEventListener(KeyboardEvent.KEY_DOWN, key_DOWN);
-//            addEventListener(VirtualFolderEvent.
-        }
-        
-        protected function key_DOWN (event:KeyboardEvent) : void
-        {
-            switch (event.keyCode)
-            {
-                case Keyboard.X:
-                    toggle_mouse_look();
-                default:
-                    break;
-            }
         }
         
         

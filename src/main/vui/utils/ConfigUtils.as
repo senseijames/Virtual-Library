@@ -6,14 +6,16 @@ package vui.utils
         {
         }
         
-        public static function set_defaults (config:Object, defaults:Object) : void
+        public static function set_defaults (config:Object, defaults:Object) : Object
         {
             var defaults_key:Object;
             for (defaults_key in defaults) {
                 if (config[defaults_key] === undefined) {
                     config[defaults_key] = defaults[defaults_key];
                 }
-            } 
+            }
+            
+            return config;
         }
     }
 }
