@@ -98,6 +98,7 @@ package vui.ui
             } 
             catch (ignored:Error) { trace(WebCamera,'disable error caught:', ignored, ignored.getStackTrace()); }
         }
+        
         public function teardown () : void
         {
             disable();

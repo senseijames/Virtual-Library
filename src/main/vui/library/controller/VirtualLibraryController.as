@@ -4,8 +4,10 @@ package vui.library.controller
     import flash.events.ActivityEvent;
     import flash.events.Event;
     import flash.events.IOErrorEvent;
+    import flash.events.KeyboardEvent;
     import flash.filesystem.File;
     import flash.media.Video;
+    import flash.ui.Keyboard;
     import flash.utils.setTimeout;
     
     import vui.library.mapper.FileSystemMapper;
@@ -97,6 +99,8 @@ package vui.library.controller
             init_virtual_folders();
 
             init_engine();
+            
+            init_keyboard_controls();
 //            open_file_browser();
             
             if (options.use_webcam) {
@@ -149,6 +153,11 @@ package vui.library.controller
             _virtual_folders = VirtualFolderMapper.init();
         }
 
+        
+        /* * * * * * *
+        * Webcam
+        * * * * * * */
+
         protected function init_webcam () : void
         {
             _webcam = new WebCamera();
@@ -158,19 +167,55 @@ package vui.library.controller
 
             if (_config.webcam_show_video)
             {
-                var video:Video = _webcam.video;
-                if (video)
-                {
-                    _container.addChild(video);
-                    _container.addChild(_webcam);
-                }
+                add_webcam_video();
             }
         }
         
+        // Should instead be idempotent
+        protected function add_webcam_video () : void
+        {
+            var video:Video = _webcam.video;
+            if (video)
+            {
+                _container.addChild(video);
+                _container.addChild(_webcam);
+            }
+        }
+        
+        protected function toggle_webcam () :void
+        {
+            if (!_webcam) {
+                init_webcam();
+            }
+            else {
+                _webcam.visible ? _webcam.disable() : _webcam.enable();
+            }
+        }
+
         protected function webcam_ACTIVITY (event:ActivityEvent) : void
         {
-//            trace('[VirtualLibraryController] Webcam Activity Event:', WebCamera(event.target).activity_level);
+            trace('[VirtualLibraryController] Webcam Activity Event:', WebCamera(event.target).activity_level);
         }
+        
+        protected function init_keyboard_controls () : void
+        {
+            _container.stage.addEventListener(KeyboardEvent.KEY_DOWN, key_DOWN);
+        }
+        
+        // TODO: Add list of keyboard controls to menu 'show keyboard controls' textfield.  Nice and simple.
+        protected function key_DOWN (event:KeyboardEvent) : void
+        {
+            switch (event.keyCode)
+            {
+                case Keyboard.X:
+                    _engine.toggle_mouse_look();
+                case Keyboard.Z:
+                    toggle_webcam();
+                default:
+                    break;
+            }
+        }
+
         
         /* * * * * * * * * * * * * * * * * * *
         * Helpers - file aggregators 
