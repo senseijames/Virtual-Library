@@ -58,7 +58,7 @@ package vui.ui
         * @param    options.video_width (unused)
         * @param    options.video_height (unused)
         */
-        public function init(options:Object) : void
+        public function init (options:Object) : void
         {
             if (!_camera) {
                 _camera = Camera.getCamera();
@@ -106,7 +106,7 @@ package vui.ui
             _video = null;
         }
 
-        public function get video() : Video
+        public function get video () : Video
         {
             if (!_camera) {
                 _camera = Camera.getCamera();
@@ -124,19 +124,19 @@ package vui.ui
             return _video;
         }
         
-        public function stop_video() : void
+        public function stop_video () : void
         {
             _video.clear();
             _video.attachCamera(null);
             _video.visible = false;
         }
         
-        public function get activity_level() : uint
+        public function get activity_level () : uint
         {
             return _camera.activityLevel;
         }
 
-        public function get is_available() : Boolean
+        public function get is_available () : Boolean
         {
             return _camera && Camera.isSupported;
         }
@@ -146,14 +146,14 @@ package vui.ui
          * Helpers
          * * * * * * * * * * * */
         
-        protected function connect(options:Object = null) : void 
+        protected function connect (options:Object = null) : void 
         {
             options ||= { }
             _camera.setMotionLevel(options.activity_level, options.activity_time);
             _camera.addEventListener(ActivityEvent.ACTIVITY, activity_EVENT);
         }
 
-        protected function show_error(message:String, time:uint) : void
+        protected function show_error (message:String, time:uint) : void
         {
             var error_message:TextField = TextUtils.get_text_field({ text_format: new TextFormat('courier', 18, 0xFF0000, true) });
             error_message.text = message;
@@ -174,7 +174,7 @@ package vui.ui
          * Event Handlers
          * * * * * * * * * * * */
         
-        protected function activity_EVENT(event:ActivityEvent) : void 
+        protected function activity_EVENT (event:ActivityEvent) : void 
         {
             if (event.activating == true) 
             {
@@ -194,14 +194,14 @@ package vui.ui
         * Activity Display
         * * * * * * * * * * * */
         
-        protected function activity_reader_TICK(event:TimerEvent) : void 
+        protected function activity_reader_TICK (event:TimerEvent) : void 
         {
             _activity_text.text = String(_camera.activityLevel);
             _activity_bar.height = _camera.height * _camera.activityLevel / 100;
             _activity_bar.y = _camera.height - _activity_bar.height;
         }
         
-        protected function init_activity_display() : void
+        protected function init_activity_display () : void
         {
             if (!_camera) {
 //                _is_init_activity_display_queued = true;
@@ -228,7 +228,7 @@ package vui.ui
             _activity_reader_timer.start();
         }
         
-        protected function disable_activity_display() : void
+        protected function disable_activity_display () : void
         {
             removeChild(_activity_bar);
             _activity_bar = null;

@@ -24,7 +24,7 @@ package vui.library.controller
     public class VirtualLibraryController
     {
         // TODO: Consider moving these to a "Config" class (encapsulation, and if you make vars you can change dynamically)
-        public static var CHROME_HEIGHT : uint = 30;
+        public static const CHROME_HEIGHT : uint = 30;
         public static const MENU_BG_COLOR : uint = 0xCDCDCD;
         public static const MENU_BG_ALPHA : Number = 0.7;
         public static const MENU_WIDTH : uint = 400;
