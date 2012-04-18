@@ -18,7 +18,7 @@ The Virtual Library allows for the creation and maintenance of virtual folders -
 A virtual folder is analogous to and in support of a workspace; it essentially allows you to abstract a 'working set' of files/folders from the actual file system organization.  We typically organize our files in a contextual hierarchy - this might be deemed long term organization; a task-, project- or workspace-based organization is much more relevant in the shorter term.  A workspace might be described as a set of files that experience temporal locality of use.  The Virtual Library allows you to easily create and edit virtual folders, and interact with your files in a natural, intuitive, fun way - one that more closely parallels how one might interact with a book in a library.  Virtual Folders can be used to save the applications you have open that are dedicated to a given task; when you want to resume that task at a later time, you can use the virtual library to open those applications so that you can resume the activity as quickly as possible.
 
                                     Milestones
-I. Console Output Prototype
+I. Console Output Prototype - 0.1.15
 Purpose - get the structure and workflow going before sexying up the view with the 3D engine
 1. Simple console view output - output one file's information
 2. Simple user interface - add a file browser (text field and button), so the user can select a file and input the directory for search
@@ -38,21 +38,25 @@ Purpose - get the structure and workflow going before sexying up the view with t
 15. Final code cleanup!
 Output - program architecture
 
-II. 3D Engine Prototype
+II. 3D Engine Prototype - 0.2.11
 Purpose - replace the console view with a sexy 3D Virtual Library.
 Also - touch up the user interface (file browser and live search)
-# 1. Create the room
-# 2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
-2. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
-3. Replace circles with file icons
-# 4. Create bookcase models, replace rectangles with bookcases
-5. Click each file to select it, double click to open it (open menu instead?  No, just a prototype!)
-6. Live search effects
-* 7. Adding files to a virtual folder with drag
-8. Viewing virtual folders
-# 9. Better/smarter room layout (bookcases in better places)
-# 10. Animation effects (zoom to bookcases, bookcase carousel, link into webcam activity)
-# 11. Final polish
+  A. The Basics
+    # 1. Create the room
+    # 2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
+    2. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
+  B. 3D Models
+    3. Replace circles with file icons
+    # 4. Create bookcase models, replace rectangles with bookcases
+  C. Virtual Folder CRUD - feature parity with 0.1.7
+    5. Click each file to select it, double click to open it (open menu instead?  No, just a prototype!)
+    6. Live search effects
+    * 7. Adding files to a virtual folder with drag/drop
+    8. Viewing virtual folders
+  D. Polish
+    # 9. Better/smarter room layout (bookcases in better places)
+    # 10. Animation effects (zoom to bookcases, bookcase carousel, link into webcam activity)
+    # 11. Final polish
 
 
 # later
