@@ -2,9 +2,7 @@ package vui.library.view.ui
 {
     import flash.display.Sprite;
     import flash.events.Event;
-    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
-    import flash.events.TextEvent;
     import flash.filters.BevelFilter;
     import flash.geom.Rectangle;
     import flash.text.TextField;
