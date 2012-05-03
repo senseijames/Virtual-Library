@@ -17,6 +17,7 @@ package vui.library.view.ui.menu
     
     import vui.library.model.VirtualFolder;
     import vui.library.model.VirtualFolderEvent;
+    import vui.ui.InteractiveInputTextField;
     import vui.ui.InteractiveTextField;
     import vui.utils.ButtonUtils;
     import vui.utils.GraphicsUtils;
@@ -243,23 +244,32 @@ package vui.library.view.ui.menu
         {
             trace('\n[Menu] Create virtual folder clicked!!\n');
             // Show an input text field and a 'submit' button, and dispatch the event on save.
-            var input_text_field:TextField = TextUtils.get_input_text_field();
+            var input_text_field:InteractiveInputTextField = new InteractiveInputTextField;
             input_text_field.width = 100;
             input_text_field.height = 20;
             input_text_field.y = height - input_text_field.height;
-            var submit_button:Sprite = ButtonUtils.get_button(new Rectangle(input_text_field.x + input_text_field.width + 10, input_text_field.y, 50, 50), 'CREATE', { color: 0xFF0000, init: true }, submit_virtual_folder_CLICK);
+            var submit_button:Sprite = ButtonUtils.get_button(new Rectangle(input_text_field.x + input_text_field.width + 10, input_text_field.y, 50, 50), 'CREATE', { color: 0x00FF00, init: true }, submit_virtual_folder_CLICK);
+            var cancel_button:Sprite = ButtonUtils.get_button(new Rectangle(submit_button.x + submit_button.width + 10, submit_button.y, 50, 50), 'CANCEL', { color: 0xFF0000, init: true }, unload);
             
             addChild(input_text_field);
             addChild(submit_button);
+            addChild(cancel_button);
             
             function submit_virtual_folder_CLICK(event:MouseEvent) : void
             {
                 trace('[Menu] Attempting to create virtual folder!');
+                dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.CREATE_FOLDER, { target_folder: input_text_field.text }));
+                
+                unload();
+            }
+            
+            function unload (event:Event = null) : void
+            {
+                input_text_field.commandeer_keyboard = false;
                 
                 removeChild(input_text_field);
                 removeChild(submit_button);
-
-                dispatchEvent(new VirtualFolderEvent(VirtualFolderEvent.CREATE_FOLDER, { target_folder: input_text_field.text }));
+                removeChild(cancel_button);
             }
         }
         

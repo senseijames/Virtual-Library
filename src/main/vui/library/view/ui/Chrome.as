@@ -2,15 +2,17 @@ package vui.library.view.ui
 {
     import flash.display.Sprite;
     import flash.events.Event;
+    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
+    import flash.events.TextEvent;
     import flash.filters.BevelFilter;
     import flash.geom.Rectangle;
     import flash.text.TextField;
     
     import vui.library.model.VirtualFolderEvent;
     import vui.library.view.ui.menu.Menu;
+    import vui.ui.InteractiveInputTextField;
     import vui.utils.ButtonUtils;
-    import vui.utils.TextUtils;
     
     public class Chrome extends Sprite
     {
@@ -23,7 +25,7 @@ package vui.library.view.ui
         // UI
         protected var _open_file_browser_button : Sprite;
         protected var _view_virtual_folders_button : Sprite;
-        protected var _live_search_text_field : TextField;
+        protected var _live_search_text_field : InteractiveInputTextField;
         protected var _clear_button : Sprite;
         protected var _toggle_menu_button : Sprite;
         // TODO: Revisit this here.
@@ -36,7 +38,7 @@ package vui.library.view.ui
             _view_virtual_folders_button = ButtonUtils.get_button(new Rectangle(0, 0, 60, 30), 'VIEW', { color: 0x0000FF, init: false });
             _clear_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'CLEAR', { color: 0xFF0000, init: false });
             _toggle_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 30, 30), 'MENU', { color: 0x00FF00, init: false });
-            _live_search_text_field = TextUtils.get_input_text_field();
+            _live_search_text_field = new InteractiveInputTextField;
             
             _create_and_add_button = ButtonUtils.get_button(new Rectangle(0, 0, 80, 30), 'CREATE & ADD', { color: 0xFFFF00, init: false });
         }
@@ -91,9 +93,7 @@ package vui.library.view.ui
             _live_search_text_field.x = width - _live_search_text_field.width - _clear_button.width - 10;
             _live_search_text_field.y = 0.5 * (height - _live_search_text_field.height);
             
-            //            _live_search_text_field.addEventListener(TextEvent.TEXT_INPUT, do_live_search);
             _live_search_text_field.addEventListener(Event.CHANGE, do_live_search);
-            _live_search_text_field.addEventListener(MouseEvent.CLICK, function(e:Event) : void { TextField(e.target).text = ''; e.target.removeEventListener(e.type, arguments.callee); });
         }
 
         protected function addEventListeners() : void
@@ -144,10 +144,12 @@ package vui.library.view.ui
         protected function show(e:Event) : void
         {
             this.alpha = 1;
+            _live_search_text_field.commandeer_keyboard = true;
         }
         protected function hide(e:Event) : void
         {
             this.alpha = 0;
+            _live_search_text_field.commandeer_keyboard = false;
         }
 
         
