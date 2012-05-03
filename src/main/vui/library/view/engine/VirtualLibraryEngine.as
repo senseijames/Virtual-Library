@@ -8,12 +8,10 @@ package vui.library.view.engine
     import alternativa.engine3d.primitives.Plane;
     
     import flash.events.Event;
-    import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
     import flash.filesystem.File;
     import flash.geom.Point;
     import flash.geom.Vector3D;
-    import flash.ui.Keyboard;
     
     import vui.engine.AlternativaEngine;
     import vui.engine.utils.CollisionResult;
@@ -206,15 +204,49 @@ package vui.library.view.engine
         
         
         
+        
         /* * * * * * * * * * * * * *
         * Drag and drop support
         * * * * * * * * * * * * * */
+        
+        
+  /*    
+        Left off here - get drag and drop working!
+        Okay - this might be the way to do it - IntersectRayExample downloaded (from Alternativa?)
+//    stage.addEventListener(MouseEvent.CLICK, onClick);
+    private function onClick(e:MouseEvent):void {
+        var origin:Vector3D = new Vector3D();
+        var direction:Vector3D = new Vector3D();
+        camera.calculateRay(origin, direction, e.stageX, e.stageY);
+        
+        var orig2:Vector3D = origin.add(direction);
+        origin = plane.globalToLocal(origin);
+        orig2 = plane.globalToLocal(orig2);
+        direction = orig2.subtract(origin);
+        direction.normalize();
+        var data:RayIntersectionData = plane.intersectRay(origin, direction);
+        if (data != null) {
+            var point:Vector3D = plane.localToGlobal(data.point);
+            
+            var box:Box = new Box(15, 15, 15);
+            box.setMaterialToAllSurfaces(new FillMaterial(0xFF0000));
+            box.x = point.x;
+            box.y = point.y;
+            box.z = point.z;
+            rootContainer.addChild(box);
+            uploadResources(box.getResources(), stage3D.context3D);
+        }
+    }
+        
+    */    
+        
+        
+        
         
 //        protected var _prev_mouse_x : Number;
 //        protected var _prev_mouse_y : Number;
         protected var _drag_start_point : Vector3D;
 
-        
         
         protected function get_drag_start_point (object:Object3D, event:MouseEvent3D) : Vector3D
         {

@@ -12,5 +12,7 @@ package vui.ui
         function disable (options:Object) : void;
         
         function teardown (options:Object) : void;
+        
+        // function resize (options:Object) : void;
     }
 }

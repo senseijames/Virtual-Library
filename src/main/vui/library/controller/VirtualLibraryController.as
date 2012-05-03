@@ -209,8 +209,10 @@ package vui.library.controller
             {
                 case Keyboard.X:
                     _engine.toggle_mouse_look();
+                    break;
                 case Keyboard.Z:
                     toggle_webcam();
+                    break;
                 default:
                     break;
             }
