@@ -39,6 +39,9 @@ package vui.library.view.ui.menu
         protected var _open_virtual_folder_button : Sprite;
         protected var _close_menu_button : Sprite;
         protected var _error_text_field : TextField;
+        protected var _help_menu : Sprite;
+        protected var _help_button : Sprite;
+
         // UI State.
         protected var _selected_virtual_folder_text_field : InteractiveTextField;
         protected var _virtual_folder_sprites : Vector.<Sprite>;
@@ -49,6 +52,7 @@ package vui.library.view.ui.menu
         protected var _selected_virtual_folder : VirtualFolder;
         protected var _selected_files : Vector.<File>;
         protected var _virtual_folders : Vector.<VirtualFolder>;
+        protected var _config : Object;
         
         public function Menu()
         {
@@ -62,6 +66,7 @@ package vui.library.view.ui.menu
         */
         public function init (options:Object) : void
         {
+            _config = options;
             // Add the bg.
             _bg = GraphicsUtils.get_shape_rect(options.width, options.height, options.bgColor, options.bgAlpha);
             addChild(_bg);
@@ -74,6 +79,8 @@ package vui.library.view.ui.menu
             _remove_file_from_virtual_folder_button = ButtonUtils.get_button(new Rectangle(_add_file_to_virtual_folder_button.x + _add_file_to_virtual_folder_button.width + 10, 60, 50, 50), 'REMOVE FILE', { color: 0xFF0000, init: true }, remove_file_from_folder_CLICK);
             _close_menu_button = ButtonUtils.get_button(new Rectangle(0, 0, 50, 50), 'X', { color: 0xFF0000, init: true }, close_menu_CLICK);
             _close_menu_button.x = width - _close_menu_button.width;
+            _help_button = ButtonUtils.get_button(new Rectangle(width - 50, height - 50, 50, 50), 'HELP', { color: 0xFF00FF, init: true }, help_button_CLICK);
+
             // Create the error text.
             _error_text_field = TextUtils.get_text_field();
             _error_text_field.defaultTextFormat = new TextFormat(null, 11, 0xFF0000);
@@ -87,8 +94,9 @@ package vui.library.view.ui.menu
             addChild(_add_file_to_virtual_folder_button);
             addChild(_remove_file_from_virtual_folder_button);
             addChild(_close_menu_button);
+            addChild(_help_button);
             addChild(_error_text_field);
-            
+
             virtual_folders = options.folders;
         }
 
@@ -182,7 +190,69 @@ package vui.library.view.ui.menu
             _error_text_field.visible = true;
         }
         
-        
+        public function add_help (help_item_name:String, help_item:Object, options:Object = null) : void
+        {
+            options ||= {};
+            var text_fields:Vector.<TextField> = new Vector.<TextField>;
+
+            var header_text_field:TextField = TextUtils.get_text_field(options);
+            header_text_field.text = help_item_name;
+            text_fields.push(header_text_field);
+
+            var boilerplate:TextField = TextUtils.get_text_field(options);
+            boilerplate.text = "* * * * * * * * * * * *";
+            text_fields.push(boilerplate);
+
+            var key:String;
+            var current_text_field:TextField;
+            for (key in help_item) {
+                current_text_field = TextUtils.get_text_field(options);
+                current_text_field.text = key + ' : \t' + help_item[key];
+                text_fields.push(current_text_field);
+            }
+
+            add_help_items(text_fields);
+        }
+
+        // TODO: Currently does not support being called multiple times, fyi.
+        protected function add_help_items (text_fields:Vector.<TextField>) : void
+        {
+            if (!_help_menu) {
+                init_help_menu();
+            }
+
+            for (var i:uint = 0; i < text_fields.length; i++) {
+                if (i != 0) {
+                    text_fields[i].y = text_fields[i - 1].y + text_fields[i - 1].textHeight;    
+                }
+
+                text_fields[i].x = 10;
+                text_fields[i].width = width - 20;
+
+                _help_menu.addChild(text_fields[i]);
+            }
+        }
+
+        protected function init_help_menu () : void
+        {
+            _help_menu = new Sprite;
+            _help_menu.graphics.beginFill(_config.bgColor, 0.9); //_config.bgAlpha);
+            _help_menu.graphics.drawRect(0, 0, _config.width, _config.height);
+            _help_menu.graphics.endFill();
+
+            _help_menu.buttonMode = true;
+            _help_menu.addEventListener(MouseEvent.CLICK, function(e:Event):void { _help_menu.visible = false; });
+            _help_menu.visible = false;
+
+            addChild(_help_menu);
+        }
+
+        protected function help_button_CLICK (event:Event) : void
+        {
+            _help_menu.visible = !_help_menu.visible;
+        }
+
+
         /* * * * * * * * * * * * * * * * * * *
         * Folder/file select event handlers
         * * * * * * * * * * * * * * * * * * */

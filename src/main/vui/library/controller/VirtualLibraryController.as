@@ -79,19 +79,7 @@ package vui.library.controller
             _show_hidden = options.show_hidden;
             _is_loose_pack = options.is_loose_pack;
             
-            _chrome.init({ height: CHROME_HEIGHT, width: container.stage.stageWidth, color: 0x00FF00, alpha: 0.5 });
-            _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, file_browser_OPEN);
-            _chrome.addEventListener(Chrome.VIEW_VIRTUAL_FOLDERS_EVENT, virtual_folders_VIEW);
-//            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE);
-            _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
-            _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
-            _chrome.addEventListener(Chrome.TOGGLE_MENU_EVENT, toggle_menu_CLICK);
-            _chrome.addEventListener(VirtualFolderEvent.CREATE_FOLDER_AND_ADD_FILES, virtual_folder_CREATE_AND_ADD);
-            
-            // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
-            _chrome.y = container.stage.stageHeight - _chrome.height;
-//            _chrome.x = -20;
-            container.addChild(_chrome);
+            init_chrome();
             
             // TODOE:
             _view.init({ is_loose_pack: _is_loose_pack, depth: _depth });
@@ -131,6 +119,28 @@ package vui.library.controller
             _container.addChildAt(_engine, 0);
         }
 
+        protected function init_virtual_folders () : void
+        {
+            _virtual_folders = VirtualFolderMapper.init();
+        }
+
+        protected function init_chrome () : void
+        {
+            _chrome.init({ height: CHROME_HEIGHT, width: _container.stage.stageWidth, color: 0x00FF00, alpha: 0.5 });
+            _chrome.addEventListener(Chrome.OPEN_FILE_BROWSER_EVENT, file_browser_OPEN);
+            _chrome.addEventListener(Chrome.VIEW_VIRTUAL_FOLDERS_EVENT, virtual_folders_VIEW);
+            //            _chrome.addEventListener(TextEvent.TEXT_INPUT, search_text_CHANGE);
+            _chrome.addEventListener(Event.CHANGE, search_text_CHANGE);
+            _chrome.addEventListener(Chrome.CLEAR_LIBRARY_EVENT, library_CLEAR);
+            _chrome.addEventListener(Chrome.TOGGLE_MENU_EVENT, toggle_menu_CLICK);
+            _chrome.addEventListener(VirtualFolderEvent.CREATE_FOLDER_AND_ADD_FILES, virtual_folder_CREATE_AND_ADD);
+
+            // TODO: Move to layout method, so can separate add_content() from layout_content() so that window resize events are handled gracefully.
+            _chrome.y = _container.stage.stageHeight - _chrome.height;
+            //            _chrome.x = -20;
+            _container.addChild(_chrome);
+        }
+
         protected function init_menu () : void
         {
             _menu = new Menu();
@@ -139,6 +149,17 @@ package vui.library.controller
             _menu.x = 0.5 * (_container.stage.stageWidth - MENU_WIDTH);
             _menu.y = 0.5 * (_container.stage.stageHeight - MENU_HEIGHT);
 
+            _menu.add_help('Keyboard Commands & Shortcuts', { 'UP ARROW / W' : 'Move forward',
+                                                              'DOWN ARROW / S' : 'Move back',
+                                                              'LEFT ARROW / A' : 'Strafe left',
+                                                              'RIGHT ARROW / D' : 'Strafe right',
+                                                              'E' : 'Levitate',
+                                                              'C' : 'Descend',
+                                                              'DRAG MOUSE' : 'Look (when not in mouse look mode)',
+                                                              'X' : 'Toggle mouse look',
+                                                              'Q' : 'Toggle webcam'
+                                                            });
+
             _menu.addEventListener(VirtualFolderEvent.OPEN_FOLDER, virtual_folder_OPEN);
             _menu.addEventListener(VirtualFolderEvent.CREATE_FOLDER, virtual_folder_CREATE);
             _menu.addEventListener(VirtualFolderEvent.DELETE_FOLDER, virtual_folder_DELETE);
@@ -146,11 +167,6 @@ package vui.library.controller
             _menu.addEventListener(VirtualFolderEvent.REMOVE_FILE, virtual_folder_file_REMOVE);
 
             _container.addChild(_menu);
-        }
-
-        protected function init_virtual_folders () : void
-        {
-            _virtual_folders = VirtualFolderMapper.init();
         }
 
         

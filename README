@@ -42,12 +42,16 @@ II. 3D Engine Prototype - 0.2.11
 Purpose - replace the console view with a sexy 3D Virtual Library.
 Also - touch up the user interface (file browser and live search)
   A. The Basics
-    # 1. Create the room
-    # 2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
-    2. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
+    1. Create the room
+    2. Room navigation - add controls for navigating the room (disable when control is in the Chrome's search field)
+        2.1. Settle on keyboard shortcuts & document them
+        2.2. Add a help menu that lists them
+        # 2.3. Simple collision detection
+    3. Very simple output - circles on a rectangle with text; a circle and text for each file (book), and a large rectangle for the bookcase
   B. 3D Models
-    3. Replace circles with file icons
-    # 4. Create bookcase models, replace rectangles with bookcases
+    4. Replace circles with file icons
+    # 5. Create bookcase models, replace rectangles with bookcases
+    # 6. Room model
   C. Virtual Folder CRUD - feature parity with 0.1.7
     5. Click each file to select it, double click to open it (open menu instead?  No, just a prototype!)
     6. Live search effects
@@ -57,6 +61,12 @@ Also - touch up the user interface (file browser and live search)
     # 9. Better/smarter room layout (bookcases in better places)
     # 10. Animation effects (zoom to bookcases, bookcase carousel, link into webcam activity)
     # 11. Final polish
+        11.1 Add description paragraph to help text
+        11.2 More keyboard shortcuts?
+        
+III. Analysis
+    1. Writeup & reflection
+    2. Planning versions 0.3 and 1.0
 
 
 # later
