@@ -6,7 +6,7 @@ package vui.utils
 
     public class FileUtils
     {
-        public function FileUtils (chastity_belt:SingletonEnforcer)
+        public function FileUtils () //chastity_belt:SingletonEnforcer)
         {
         }
         
@@ -36,4 +36,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

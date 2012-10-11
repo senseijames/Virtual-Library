@@ -8,7 +8,7 @@ package vui.utils
         /** * * * * * * * * *
         * Vector graphics
         * * * * * * * * * */
-        public function GraphicsUtils(chastity_belt:SingletonEnforcer)
+        public function GraphicsUtils() //chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[GraphicsUtils] I am a singleton class, saving myself for marriage!');
         }
@@ -40,4 +40,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

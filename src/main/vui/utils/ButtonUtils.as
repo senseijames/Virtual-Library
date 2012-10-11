@@ -17,7 +17,7 @@ package vui.utils
         public static const BUTTON_MOUSE_DOWN_ALPHA : Number = 1;
 
         
-        public function ButtonUtils (chastity_belt:SingletonEnforcer)
+        public function ButtonUtils () //chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[GraphicsUtils] I am a singleton class, saving myself for marriage!');
         }
@@ -87,4 +87,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

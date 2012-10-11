@@ -13,7 +13,7 @@ package vui.utils
     {
 //        public static var _files:Vector.<File>;
         
-        public function FileReaderWriter (chastity_belt:SingletonEnforcer)
+        public function FileReaderWriter () //chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[FileReaderWriter] I am a singleton class, saving myself for marriage!');
         }
@@ -44,4 +44,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

@@ -5,7 +5,7 @@ package vui.utils
 
     public class DisplayListUtils
     {
-        public function DisplayListUtils(chastity_belt:SingletonEnforcer)
+        public function DisplayListUtils() //chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[DisplayListUtils] I am a singleton class, saving myself for marriage!');
         }
@@ -26,4 +26,4 @@ package vui.utils
 }
 
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

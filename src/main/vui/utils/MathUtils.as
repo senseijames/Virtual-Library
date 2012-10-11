@@ -4,10 +4,18 @@ package vui.utils
     {
         public static const POWERS_OF_TWO : Vector.<uint> = new <uint>[2, 4, 8, 16, 32, 64, 128, 256];
 
-        public function MathUtils (chastity_belt:SingletonEnforcer)
+        public function MathUtils () //chastity_belt:SingletonEnforcer)
         {
         }
         
+		public static function radians (degrees:Number) : Number {
+			return Math.PI * degrees / 180;
+		}
+
+		public static function degrees (radians:Number) : Number {
+			return 180 * radians / Math.PI;
+		}
+		
         public static function get_power_of_two (value:uint, is_max_value:Boolean = true) : uint
         {
             for (var i:uint = 1; i < POWERS_OF_TWO.length; i++) {
@@ -32,4 +40,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

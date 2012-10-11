@@ -2,7 +2,7 @@ package vui.utils
 {
     public class ConfigUtils
     {
-        public function ConfigUtils (chastity_belt:SingletonEnforcer)
+        public function ConfigUtils () //chastity_belt:SingletonEnforcer)
         {
         }
         
@@ -20,4 +20,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }

@@ -6,7 +6,7 @@ package vui.utils
     
     public class TextUtils
     {
-        public function TextUtils(chastity_belt:SingletonEnforcer)
+        public function TextUtils() //chastity_belt:SingletonEnforcer)
         {
 //            throw new Error('[TextUtils] I am a singleton class, saving myself for marriage!');
         }
@@ -54,4 +54,4 @@ package vui.utils
     }
 }
 
-class SingletonEnforcer { }
+//class SingletonEnforcer { }
