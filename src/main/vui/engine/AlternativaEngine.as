@@ -7,10 +7,10 @@ package vui.engine
     import alternativa.engine3d.core.View;
     import alternativa.engine3d.lights.AmbientLight;
     import alternativa.engine3d.lights.DirectionalLight;
-    import alternativa.engine3d.materials.FillMaterial;
-    import alternativa.engine3d.primitives.Box;
-    import alternativa.engine3d.primitives.GeoSphere;
-    import alternativa.engine3d.primitives.Plane;
+//    import alternativa.engine3d.materials.FillMaterial;
+//    import alternativa.engine3d.primitives.Box;
+//    import alternativa.engine3d.primitives.GeoSphere;
+//    import alternativa.engine3d.primitives.Plane;
     
     import flash.display.Sprite;
     import flash.display.Stage3D;
@@ -71,6 +71,8 @@ package vui.engine
             _camera.x = point.x;
             _camera.y = point.y;
             _camera.z = point.z;
+			
+			_camera_controller.setObjectPosXYZ(point.x, point.y, point.z);
         }
         
         public function set camera_sight (point : Vector3D) : void
@@ -100,9 +102,7 @@ package vui.engine
         
         protected function init (event:Event = null) : void
         {
-            if (event) {
-                removeEventListener(event.type, init);
-            }
+            if (event) removeEventListener(event.type, init);
          
             init_engine();
             init_lights();
@@ -112,59 +112,75 @@ package vui.engine
         {
             init_camera();
             init_camera_controller();
+			init_resource_containers();
             init_stage_3d();
         }
-
-        protected function init_lights () : void
-        {
-            _directional_light = new DirectionalLight(0xFF0000);
-            _directional_light.intensity = 10;
-            _directional_light.y = -500;
-            _directional_light.z = 500;
-            _directional_light.lookAt(0, 0, 0);
-            _root_container.addChild(_directional_light);
-            
-            _ambient_light = new AmbientLight(0x00FF00);
-            //            ambient_light.intensity = 1000;
-            //            root_container.addChild(ambient_light);
-        }
-        
+		
+// TODO: This needs revision.
+		protected function init_lights () : void
+		{
+			_directional_light = new DirectionalLight(0xFF0000);
+			_directional_light.intensity = 10;
+			_directional_light.y = -500;
+			_directional_light.z = 500;
+			_directional_light.lookAt(0, 0, 0);
+			_root_container.addChild(_directional_light);
+			
+			_ambient_light = new AmbientLight(0x00FF00);
+			//            ambient_light.intensity = 1000;
+			//            root_container.addChild(ambient_light);
+		}
+		
         protected function init_camera () : void
         {
+			// Camera3D params are nearClipping and farClipping - they are the depth of space the camera
+			// can observe, which is the effective range of values in the z-buffer.  The z-buffer, or depth buffer,
+			// stores the depths (z-coordinates) of all rendered pixels (with respect to the camera);
             _camera = new Camera3D(0.01, 10000000000);
             camera_position = new Vector3D(-50, -420, 100);
-            // Add a view to the camera.
+			
+            // Create a viewport for the camera, and add the viewport to the regular display list!
+			// The viewport is the window through which you view the world. 
             _camera.view = new View(_rectangle.width, _rectangle.height, false, 0x404040, 0, 4);
             addChild(_camera.view);
+
             // Add the camera to the root container.
             _root_container = new Object3D;
             _root_container.addChild(_camera);
-            // Add a content container to facilitate 'clearing' that content.
-            _content_container = new Object3D;
-            _root_container.addChild(_content_container);
-            // Add a container buffer to optimize uploading new resources to the GPU.
-            _content_container_buffer = new Object3D;
         }
         
         protected function init_camera_controller () : void
         {
-            // Set the speed & sensitivity of navigation!
+            // SimpleObjectController - allows the user to control the camera position with the keys and mouse,
+			// provides the "lookAt" method, and sets the speed & sensitivity of (camera) navigation!
             _camera_controller = new SimpleObjectController(stage, _camera, 200);
              // Default is 1.
              _camera_controller.mouseSensitivity = 0.5;
             // _camera_controller.unbindAll();
             _camera_controller.lookAtXYZ(0,0,0);
         }
-        
+		
+		protected function init_resource_containers () : void
+		{
+			// Add a content container to facilitate 'clearing' that content.
+			_content_container = new Object3D;
+			_root_container.addChild(_content_container);
+			// Add a container buffer to optimize uploading new resources to the GPU.
+			_content_container_buffer = new Object3D;
+		}
+
         protected function init_stage_3d () : void
         {
             _stage3D = stage.stage3Ds[0];
+// TODO: Graceful fallback here? Throw an error to the tune of "Stage3d not available"			
             _stage3D.addEventListener(Event.CONTEXT3D_CREATE, init_resource_upload);
             _stage3D.requestContext3D();
         }
         
         protected function init_resource_upload (event:Event) : void 
         {
+			_stage3D.removeEventListener(event.type, arguments.callee);
+			
             upload_resources_to_GPU(_root_container);
             addEventListener(Event.ENTER_FRAME, on_ENTER_FRAME)
         }
@@ -199,6 +215,8 @@ package vui.engine
 
         protected function on_ENTER_FRAME(event:Event) : void 
         {
+			// Update the camera controller whenever the camera position can change (in this case, on 
+			// every frame, as it is controlled by the mouse).
             _camera_controller.update();
             _camera.render(_stage3D);
         }
