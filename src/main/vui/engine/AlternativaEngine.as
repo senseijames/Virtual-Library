@@ -1,5 +1,11 @@
 package vui.engine
 {    
+    import flash.display.Sprite;
+    import flash.display.Stage3D;
+    import flash.events.Event;
+    import flash.geom.Rectangle;
+    import flash.geom.Vector3D;
+    
     import alternativa.engine3d.controllers.SimpleObjectController;
     import alternativa.engine3d.core.Camera3D;
     import alternativa.engine3d.core.Object3D;
@@ -7,16 +13,6 @@ package vui.engine
     import alternativa.engine3d.core.View;
     import alternativa.engine3d.lights.AmbientLight;
     import alternativa.engine3d.lights.DirectionalLight;
-//    import alternativa.engine3d.materials.FillMaterial;
-//    import alternativa.engine3d.primitives.Box;
-//    import alternativa.engine3d.primitives.GeoSphere;
-//    import alternativa.engine3d.primitives.Plane;
-    
-    import flash.display.Sprite;
-    import flash.display.Stage3D;
-    import flash.events.Event;
-    import flash.geom.Rectangle;
-    import flash.geom.Vector3D;
 //    import flash.ui.Keyboard;
 
     
@@ -80,6 +76,12 @@ package vui.engine
             _camera_controller.lookAt(point);
         }
         
+		public function set view_size ( dimensions : Rectangle) : void
+		{
+			_camera.view.width = _rectangle.width = dimensions.width;
+			_camera.view.height = _rectangle.height = dimensions.height;
+		}
+		
         public function clear () : void
         {
             for (var i:int = _content_container.numChildren - 1; i >= 0; i--) {
@@ -95,10 +97,9 @@ package vui.engine
             // _camera_controller.bindKey(Keyboard.Q, SimpleObjectController.ACTION_MOUSE_LOOK);
         }
         
+		
         
-        /** * * * * * * * * * *
-        * Initialization
-        * * * * * * * * * * * */
+        /** * * * * * * * * * *  Initialization  * * * * * * * * * * * */
         
         protected function init (event:Event = null) : void
         {
@@ -147,6 +148,8 @@ package vui.engine
             // Add the camera to the root container.
             _root_container = new Object3D;
             _root_container.addChild(_camera);
+			
+			stage.addEventListener(Event.RESIZE, stage_RESIZE);
         }
         
         protected function init_camera_controller () : void
@@ -186,9 +189,8 @@ package vui.engine
         }
 
         
-        /** * * * * * * * * * *
-         * Helpers
-         * * * * * * * * * * * */
+		
+        /** * * * * * * * * * *  Helpers  * * * * * * * * * * * */
 
         protected function upload_buffer_to_GPU () : void
         {
@@ -207,11 +209,19 @@ package vui.engine
                 resource.upload(_stage3D.context3D);
             }
         }
+
+		
+		
+		/** * * * * * * * * * *  Event Handlers  * * * * * * * * * * * */
+		
+		private function stage_RESIZE (event:Event = null) : void
+		{
+			view_size = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+		}
+
         
-        
-        /** * * * * * * * * * *
-         * On Enter Frame
-         * * * * * * * * * * * */
+		
+        /** * * * * * * * * * *  On Enter Frame  * * * * * * * * * * * */
 
         protected function on_ENTER_FRAME(event:Event) : void 
         {

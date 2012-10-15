@@ -30,6 +30,8 @@ package
             virtual_library_controller.init(container, {depth: VirtualLibraryConfig.FILE_SEARCH_DEPTH, show_hidden: VirtualLibraryConfig.SHOW_HIDDEN, is_loose_pack: VirtualLibraryConfig.IS_LOOSE_PACK, 
                                                         use_webcam: VirtualLibraryConfig.USE_WEBCAM, webcam_activity_level: VirtualLibraryConfig.WEBCAM_ACTIVITY_LEVEL, webcam_activity_time: VirtualLibraryConfig.WEBCAM_ACTIVITY_TIME, 
                                                         webcam_show_video: VirtualLibraryConfig.WEBCAM_SHOW_VIDEO, webcam_show_activity : VirtualLibraryConfig.WEBCAM_SHOW_VIDEO });
+			// TODO: Add abstract init from running here.
+			// TODO: virtual_library_controller.run() || .go();
         }
 
         
