@@ -2,6 +2,8 @@ package vui.engine
 {    
     import flash.display.Sprite;
     import flash.display.Stage3D;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
     import flash.events.Event;
     import flash.geom.Rectangle;
     import flash.geom.Vector3D;
@@ -148,7 +150,9 @@ package vui.engine
             // Add the camera to the root container.
             _root_container = new Object3D;
             _root_container.addChild(_camera);
-			
+
+			stage.align = StageAlign .TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.addEventListener(Event.RESIZE, stage_RESIZE);
         }
         
