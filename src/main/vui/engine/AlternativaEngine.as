@@ -70,7 +70,9 @@ package vui.engine
             _camera.y = point.y;
             _camera.z = point.z;
 			
-			_camera_controller.setObjectPosXYZ(point.x, point.y, point.z);
+			if (_camera_controller) {
+				_camera_controller.setObjectPosXYZ(point.x, point.y, point.z);
+			}
         }
         
         public function set camera_sight (point : Vector3D) : void
@@ -109,6 +111,7 @@ package vui.engine
          
             init_engine();
             init_lights();
+			init_content();
         }
         
         protected function init_engine () : void
@@ -116,6 +119,7 @@ package vui.engine
             init_camera();
             init_camera_controller();
 			init_resource_containers();
+//init_content();
             init_stage_3d();
         }
 		
@@ -132,6 +136,11 @@ package vui.engine
 			_ambient_light = new AmbientLight(0x00FF00);
 			//            ambient_light.intensity = 1000;
 			//            root_container.addChild(ambient_light);
+		}
+		
+		protected function init_content () : void
+		{
+			// Override me please!!
 		}
 		
         protected function init_camera () : void

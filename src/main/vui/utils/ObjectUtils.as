@@ -14,14 +14,13 @@ package vui.utils
 		 */
 		public static function add_defaults (target : Object, defaults : Object) : Object
 		{
-			target ||= { };
+			target ||= {};
 			if (!defaults) return target;
 
 			var current_key:String;
-			for each (current_key in defaults) {
-				if (target[current_key] !== undefined) {
+			for (current_key in defaults) {
+				if (!target.hasOwnProperty(current_key))
 					target[current_key] = defaults[current_key];
-				}
 			}
 			
 			return target;
