@@ -61,7 +61,7 @@ package vui.engine
 
         public function render () : void
         {
-            upload_buffer_to_GPU();
+            upload_content_buffer_to_GPU();
         }
 
         public function set camera_position (point : Vector3D) : void
@@ -189,15 +189,16 @@ package vui.engine
         {
             _stage3D = stage.stage3Ds[0];
 // TODO: Graceful fallback here? Throw an error to the tune of "Stage3d not available"			
-            _stage3D.addEventListener(Event.CONTEXT3D_CREATE, init_resource_upload);
+            _stage3D.addEventListener(Event.CONTEXT3D_CREATE, stage3d_context_CREATE);
             _stage3D.requestContext3D();
         }
         
-        protected function init_resource_upload (event:Event) : void 
+        protected function stage3d_context_CREATE (event:Event) : void 
         {
 			_stage3D.removeEventListener(event.type, arguments.callee);
 			
-            upload_resources_to_GPU(_root_container);
+			upload_resources_to_GPU();
+			
             addEventListener(Event.ENTER_FRAME, on_ENTER_FRAME)
         }
 
@@ -205,19 +206,24 @@ package vui.engine
 		
         /** * * * * * * * * * *  Helpers  * * * * * * * * * * * */
 
-        protected function upload_buffer_to_GPU () : void
+		protected function upload_resources_to_GPU () : void
+		{
+			upload_content_resources_to_GPU(_root_container);
+		}
+		
+        protected function upload_content_buffer_to_GPU () : void
         {
-            upload_resources_to_GPU(_content_container_buffer);
+            upload_content_resources_to_GPU(_content_container_buffer);
             
             for (var i:int = _content_container_buffer.numChildren - 1; i >= 0; i--) {
                 _content_container.addChild(_content_container_buffer.getChildAt(i));
             } 
         }
 
-        protected function upload_resources_to_GPU (container:Object3D = null) : void
+        protected function upload_content_resources_to_GPU (container:Object3D = null) : void
         {
             container ||= _content_container;
-            trace(AlternativaEngine, 'doing resource upload for', container);
+//            trace(AlternativaEngine, 'doing resource upload for', container);
             for each (var resource:Resource in container.getResources(true)) {
                 resource.upload(_stage3D.context3D);
             }
